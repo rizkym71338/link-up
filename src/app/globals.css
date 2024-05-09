@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .cl-formButtonPrimary {
-  @apply bg-purple-1;
+  @apply bg-purple-1 text-light-1;
 }
 
 .cl-formButtonPrimary:hover {
