@@ -12,7 +12,7 @@ export const TopBar = () => {
   const router = useRouter()
 
   return (
-    <div className="mt-6 flex items-center gap-4">
+    <div className="sticky top-0 flex items-center gap-4 border-b border-dark-2 bg-purple-2 p-6">
       <div className="relative flex w-full">
         <input
           type="text"

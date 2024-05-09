@@ -17,12 +17,10 @@ export const MainContainer = ({ children }: MainContainerProps) => {
   const page = pageTitles.find((page) => page.url === firstPathname)
 
   return (
-    <section className="mx-auto flex max-w-3xl flex-1 flex-col px-4 md:px-10 lg:px-4 xl:px-20">
+    <section className="mx-auto flex flex-1 flex-col">
       <TopBar />
-      <div className="mb-20 mt-6">
-        <h1 className="mb-5 text-heading2-bold max-sm:text-heading3-bold">
-          {page?.title}
-        </h1>
+      <div className="mx-auto flex w-full max-w-lg flex-col gap-6 p-6 pb-20">
+        <h1 className="text-heading2-bold">{page?.title}</h1>
         {children}
       </div>
     </section>

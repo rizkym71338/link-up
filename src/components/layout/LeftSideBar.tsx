@@ -30,7 +30,7 @@ export const LeftSideBar = async () => {
   ]
 
   return (
-    <div className="custom-scrollbar sticky left-0 top-0 hidden h-screen flex-col gap-6 overflow-auto px-10 py-6 md:flex">
+    <div className="custom-scrollbar sticky left-0 top-0 hidden h-screen flex-col gap-6 overflow-auto border-r border-dark-2 p-6 md:flex">
       <Link href="/">
         <CustomImage src="/assets/logo.png" alt="logo" priority />
       </Link>
@@ -54,7 +54,7 @@ export const LeftSideBar = async () => {
           ))}
         </div>
 
-        <hr />
+        <hr className="border-dark-2" />
 
         <Menu />
       </div>
