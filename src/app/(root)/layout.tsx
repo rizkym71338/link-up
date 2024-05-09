@@ -7,9 +7,8 @@ import { redirect } from 'next/navigation'
 
 import { LeftSideBar, RightSideBar } from '@/components'
 import { BottomBar, MainContainer } from '@/components'
-import { cn, prisma } from '@/libs'
+import { cn } from '@/libs'
 import '../globals.css'
-import { Post, User } from '@prisma/client'
 
 export const metadata: Metadata = {
   title: 'Vibe Zone',
@@ -27,16 +26,12 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
   if (!userId) redirect('/sign-in')
 
-  const user = (await prisma.user.findFirst({
-    where: { clerkId: userId },
-  })) as User & { posts: Post[] }
-
   return (
     <ClerkProvider>
       <html lang="en">
         <body className={cn(inter.className, 'bg-purple-2 text-light-1')}>
           <main className="flex">
-            <LeftSideBar user={user} />
+            <LeftSideBar />
             <MainContainer>{children}</MainContainer>
             <RightSideBar />
           </main>

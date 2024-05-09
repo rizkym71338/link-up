@@ -18,7 +18,7 @@ export const Menu = () => {
             key={route}
             href={route}
             className={cn(
-              'flex items-center gap-4 rounded-lg px-4 py-2',
+              'flex items-center gap-4 rounded-lg px-4 py-2 transition-all hover:bg-purple-1',
               isActive && 'bg-purple-1',
             )}
           >

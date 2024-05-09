@@ -2,9 +2,9 @@
 const nextConfig = {
   images: {
     remotePatterns: [
-      {
-        hostname: 'img.clerk.com',
-      },
+      { hostname: 'img.clerk.com' },
+      { hostname: 'via.placeholder.com' },
+      { hostname: 'res.cloudinary.com' },
     ],
   },
 }
