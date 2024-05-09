@@ -1,8 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { MagnifyingGlassIcon, PlusIcon } from '@heroicons/react/24/outline'
 
@@ -15,10 +13,6 @@ export const TopBar = () => {
 
   return (
     <div className="mt-6 flex items-center gap-4">
-      <Link href="/" className="md:hidden">
-        <Image src="/assets/logo.png" alt="logo" width={200} height={200} />
-      </Link>
-
       <div className="relative flex w-full">
         <input
           type="text"

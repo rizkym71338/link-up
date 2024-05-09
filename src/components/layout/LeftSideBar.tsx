@@ -2,16 +2,30 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import { Menu } from '@/components'
+import { User, Post } from '@prisma/client'
 
-const data = {
-  name: 'Phuc Mai',
-  avatar: '/assets/phucmai.png',
-  posts: 1,
-  followers: 100,
-  following: 100,
+interface LeftSideBarProps {
+  user: User & {
+    posts: Post[]
+  }
 }
 
-export const LeftSideBar = () => {
+export const LeftSideBar = ({ user }: LeftSideBarProps) => {
+  const info = [
+    {
+      value: user?.posts?.length || '0',
+      label: 'Posts',
+    },
+    {
+      value: user?.followersIds?.length || '0',
+      label: 'Followers',
+    },
+    {
+      value: user?.followingIds?.length || '0',
+      label: 'Following',
+    },
+  ]
+
   return (
     <div className="custom-scrollbar sticky left-0 top-0 hidden h-screen flex-col gap-6 overflow-auto px-10 py-6 md:flex">
       <Link href="/">
@@ -19,32 +33,26 @@ export const LeftSideBar = () => {
       </Link>
 
       <div className="flex flex-col gap-4">
-        <div className="flex flex-col items-center gap-2 text-light-1">
+        <div className="flex flex-col items-center gap-2">
           <Link href="/">
             <Image
-              src={data.avatar}
+              src={user.profilePhoto || ''}
               alt="profile-photo"
               width={50}
               height={50}
               className="rounded-full"
             />
           </Link>
-          <p className="text-small-bold">{data.name}</p>
+          <p className="text-small-bold">{user.username}</p>
         </div>
 
-        <div className="flex justify-between text-light-1">
-          <div className="flex flex-col items-center">
-            <p className="text-base-bold">{data.posts}</p>
-            <p className="text-tiny-medium">Posts</p>
-          </div>
-          <div className="flex flex-col items-center">
-            <p className="text-base-bold">{data.followers}</p>
-            <p className="text-tiny-medium">Followers</p>
-          </div>
-          <div className="flex flex-col items-center">
-            <p className="text-base-bold">{data.following}</p>
-            <p className="text-tiny-medium">Following</p>
-          </div>
+        <div className="flex justify-between">
+          {info.map(({ value, label }, index) => (
+            <div key={index} className="flex flex-col items-center">
+              <p className="text-base-bold">{value}</p>
+              <p className="text-tiny-medium">{label}</p>
+            </div>
+          ))}
         </div>
 
         <hr />
