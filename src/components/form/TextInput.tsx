@@ -9,7 +9,13 @@ export const TextInput = ({ label, name, ...props }: TextInputProps) => {
   return (
     <div>
       <label htmlFor={name}>{label}</label>
-      <input id={name} type="text" className="input w-full" {...props} />
+      <input
+        id={name}
+        name={name}
+        type="text"
+        className="input w-full"
+        {...props}
+      />
     </div>
   )
 }
