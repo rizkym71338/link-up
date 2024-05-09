@@ -1,9 +1,9 @@
 'use client'
 
 import { ReactNode } from 'react'
+import { usePathname } from 'next/navigation'
 
 import { TopBar } from '@/components'
-import { usePathname } from 'next/navigation'
 import { pageTitles } from '@/constants'
 
 interface MainContainerProps {
