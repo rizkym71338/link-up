@@ -51,8 +51,8 @@ export const pageTitles = [
     title: 'Search',
   },
   {
-    url: '/search',
-    title: 'Search',
+    url: '/profile',
+    title: 'Profile',
   },
   {
     url: '/saved-posts',
@@ -64,17 +64,28 @@ export const pageTitles = [
   },
 ]
 
-export const tabs = [
+export const profileTabs = [
   {
-    link: 'posts',
+    prefix: 'posts',
     name: 'Posts',
   },
   {
-    link: 'followers',
+    prefix: 'followers',
     name: 'Followers',
   },
   {
-    link: 'following',
+    prefix: 'following',
     name: 'Following',
+  },
+]
+
+export const searchTabs = [
+  {
+    prefix: 'posts',
+    name: 'Posts',
+  },
+  {
+    prefix: 'people',
+    name: 'People',
   },
 ]

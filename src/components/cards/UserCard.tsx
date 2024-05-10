@@ -12,7 +12,7 @@ interface UserCardProps {
 export const UserCard = ({ user }: UserCardProps) => {
   return (
     <div className="flex items-center gap-2">
-      <Link href={`/profile/${nullSafe(user?.id)}`} className="flex-none">
+      <Link href={`/profile/${nullSafe(user?.id)}/posts`} className="flex-none">
         <NextImage
           src={nullSafe(user?.profilePhoto)}
           alt="profile photo"

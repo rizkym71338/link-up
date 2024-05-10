@@ -45,8 +45,12 @@ export const LeftSideBar = async () => {
         useSkeleton
       />
 
-      <p className="mb-4 text-center text-small-bold">
-        {nullSafe(user?.username)}
+      <p className="mb-1 text-center text-small-bold">
+        {nullSafe(user?.firstName)} {nullSafe(user?.lastName)}
+      </p>
+
+      <p className="mb-4 text-center text-subtle-medium text-light-2">
+        @{nullSafe(user?.username)}
       </p>
 
       <div className="mb-4 flex items-center">

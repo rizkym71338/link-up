@@ -18,7 +18,7 @@ export const PostCard = ({ post }: PostCardProps) => {
     <div className="w-full rounded-lg bg-dark-1 p-4">
       <div className="mb-4 flex items-center gap-2">
         <Link
-          href={`/profile/${nullSafe(post.author?.id)}`}
+          href={`/profile/${nullSafe(post.author?.id)}/posts`}
           className="flex-none"
         >
           <NextImage

@@ -1,6 +1,4 @@
-import Link from 'next/link'
-
-import { PostCard } from '@/components'
+import { PostCard, SearchTab } from '@/components'
 import { prisma } from '@/libs'
 
 interface SearchPageProps {
@@ -21,18 +19,10 @@ export default async function SearchPage({ params }: SearchPageProps) {
 
   return (
     <section className="flex flex-col gap-4">
-      <div className="flex justify-center gap-4">
-        <Link
-          href={`/search/posts/${params.query}`}
-          className="tab bg-purple-1"
-        >
-          Posts
-        </Link>
-        <Link href={`/search/people/${params.query}`} className="tab bg-dark-2">
-          People
-        </Link>
-      </div>
+      <SearchTab />
+
       {posts.length === 0 && <div className="text-center">No posts found</div>}
+
       {posts.map((post) => (
         <PostCard key={post.id} post={post as any} />
       ))}
