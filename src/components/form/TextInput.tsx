@@ -8,12 +8,14 @@ interface TextInputProps {
 export const TextInput = ({ label, name, ...props }: TextInputProps) => {
   return (
     <div>
-      <label htmlFor={name}>{label}</label>
+      <label htmlFor={name} className="text-base-bold">
+        {label}
+      </label>
       <input
         id={name}
         name={name}
         type="text"
-        className="input w-full"
+        className="input mb-6 w-full"
         {...props}
       />
     </div>

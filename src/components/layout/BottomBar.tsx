@@ -10,7 +10,7 @@ export const BottomBar = () => {
   const pathname = usePathname()
 
   return (
-    <div className="fixed bottom-0 z-10 flex w-full items-center justify-between overflow-hidden rounded-t-3xl bg-dark-1 p-6 md:hidden">
+    <div className="fixed bottom-0 z-10 flex w-full items-center justify-between overflow-hidden rounded-t-3xl border-t border-dark-2 bg-purple-2 p-6 md:hidden">
       {sidebarLinks.map(({ icon: Icon, route }) => {
         const isActive = pathname === route
         return (

@@ -1,63 +1,72 @@
 import Link from 'next/link'
 import { auth } from '@clerk/nextjs/server'
 
-import { Menu, CustomImage } from '@/components'
-import { prisma } from '@/libs'
+import { Menu, NextImage } from '@/components'
+import { nullSafe, prisma } from '@/libs'
 
 export const LeftSideBar = async () => {
   const { userId } = auth()
 
   const user = await prisma.user.findFirst({
     where: { clerkId: userId },
-    include: {
-      posts: true,
-    },
+    include: { posts: true },
   })
 
   const info = [
     {
-      value: user?.posts?.length || '0',
+      value: nullSafe(user?.posts.length, '0'),
       label: 'Posts',
     },
     {
-      value: user?.followersIds?.length || '0',
+      value: nullSafe(user?.followersIds.length, '0'),
       label: 'Followers',
     },
     {
-      value: user?.followingIds?.length || '0',
+      value: nullSafe(user?.followingIds.length, '0'),
       label: 'Following',
     },
   ]
 
   return (
-    <div className="custom-scrollbar sticky left-0 top-0 hidden h-screen flex-col gap-6 overflow-auto border-r border-dark-2 p-6 md:flex">
+    <div className="custom-scrollbar sticky left-0 top-0 hidden h-screen w-full max-w-[300px] overflow-auto border-r border-dark-2 p-6 md:block">
       <Link href="/">
-        <CustomImage src="/assets/logo.png" alt="logo" priority />
+        <NextImage
+          src="/assets/logo.png"
+          alt="logo"
+          className="mx-auto mb-6"
+          useSkeleton
+        />
       </Link>
 
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-col items-center gap-2">
-          <CustomImage
-            src={user?.profilePhoto || ''}
-            alt="profile-photo"
-            className="h-16 w-16 rounded-full bg-dark-1"
-          />
-          <p className="text-small-bold">{user?.username}</p>
-        </div>
+      <NextImage
+        src={nullSafe(user?.profilePhoto)}
+        alt="profile-photo"
+        className="mx-auto mb-4 h-16 w-16 rounded-full"
+        useSkeleton
+      />
 
-        <div className="flex justify-between">
-          {info.map(({ value, label }, index) => (
-            <div key={index} className="flex flex-col items-center">
-              <p className="text-base-bold">{value}</p>
-              <p className="text-tiny-medium">{label}</p>
-            </div>
-          ))}
-        </div>
+      <p className="mb-4 text-center text-small-bold">
+        {nullSafe(user?.username)}
+      </p>
 
-        <hr className="border-dark-2" />
-
-        <Menu />
+      <div className="mb-6 flex justify-between">
+        {info.map(({ value, label }, index) => (
+          <div key={index} className="flex flex-col items-center">
+            <p className="text-base-bold">{nullSafe(value)}</p>
+            <p className="text-tiny-medium">{nullSafe(label)}</p>
+          </div>
+        ))}
       </div>
+
+      <hr className="mb-6 border-dark-2" />
+
+      <Menu />
+
+      <hr className="my-6 border-dark-2" />
+
+      <p className="text-center text-tiny-medium">
+        © 2024 Vibe Zone | Created by Rizky Maulana
+      </p>
     </div>
   )
 }

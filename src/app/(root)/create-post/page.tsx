@@ -24,7 +24,7 @@ export default async function CreatePostPage() {
   }
 
   return (
-    <form action={handlePublish} className="flex flex-col gap-6">
+    <form action={handlePublish}>
       <ImageInput name="photo" />
       <Textarea
         name="caption"
