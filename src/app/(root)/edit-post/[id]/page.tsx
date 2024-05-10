@@ -11,7 +11,7 @@ export default async function EditPostPage({ params }: EditPostPageProps) {
     where: { id: params.id },
   })
 
-  const editPostWithId = editPost.bind(null, nullSafe(post?.authorId))
+  const editPostWithId = editPost.bind(null, nullSafe(post?.id))
 
   return (
     <form action={editPostWithId}>
