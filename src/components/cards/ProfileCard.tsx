@@ -1,8 +1,8 @@
 import { Post, User } from '@prisma/client'
 
-import { NextImage } from '@/components'
+import { FollowOrUnFollowButton, NextImage } from '@/components'
 import { nullSafe } from '@/libs'
-import { UserPlusIcon } from '@heroicons/react/24/outline'
+import { auth } from '@clerk/nextjs/server'
 
 interface ProfileCardProps {
   user: User & { posts: Post[] }
@@ -52,7 +52,9 @@ export const ProfileCard = ({ user }: ProfileCardProps) => {
         </div>
       </div>
 
-      <UserPlusIcon className="h-8 w-8 cursor-pointer transition-all hover:text-purple-1" />
+      {user.clerkId !== nullSafe(auth().userId) && (
+        <FollowOrUnFollowButton followId={nullSafe(user?.id)} />
+      )}
     </div>
   )
 }

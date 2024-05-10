@@ -1,3 +1,5 @@
+import { auth } from '@clerk/nextjs/server'
+
 import { SearchTab, UserCard } from '@/components'
 import { prisma } from '@/libs'
 
@@ -13,6 +15,7 @@ export default async function SearchPage({ params }: SearchPageProps) {
         { firstName: { contains: params.query, mode: 'insensitive' } },
         { lastName: { contains: params.query, mode: 'insensitive' } },
       ],
+      NOT: { clerkId: auth().userId },
     },
     orderBy: { createdAt: 'desc' },
   })

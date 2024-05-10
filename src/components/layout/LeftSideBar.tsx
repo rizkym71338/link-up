@@ -38,12 +38,14 @@ export const LeftSideBar = async () => {
         />
       </Link>
 
-      <NextImage
-        src={nullSafe(user?.profilePhoto)}
-        alt="profile-photo"
-        className="mx-auto mb-2 h-16 w-16 rounded-full"
-        useSkeleton
-      />
+      <Link href={`/profile/${nullSafe(user?.id)}/posts`}>
+        <NextImage
+          src={nullSafe(user?.profilePhoto)}
+          alt="profile-photo"
+          className="mx-auto mb-2 h-16 w-16 rounded-full"
+          useSkeleton
+        />
+      </Link>
 
       <p className="mb-1 text-center text-small-bold">
         {nullSafe(user?.firstName)} {nullSafe(user?.lastName)}

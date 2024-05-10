@@ -1,10 +1,10 @@
+'use server'
+
 import { redirect } from 'next/navigation'
 
 import { prisma } from '@/libs'
 
 export const editPost = async (postId: string, formData: FormData) => {
-  'use server'
-
   await prisma.post.update({
     where: { id: postId },
     data: {

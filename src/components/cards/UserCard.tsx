@@ -1,8 +1,8 @@
 import Link from 'next/link'
-import { UserPlusIcon } from '@heroicons/react/24/outline'
+import { auth } from '@clerk/nextjs/server'
 import { User } from '@prisma/client'
 
-import { NextImage } from '@/components'
+import { FollowOrUnFollowButton, NextImage } from '@/components'
 import { nullSafe } from '@/libs'
 
 interface UserCardProps {
@@ -30,7 +30,9 @@ export const UserCard = ({ user }: UserCardProps) => {
         </p>
       </div>
 
-      <UserPlusIcon className="h-8 w-8 cursor-pointer transition-all hover:text-purple-1" />
+      {user.clerkId !== nullSafe(auth().userId) && (
+        <FollowOrUnFollowButton followId={nullSafe(user?.id)} />
+      )}
     </div>
   )
 }

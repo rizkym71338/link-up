@@ -23,6 +23,8 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 
       <ProfileTab />
 
+      {posts.length === 0 && <div className="text-center">No posts</div>}
+
       {posts.map((post) => (
         <PostCard key={post.id} post={post as any} />
       ))}
