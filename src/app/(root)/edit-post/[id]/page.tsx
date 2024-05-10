@@ -1,7 +1,6 @@
-import { redirect } from 'next/navigation'
-
 import { ImageInput, SubmitButton, TextInput, Textarea } from '@/components'
 import { nullSafe, prisma } from '@/libs'
+import { editPost } from '@/actions'
 
 interface EditPostPageProps {
   params: { id: string }
@@ -12,23 +11,10 @@ export default async function EditPostPage({ params }: EditPostPageProps) {
     where: { id: params.id },
   })
 
-  const handlePublish = async (formData: FormData) => {
-    'use server'
-
-    await prisma.post.update({
-      where: { id: post?.id },
-      data: {
-        postPhoto: formData.get('photo') as string,
-        caption: formData.get('caption') as string,
-        tag: formData.get('tag') as string,
-      },
-    })
-
-    redirect('/')
-  }
+  const editPostWithId = editPost.bind(null, nullSafe(post?.authorId))
 
   return (
-    <form action={handlePublish}>
+    <form action={editPostWithId}>
       <ImageInput name="photo" defaultValue={nullSafe(post?.postPhoto)} />
       <Textarea
         name="caption"
