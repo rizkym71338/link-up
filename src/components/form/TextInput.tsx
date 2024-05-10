@@ -2,6 +2,7 @@ interface TextInputProps {
   name: string
   label: string
   placeholder: string
+  defaultValue?: string
   required?: boolean
 }
 

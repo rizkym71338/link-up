@@ -23,7 +23,7 @@ export const TopBar = () => {
         />
         <MagnifyingGlassIcon
           className="search-icon aspect-square h-6"
-          onClick={() => {}}
+          onClick={() => router.push(`/search/posts/${search}`)}
         />
       </div>
 

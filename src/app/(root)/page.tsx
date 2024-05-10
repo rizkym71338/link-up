@@ -1,26 +1,19 @@
-import { NextImage } from '@/components'
-import { nullSafe, prisma } from '@/libs'
+import { PostCard } from '@/components'
+import { prisma } from '@/libs'
 
 export default async function RootPage() {
   const posts = await prisma.post.findMany({
-    include: { author: true, likes: true, saves: true },
+    include: { author: true, likes: true },
     orderBy: { createdAt: 'desc' },
   })
+
+  if (posts.length === 0)
+    return <div className="text-center">No posts found</div>
 
   return (
     <section className="flex flex-col gap-6">
       {posts.map((post) => (
-        <div key={post.id} className="rounded-lg bg-dark-1 p-6">
-          <NextImage
-            src={nullSafe(post.postPhoto)}
-            alt="post photo"
-            className="aspect-video w-full rounded-lg bg-dark-2 object-cover"
-            useSkeleton
-          />
-          <p>{nullSafe(post.caption)}</p>
-          <p>{nullSafe(post.tag)}</p>
-          <p>{nullSafe(post.author?.username)}</p>
-        </div>
+        <PostCard key={post.id} post={post as any} />
       ))}
     </section>
   )
