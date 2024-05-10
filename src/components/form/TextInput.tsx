@@ -16,7 +16,7 @@ export const TextInput = ({ label, name, ...props }: TextInputProps) => {
         id={name}
         name={name}
         type="text"
-        className="input mb-6 w-full"
+        className="input mb-4 w-full"
         {...props}
       />
     </div>

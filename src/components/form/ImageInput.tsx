@@ -5,6 +5,7 @@ import { CldUploadWidget } from 'next-cloudinary'
 import { PhotoIcon } from '@heroicons/react/24/outline'
 
 import { NextImage } from '@/components'
+import { nullSafe } from '@/libs'
 
 interface ImageInputProps {
   name: string
@@ -12,20 +13,22 @@ interface ImageInputProps {
 }
 
 export const ImageInput = ({ name, defaultValue }: ImageInputProps) => {
-  const [imagePreview, setImagePreview] = useState<string>(defaultValue || '')
+  const [imagePreview, setImagePreview] = useState<string>(
+    nullSafe(defaultValue),
+  )
 
   return (
     <CldUploadWidget
       uploadPreset="vibe-zone"
       onSuccess={(result) => {
         const image = result?.info as any
-        setImagePreview(image?.secure_url || '')
+        setImagePreview(nullSafe(image?.secure_url))
       }}
     >
       {({ open }) => (
         <div
           onClick={() => open()}
-          className="mb-6 flex aspect-video cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-dark-1"
+          className="mb-4 flex aspect-video cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-dark-1"
         >
           {imagePreview ? (
             <NextImage
@@ -34,7 +37,7 @@ export const ImageInput = ({ name, defaultValue }: ImageInputProps) => {
               className="aspect-video w-full object-cover"
             />
           ) : (
-            <div className="flex w-full flex-col items-center justify-center p-6">
+            <div className="flex w-full flex-col items-center justify-center p-4">
               <PhotoIcon className="aspect-square h-24" />
               <p>Upload a photo</p>
             </div>

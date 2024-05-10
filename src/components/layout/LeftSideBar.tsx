@@ -28,12 +28,12 @@ export const LeftSideBar = async () => {
   ]
 
   return (
-    <div className="custom-scrollbar sticky left-0 top-0 hidden h-screen w-full max-w-[300px] overflow-auto border-r border-dark-2 p-6 md:block">
+    <div className="custom-scrollbar sticky left-0 top-0 hidden h-screen w-full max-w-[300px] overflow-auto border-r border-dark-2 p-4 md:block">
       <Link href="/">
         <NextImage
           src="/assets/logo.png"
           alt="logo"
-          className="mx-auto mb-6"
+          className="mx-auto mb-8"
           useSkeleton
         />
       </Link>
@@ -41,7 +41,7 @@ export const LeftSideBar = async () => {
       <NextImage
         src={nullSafe(user?.profilePhoto)}
         alt="profile-photo"
-        className="mx-auto mb-4 h-16 w-16 rounded-full"
+        className="mx-auto mb-2 h-16 w-16 rounded-full"
         useSkeleton
       />
 
@@ -49,20 +49,20 @@ export const LeftSideBar = async () => {
         {nullSafe(user?.username)}
       </p>
 
-      <div className="mb-6 flex justify-between">
+      <div className="mb-4 flex items-center">
         {info.map(({ value, label }, index) => (
-          <div key={index} className="flex flex-col items-center">
+          <div key={index} className="w-full text-center">
             <p className="text-base-bold">{nullSafe(value)}</p>
             <p className="text-tiny-medium">{nullSafe(label)}</p>
           </div>
         ))}
       </div>
 
-      <hr className="mb-6 border-dark-2" />
+      <hr className="mb-4 border-dark-2" />
 
       <Menu />
 
-      <hr className="my-6 border-dark-2" />
+      <hr className="my-4 border-dark-2" />
 
       <p className="text-center text-tiny-medium">
         © 2024 Vibe Zone | Created by Rizky Maulana

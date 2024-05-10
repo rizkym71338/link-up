@@ -20,8 +20,8 @@ export default async function SearchPage({ params }: SearchPageProps) {
   })
 
   return (
-    <section className="flex flex-col gap-6">
-      <div className="flex justify-center gap-6">
+    <section className="flex flex-col gap-4">
+      <div className="flex justify-center gap-4">
         <Link
           href={`/search/posts/${params.query}`}
           className="tab bg-purple-1"

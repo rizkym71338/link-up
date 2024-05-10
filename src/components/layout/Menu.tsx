@@ -19,11 +19,11 @@ export const Menu = () => {
             key={route}
             href={route}
             className={cn(
-              'mb-4 flex items-center rounded-lg px-4 py-2 transition-all hover:bg-purple-1',
+              'mb-2 flex items-center rounded-lg px-3 py-2 transition-all hover:bg-purple-1',
               isActive && 'bg-purple-1',
             )}
           >
-            <Icon className="mr-4 aspect-square h-[26px]" />
+            <Icon className="mr-3 h-5 w-5" />
             <p>{label}</p>
           </Link>
         )

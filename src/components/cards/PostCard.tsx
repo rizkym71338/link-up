@@ -15,8 +15,8 @@ export const PostCard = ({ post }: PostCardProps) => {
   const { userId } = auth()
 
   return (
-    <div className="w-full rounded-lg bg-dark-1 p-6">
-      <div className="mb-6 flex items-center gap-4">
+    <div className="w-full rounded-lg bg-dark-1 p-4">
+      <div className="mb-4 flex items-center gap-2">
         <Link
           href={`/profile/${nullSafe(post.author?.id)}`}
           className="flex-none"
@@ -40,28 +40,28 @@ export const PostCard = ({ post }: PostCardProps) => {
 
         {userId === nullSafe(post.author?.clerkId) && (
           <Link href={`/edit-post/${nullSafe(post.id)}`}>
-            <PencilSquareIcon className="h-8 w-8" />
+            <PencilSquareIcon className="h-5 w-5 transition-all hover:text-purple-1" />
           </Link>
         )}
       </div>
 
-      <p className="mb-6 text-body-normal">{nullSafe(post.caption)}</p>
+      <p className="mb-4 text-body-normal">{nullSafe(post.caption)}</p>
 
       <NextImage
         src={nullSafe(post.postPhoto)}
         alt="post photo"
-        className="mb-6 aspect-video w-full rounded-lg bg-dark-2 object-cover"
+        className="mb-4 aspect-video w-full rounded-md bg-dark-2 object-cover"
         useSkeleton
       />
 
-      <p className="mb-6 text-base text-purple-1">{nullSafe(post.tag)}</p>
+      <p className="mb-4 text-base text-purple-1">{nullSafe(post.tag)}</p>
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between text-small-semibold">
         <div className="flex items-center gap-2">
-          <HeartIcon className="h-8 w-8 cursor-pointer" />
+          <HeartIcon className="h-5 w-5 cursor-pointer" />
           <p>{nullSafe(post.likes.length, '0')}</p>
         </div>
-        <BookmarkIcon className="h-8 w-8 cursor-pointer" />
+        <BookmarkIcon className="h-5 w-5 cursor-pointer" />
       </div>
     </div>
   )
