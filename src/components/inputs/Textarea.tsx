@@ -16,7 +16,7 @@ export const Textarea = ({ label, name, ...props }: TextareaProps) => {
         id={name}
         name={name}
         rows={5}
-        className="input mb-4 w-full"
+        className="mb-4 w-full rounded-lg border-none bg-dark-1 p-2.5 focus:outline-none"
         {...props}
       />
     </div>

@@ -15,6 +15,8 @@ export const ProfileCard = async ({ user }: ProfileCardProps) => {
 
   const isFollowed = currentUser?.followingIds.includes(user.id)
 
+  const isCurrentUser = user.clerkId === nullSafe(auth().userId)
+
   const info = [
     {
       value: nullSafe(user?.posts.length, '0'),
@@ -58,7 +60,7 @@ export const ProfileCard = async ({ user }: ProfileCardProps) => {
         </div>
       </div>
 
-      {user.clerkId !== nullSafe(auth().userId) && (
+      {!isCurrentUser && (
         <FollowOrUnFollowButton
           followId={nullSafe(user?.id)}
           isFollwed={isFollowed!}

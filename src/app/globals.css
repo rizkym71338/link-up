@@ -25,24 +25,3 @@
     border-radius: 2px;
   }
 }
-
-.input {
-  @apply mt-3 rounded-lg border-none bg-dark-1 p-2.5 text-light-1 focus:outline-none;
-}
-
-/* Top Bar */
-.search-bar {
-  @apply w-full rounded-lg bg-dark-2 px-5 py-3 text-small-semibold text-light-1 focus:outline-none;
-}
-.create-post-btn {
-  @apply flex items-center gap-2 rounded-lg bg-gradient-to-l from-pink-1 to-purple-1 px-3 py-2.5 text-small-semibold text-light-1 max-md:hidden;
-}
-
-.search-icon {
-  @apply absolute right-2 top-2 cursor-pointer text-light-1 hover:text-pink-1;
-}
-
-/* Tabs */
-.tab {
-  @apply rounded-lg px-4 py-2 text-small-bold text-light-1;
-}

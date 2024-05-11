@@ -5,10 +5,8 @@ import { Menu, NextImage } from '@/components'
 import { nullSafe, prisma } from '@/libs'
 
 export const LeftSideBar = async () => {
-  const { userId } = auth()
-
   const user = await prisma.user.findFirst({
-    where: { clerkId: userId },
+    where: { clerkId: auth().userId },
     include: { posts: true },
   })
 

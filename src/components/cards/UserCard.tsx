@@ -16,6 +16,8 @@ export const UserCard = async ({ user }: UserCardProps) => {
 
   const isFollowed = currentUser?.followingIds.includes(user.id)
 
+  const isCurrentUser = user.clerkId === nullSafe(auth().userId)
+
   return (
     <div className="flex items-center gap-2">
       <Link href={`/profile/${nullSafe(user?.id)}/posts`} className="flex-none">
@@ -36,7 +38,7 @@ export const UserCard = async ({ user }: UserCardProps) => {
         </p>
       </Link>
 
-      {user.clerkId !== nullSafe(auth().userId) && (
+      {!isCurrentUser && (
         <FollowOrUnFollowButton
           followId={nullSafe(user?.id)}
           isFollwed={isFollowed!}

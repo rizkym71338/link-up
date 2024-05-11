@@ -23,6 +23,8 @@ export const PostCard = async ({ post }: PostCardProps) => {
     where: { postId: post.id, userId: user?.id },
   })
 
+  const isCurrentUser = auth().userId === nullSafe(post.author?.clerkId)
+
   return (
     <div className="w-full rounded-lg bg-dark-1 p-4">
       <div className="mb-4 flex items-center gap-2">
@@ -50,7 +52,7 @@ export const PostCard = async ({ post }: PostCardProps) => {
           </p>
         </Link>
 
-        {auth().userId === nullSafe(post.author?.clerkId) && (
+        {isCurrentUser && (
           <Link href={`/edit-post/${nullSafe(post.id)}`}>
             <PencilSquareIcon className="h-5 w-5 transition-all hover:text-purple-1" />
           </Link>
