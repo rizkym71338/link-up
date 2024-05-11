@@ -29,7 +29,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={cn(inter.className, 'bg-purple-2 text-light-1')}>
+        <body className={inter.className}>
           <ProgressBarProvider>
             <main className="flex">
               <LeftSideBar />

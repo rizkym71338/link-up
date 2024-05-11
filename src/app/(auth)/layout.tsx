@@ -3,7 +3,6 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { ClerkProvider } from '@clerk/nextjs'
 
-import { cn } from '@/libs'
 import '../globals.css'
 
 export const metadata: Metadata = {
@@ -21,13 +20,10 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
     <ClerkProvider>
       <html lang="en">
-        <body
-          className={cn(
-            inter.className,
-            'container flex min-h-screen items-center justify-center bg-purple-2 py-20',
-          )}
-        >
-          {children}
+        <body className={inter.className}>
+          <main className="container flex min-h-screen items-center justify-center py-20">
+            {children}
+          </main>
         </body>
       </html>
     </ClerkProvider>
