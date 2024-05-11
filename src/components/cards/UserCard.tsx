@@ -27,14 +27,14 @@ export const UserCard = async ({ user }: UserCardProps) => {
         />
       </Link>
 
-      <div className="w-full">
+      <Link href={`/profile/${nullSafe(user?.id)}/posts`} className="w-full">
         <p className="mb-1 text-small-semibold">
           {nullSafe(user?.firstName)} {nullSafe(user?.lastName)}
         </p>
         <p className="text-subtle-medium text-light-2">
           @{nullSafe(user?.username)}
         </p>
-      </div>
+      </Link>
 
       {user.clerkId !== nullSafe(auth().userId) && (
         <FollowOrUnFollowButton

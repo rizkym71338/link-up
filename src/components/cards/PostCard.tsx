@@ -38,14 +38,17 @@ export const PostCard = async ({ post }: PostCardProps) => {
           />
         </Link>
 
-        <div className="w-full">
+        <Link
+          href={`/profile/${nullSafe(post.author?.id)}/posts`}
+          className="w-full"
+        >
           <p className="mb-1 text-small-semibold">
             {nullSafe(post.author?.firstName)} {nullSafe(post.author?.lastName)}
           </p>
           <p className="text-subtle-medium text-light-2">
             @{nullSafe(post.author?.username)}
           </p>
-        </div>
+        </Link>
 
         {auth().userId === nullSafe(post.author?.clerkId) && (
           <Link href={`/edit-post/${nullSafe(post.id)}`}>
