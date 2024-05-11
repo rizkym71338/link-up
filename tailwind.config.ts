@@ -19,7 +19,7 @@ const config: Config = {
         'light-1': '#FFFFFF',
         'light-2': '#808080',
         'light-3': '#626067',
-        'dark-1': '#121212',
+        'dark-1': '#100817',
         'dark-2': '#34303E',
         'blue-1': '#016FD5',
       },
