@@ -1,19 +1,28 @@
+'use client'
+
+import { useTransition } from 'react'
 import { BookmarkIcon as BookmarkOutlineIcon } from '@heroicons/react/24/outline'
 import { BookmarkIcon as BookmarkSolidIcon } from '@heroicons/react/24/solid'
 import { Post, SavedPost } from '@prisma/client'
 
 import { saveOrUnSavePost } from '@/actions'
-import { IconSubmitButton } from '@/components'
+import { Loader } from '@/components'
 
 interface SaveOrUnSaveButtonProps {
   post: Post & { saves: SavedPost[] }
   isSaved: boolean
 }
 
-export const SaveOrUnSaveButton = async ({
+export const SaveOrUnSaveButton = ({
   post,
   isSaved,
 }: SaveOrUnSaveButtonProps) => {
+  const [isPending, startTransition] = useTransition()
+
+  const onClick = () => {
+    startTransition(async () => await saveOrUnSavePost(post.id))
+  }
+
   const Icon = () => {
     if (isSaved)
       return <BookmarkSolidIcon className="h-5 w-5 text-yellow-500" />
@@ -21,10 +30,8 @@ export const SaveOrUnSaveButton = async ({
   }
 
   return (
-    <form action={saveOrUnSavePost.bind(null, post.id)}>
-      <IconSubmitButton>
-        <Icon />
-      </IconSubmitButton>
-    </form>
+    <button onClick={onClick}>
+      {isPending ? <Loader className="h-5" /> : <Icon />}
+    </button>
   )
 }
