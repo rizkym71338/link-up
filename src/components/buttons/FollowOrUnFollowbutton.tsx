@@ -11,11 +11,9 @@ interface FollowOrUnFollowButtonProps {
 export const FollowOrUnFollowButton = async ({
   followId,
 }: FollowOrUnFollowButtonProps) => {
-  const { userId } = auth()
-
-  const user = await prisma.user.findFirst({ where: { clerkId: userId } })
-
-  const followOrUnFollowUserWithId = followOrUnFollowUser.bind(null, followId)
+  const user = await prisma.user.findFirst({
+    where: { clerkId: auth().userId },
+  })
 
   const Icon = () => {
     if (user?.followingIds.includes(followId))
@@ -24,7 +22,7 @@ export const FollowOrUnFollowButton = async ({
   }
 
   return (
-    <form action={followOrUnFollowUserWithId}>
+    <form action={followOrUnFollowUser.bind(null, followId)}>
       <button type="submit">
         <Icon />
       </button>

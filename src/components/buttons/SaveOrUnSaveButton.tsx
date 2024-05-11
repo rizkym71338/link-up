@@ -15,8 +15,9 @@ export const SaveOrUnSaveButton = async ({ post }: SaveOrUnSaveButtonProps) => {
     where: { clerkId: auth().userId },
   })
 
-  const isSaved =
-    post?.saves?.filter((save) => save.userId === user?.id).length !== 0
+  const isSaved = await prisma.savedPost.findFirst({
+    where: { postId: post.id, userId: user?.id },
+  })
 
   const Icon = () => {
     if (isSaved)

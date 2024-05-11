@@ -15,8 +15,9 @@ export const LikeOrUnLikeButton = async ({ post }: LikeOrUnLikeButtonProps) => {
     where: { clerkId: auth().userId },
   })
 
-  const isLiked =
-    post?.likes?.filter((like) => like.userId === user?.id).length !== 0
+  const isLiked = await prisma.likedPost.findFirst({
+    where: { postId: post.id, userId: user?.id },
+  })
 
   const Icon = () => {
     if (isLiked) return <HeartSolidIcon className="h-5 w-5 text-red-500" />
