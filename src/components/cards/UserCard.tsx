@@ -3,13 +3,19 @@ import { auth } from '@clerk/nextjs/server'
 import { User } from '@prisma/client'
 
 import { FollowOrUnFollowButton, NextImage } from '@/components'
-import { nullSafe } from '@/libs'
+import { nullSafe, prisma } from '@/libs'
 
 interface UserCardProps {
   user: User
 }
 
-export const UserCard = ({ user }: UserCardProps) => {
+export const UserCard = async ({ user }: UserCardProps) => {
+  const currentUser = await prisma.user.findFirst({
+    where: { clerkId: auth().userId },
+  })
+
+  const isFollowed = currentUser?.followingIds.includes(user.id)
+
   return (
     <div className="flex items-center gap-2">
       <Link href={`/profile/${nullSafe(user?.id)}/posts`} className="flex-none">
@@ -31,7 +37,10 @@ export const UserCard = ({ user }: UserCardProps) => {
       </div>
 
       {user.clerkId !== nullSafe(auth().userId) && (
-        <FollowOrUnFollowButton followId={nullSafe(user?.id)} />
+        <FollowOrUnFollowButton
+          followId={nullSafe(user?.id)}
+          isFollwed={isFollowed!}
+        />
       )}
     </div>
   )

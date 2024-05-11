@@ -1,24 +1,19 @@
 import { BookmarkIcon as BookmarkOutlineIcon } from '@heroicons/react/24/outline'
 import { BookmarkIcon as BookmarkSolidIcon } from '@heroicons/react/24/solid'
-import { auth } from '@clerk/nextjs/server'
 import { Post, SavedPost } from '@prisma/client'
 
 import { saveOrUnSavePost } from '@/actions'
-import { prisma } from '@/libs'
+import { IconSubmitButton } from '@/components'
 
 interface SaveOrUnSaveButtonProps {
   post: Post & { saves: SavedPost[] }
+  isSaved: boolean
 }
 
-export const SaveOrUnSaveButton = async ({ post }: SaveOrUnSaveButtonProps) => {
-  const user = await prisma.user.findFirst({
-    where: { clerkId: auth().userId },
-  })
-
-  const isSaved = await prisma.savedPost.findFirst({
-    where: { postId: post.id, userId: user?.id },
-  })
-
+export const SaveOrUnSaveButton = async ({
+  post,
+  isSaved,
+}: SaveOrUnSaveButtonProps) => {
   const Icon = () => {
     if (isSaved)
       return <BookmarkSolidIcon className="h-5 w-5 text-yellow-500" />
@@ -27,9 +22,9 @@ export const SaveOrUnSaveButton = async ({ post }: SaveOrUnSaveButtonProps) => {
 
   return (
     <form action={saveOrUnSavePost.bind(null, post.id)}>
-      <button type="submit">
+      <IconSubmitButton>
         <Icon />
-      </button>
+      </IconSubmitButton>
     </form>
   )
 }

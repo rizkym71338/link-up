@@ -4,13 +4,25 @@ import { LikedPost, Post, SavedPost, User } from '@prisma/client'
 import { PencilSquareIcon } from '@heroicons/react/24/outline'
 
 import { LikeOrUnLikeButton, NextImage, SaveOrUnSaveButton } from '@/components'
-import { nullSafe } from '@/libs'
+import { nullSafe, prisma } from '@/libs'
 
 interface PostCardProps {
   post: Post & { author: User; likes: LikedPost[]; saves: SavedPost[] }
 }
 
-export const PostCard = ({ post }: PostCardProps) => {
+export const PostCard = async ({ post }: PostCardProps) => {
+  const user = await prisma.user.findFirst({
+    where: { clerkId: auth().userId },
+  })
+
+  const likedPost = await prisma.likedPost.findFirst({
+    where: { postId: post.id, userId: user?.id },
+  })
+
+  const savedPost = await prisma.savedPost.findFirst({
+    where: { postId: post.id, userId: user?.id },
+  })
+
   return (
     <div className="w-full rounded-lg bg-dark-1 p-4">
       <div className="mb-4 flex items-center gap-2">
@@ -54,8 +66,8 @@ export const PostCard = ({ post }: PostCardProps) => {
       <p className="mb-4 text-base text-purple-1">{nullSafe(post.tag)}</p>
 
       <div className="flex items-center justify-between text-small-semibold">
-        <LikeOrUnLikeButton post={nullSafe(post)} />
-        <SaveOrUnSaveButton post={nullSafe(post)} />
+        <LikeOrUnLikeButton post={nullSafe(post)} isLiked={!!likedPost} />
+        <SaveOrUnSaveButton post={nullSafe(post)} isSaved={!!savedPost} />
       </div>
     </div>
   )

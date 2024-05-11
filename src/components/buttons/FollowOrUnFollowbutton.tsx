@@ -1,31 +1,28 @@
-import { auth } from '@clerk/nextjs/server'
 import { UserMinusIcon, UserPlusIcon } from '@heroicons/react/24/outline'
 
 import { followOrUnFollowUser } from '@/actions'
-import { prisma } from '@/libs'
+import { IconSubmitButton } from '@/components'
 
 interface FollowOrUnFollowButtonProps {
   followId: string
+  isFollwed: boolean
 }
 
 export const FollowOrUnFollowButton = async ({
   followId,
+  isFollwed,
 }: FollowOrUnFollowButtonProps) => {
-  const user = await prisma.user.findFirst({
-    where: { clerkId: auth().userId },
-  })
-
   const Icon = () => {
-    if (user?.followingIds.includes(followId))
+    if (isFollwed)
       return <UserMinusIcon className="h-8 w-8 cursor-pointer text-red-500" />
     return <UserPlusIcon className="h-8 w-8 cursor-pointer" />
   }
 
   return (
     <form action={followOrUnFollowUser.bind(null, followId)}>
-      <button type="submit">
+      <IconSubmitButton className="h-8">
         <Icon />
-      </button>
+      </IconSubmitButton>
     </form>
   )
 }
