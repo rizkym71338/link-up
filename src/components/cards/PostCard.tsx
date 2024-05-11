@@ -1,19 +1,16 @@
 import Link from 'next/link'
 import { auth } from '@clerk/nextjs/server'
-import { LikedPost, Post, User } from '@prisma/client'
-import { BookmarkIcon, HeartIcon } from '@heroicons/react/24/outline'
+import { LikedPost, Post, SavedPost, User } from '@prisma/client'
 import { PencilSquareIcon } from '@heroicons/react/24/outline'
 
-import { NextImage } from '@/components'
+import { LikeOrUnLikeButton, NextImage, SaveOrUnSaveButton } from '@/components'
 import { nullSafe } from '@/libs'
 
 interface PostCardProps {
-  post: Post & { author: User; likes: LikedPost[] }
+  post: Post & { author: User; likes: LikedPost[]; saves: SavedPost[] }
 }
 
 export const PostCard = ({ post }: PostCardProps) => {
-  const { userId } = auth()
-
   return (
     <div className="w-full rounded-lg bg-dark-1 p-4">
       <div className="mb-4 flex items-center gap-2">
@@ -38,7 +35,7 @@ export const PostCard = ({ post }: PostCardProps) => {
           </p>
         </div>
 
-        {userId === nullSafe(post.author?.clerkId) && (
+        {auth().userId === nullSafe(post.author?.clerkId) && (
           <Link href={`/edit-post/${nullSafe(post.id)}`}>
             <PencilSquareIcon className="h-5 w-5 transition-all hover:text-purple-1" />
           </Link>
@@ -57,11 +54,8 @@ export const PostCard = ({ post }: PostCardProps) => {
       <p className="mb-4 text-base text-purple-1">{nullSafe(post.tag)}</p>
 
       <div className="flex items-center justify-between text-small-semibold">
-        <div className="flex items-center gap-2">
-          <HeartIcon className="h-5 w-5 cursor-pointer" />
-          <p>{nullSafe(post.likes.length, '0')}</p>
-        </div>
-        <BookmarkIcon className="h-5 w-5 cursor-pointer" />
+        <LikeOrUnLikeButton post={nullSafe(post)} />
+        <SaveOrUnSaveButton post={nullSafe(post)} />
       </div>
     </div>
   )

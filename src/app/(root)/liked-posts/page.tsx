@@ -1,8 +1,15 @@
+import { auth } from '@clerk/nextjs/server'
+
 import { PostCard } from '@/components'
 import { prisma } from '@/libs'
 
-export default async function RootPage() {
+export default async function LikedPostsPage() {
+  const user = await prisma.user.findFirst({
+    where: { clerkId: auth().userId },
+  })
+
   const posts = await prisma.post.findMany({
+    where: { likes: { some: { userId: user?.id } } },
     include: { author: true, likes: true, saves: true },
     orderBy: { createdAt: 'desc' },
   })
