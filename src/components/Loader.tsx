@@ -8,7 +8,7 @@ export const Loader = ({ className }: LoaderProps) => {
   return (
     <div
       className={cn(
-        'aspect-square animate-spin rounded-full border-t-4 border-solid border-blue-500',
+        'aspect-square animate-spin rounded-full border-t-4 border-solid border-purple-1',
         className,
       )}
     />

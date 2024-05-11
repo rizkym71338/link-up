@@ -2,11 +2,12 @@ import { ReactNode } from 'react'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
+import { ProgressBarProvider } from '@/components'
 import { cn } from '@/libs'
-import './globals.css'
+import '@/styles/globals.css'
 
 export const metadata: Metadata = {
-  title: 'Not Found | Vibe Zone',
+  title: 'Vibe Zone',
   description: 'Next 14 Social Media App',
 }
 
@@ -20,7 +21,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   return (
     <html lang="en">
       <body className={cn(inter.className, 'bg-purple-2 text-light-1')}>
-        {children}
+        <ProgressBarProvider>{children}</ProgressBarProvider>
       </body>
     </html>
   )

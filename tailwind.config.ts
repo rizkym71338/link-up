@@ -15,7 +15,7 @@ const config: Config = {
         'purple-1': '#7857FF',
         'purple-2': '#1D1928',
         'pink-1': '#FF0073',
-        'light-1': '#FFFFFF',
+        'light-1': '#F5F5F5',
         'light-2': '#808080',
         'light-3': '#626067',
         'dark-1': '#100817',
