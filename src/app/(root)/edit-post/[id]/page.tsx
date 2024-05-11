@@ -1,3 +1,5 @@
+import { notFound } from 'next/navigation'
+
 import { ImageInput, SubmitButton, TextInput, Textarea } from '@/components'
 import { nullSafe, prisma } from '@/libs'
 import { editPost } from '@/actions'
@@ -7,9 +9,13 @@ interface EditPostPageProps {
 }
 
 export default async function EditPostPage({ params }: EditPostPageProps) {
-  const post = await prisma.post.findFirst({
-    where: { id: params.id },
-  })
+  const post = await prisma.post
+    .findFirst({
+      where: { id: params.id },
+    })
+    .catch(() => notFound())
+
+  if (!post) return notFound()
 
   return (
     <form action={editPost.bind(null, nullSafe(post?.id))}>

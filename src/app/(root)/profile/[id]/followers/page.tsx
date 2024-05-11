@@ -1,3 +1,5 @@
+import { notFound } from 'next/navigation'
+
 import { ProfileCard, ProfileTab, UserCard } from '@/components'
 import { prisma } from '@/libs'
 
@@ -6,10 +8,14 @@ interface FollowersPageProps {
 }
 
 export default async function FollowersPage({ params }: FollowersPageProps) {
-  const user = await prisma.user.findFirst({
-    where: { id: params.id },
-    include: { posts: true },
-  })
+  const user = await prisma.user
+    .findFirst({
+      where: { id: params.id },
+      include: { posts: true },
+    })
+    .catch(() => notFound())
+
+  if (!user) return notFound()
 
   const followers = await prisma.user.findMany({
     where: { followingIds: { has: params.id } },
