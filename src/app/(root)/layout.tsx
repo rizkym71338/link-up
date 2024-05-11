@@ -5,7 +5,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 
-import { LeftSideBar, RightSideBar } from '@/components'
+import { LeftSideBar, ProgressBarProvider, RightSideBar } from '@/components'
 import { BottomBar, MainContainer } from '@/components'
 import { cn } from '@/libs'
 import '../globals.css'
@@ -30,12 +30,14 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     <ClerkProvider>
       <html lang="en">
         <body className={cn(inter.className, 'bg-purple-2 text-light-1')}>
-          <main className="flex">
-            <LeftSideBar />
-            <MainContainer>{children}</MainContainer>
-            <RightSideBar />
-          </main>
-          <BottomBar />
+          <ProgressBarProvider>
+            <main className="flex">
+              <LeftSideBar />
+              <MainContainer>{children}</MainContainer>
+              <RightSideBar />
+            </main>
+            <BottomBar />
+          </ProgressBarProvider>
         </body>
       </html>
     </ClerkProvider>
