@@ -62,6 +62,10 @@ export const pageTitles = [
     url: '/liked-posts',
     title: 'Liked Posts',
   },
+  {
+    url: '/people',
+    title: 'People',
+  },
 ]
 
 export const profileTabs = [
