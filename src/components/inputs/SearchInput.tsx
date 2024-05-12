@@ -1,18 +1,21 @@
 'use client'
 
 import { useState } from 'react'
+import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 
 export const SearchInput = () => {
-  const [search, setSearch] = useState('')
+  const params = useParams()
+
+  const [search, setSearch] = useState(params.query || '')
 
   const Icon = () => {
     const icon = (
-      <MagnifyingGlassIcon className="absolute right-3 top-2 h-5 w-5 cursor-pointer hover:text-pink-1" />
+      <MagnifyingGlassIcon className="absolute right-2.5 top-2 h-5 w-5 cursor-pointer hover:text-pink-1" />
     )
     if (search === '') return icon
-    return <Link href={`/search/posts/${search}`}>{icon}</Link>
+    return <Link href={`/search/${search}`}>{icon}</Link>
   }
 
   return (

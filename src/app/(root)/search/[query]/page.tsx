@@ -1,6 +1,6 @@
 import { auth } from '@clerk/nextjs/server'
 
-import { SearchTab, UserCard } from '@/components'
+import { UserCard } from '@/components'
 import { prisma } from '@/libs'
 
 interface SearchPageProps {
@@ -21,16 +21,12 @@ export default async function SearchPage({ params }: SearchPageProps) {
   })
 
   return (
-    <section>
-      <SearchTab />
-
+    <section className="divide-y divide-dark-2">
       {users.length === 0 && <div className="text-center">No people found</div>}
 
-      <div className="divide-y divide-dark-2">
-        {users.map((user) => (
-          <UserCard key={user.id} user={user} />
-        ))}
-      </div>
+      {users.map((user) => (
+        <UserCard key={user.id} user={user} />
+      ))}
     </section>
   )
 }

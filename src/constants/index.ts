@@ -1,4 +1,4 @@
-import { HeartIcon, HomeIcon, UsersIcon } from '@heroicons/react/24/outline'
+import { HeartIcon, HomeIcon } from '@heroicons/react/24/outline'
 import { BookmarkIcon, FolderPlusIcon } from '@heroicons/react/24/outline'
 
 export const sidebarLinks = [
@@ -12,11 +12,6 @@ export const sidebarLinks = [
     route: '/create-post',
     label: 'Create Post',
   },
-  // {
-  //   icon: UsersIcon,
-  //   route: '/people',
-  //   label: 'People',
-  // },
   {
     icon: BookmarkIcon,
     route: '/saved-posts',
@@ -80,16 +75,5 @@ export const profileTabs = [
   {
     prefix: 'following',
     name: 'Following',
-  },
-]
-
-export const searchTabs = [
-  {
-    prefix: 'posts',
-    name: 'Posts',
-  },
-  {
-    prefix: 'people',
-    name: 'People',
   },
 ]
