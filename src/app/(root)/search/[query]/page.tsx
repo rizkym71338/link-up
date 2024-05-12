@@ -9,11 +9,11 @@ interface SearchPageProps {
 }
 
 export default async function SearchPage({ params }: SearchPageProps) {
-  const user = await prisma.user.findFirst({
+  const currentUser = await prisma.user.findFirst({
     where: { clerkId: auth().userId },
   })
 
-  if (!user) return notFound()
+  if (!currentUser) return notFound()
 
   const users = await prisma.user.findMany({
     where: {
@@ -28,11 +28,11 @@ export default async function SearchPage({ params }: SearchPageProps) {
   })
 
   return (
-    <section className="divide-y divide-dark-2">
+    <section className="-mt-4 divide-y divide-dark-2">
       {users.length === 0 && <div className="text-center">No people found</div>}
 
       {users.map((user) => (
-        <UserCard key={user.id} user={user} currentUser={user} />
+        <UserCard key={user.id} user={user} currentUser={currentUser} />
       ))}
     </section>
   )
