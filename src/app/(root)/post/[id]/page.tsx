@@ -44,7 +44,7 @@ export default async function PostPage({ params }: PostPageProps) {
     })
 
   return (
-    <section>
+    <section className="relative">
       <div className="mb-4 flex items-center gap-2 px-4 md:px-0">
         <Link
           href={`/profile/${nullSafe(post.author?.id)}`}
@@ -82,18 +82,32 @@ export default async function PostPage({ params }: PostPageProps) {
         />
       </Link>
 
-      <div className="mb-4 flex items-center justify-between px-4 text-small-semibold md:px-0">
+      <div className="mb-2 flex items-center justify-between px-4 text-small-semibold md:px-0">
         <LikeOrUnLikeButton post={nullSafe(post)} isLiked={!!likedPost} />
         <SaveOrUnSaveButton post={nullSafe(post)} isSaved={!!savedPost} />
       </div>
 
       <p className="mb-1 px-4 md:px-0">{nullSafe(post.caption)}</p>
 
-      <p className="mb-4 px-4 text-sm text-purple-1 md:px-0">
+      <p className="mb-2 px-4 text-sm text-purple-1 md:px-0">
         {nullSafe(post.tag)}
       </p>
 
-      <div className="flex items-center gap-2 px-4 md:px-0">
+      <div className="border-t border-dark-2 px-4 py-2 md:px-0">
+        {Array.from({ length: 20 }).map((_, index) => (
+          <div key={index} className="flex gap-2 py-1">
+            <div className="h-8 w-8 rounded-full bg-dark-2" />
+            <div>
+              <p className="text-sm">
+                <span className="font-semibold">username</span> comment
+              </p>
+              <p className="text-tiny-medium text-light-2">1 hour ago</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="sticky bottom-[53px] flex items-center gap-2 border-t border-dark-2 bg-purple-2 px-4 py-2 md:bottom-0 md:px-0">
         <input
           type="text"
           placeholder="Add a comment..."
