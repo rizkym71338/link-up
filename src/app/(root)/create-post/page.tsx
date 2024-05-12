@@ -3,7 +3,7 @@ import { createPost } from '@/actions'
 
 export default async function CreatePostPage() {
   return (
-    <form action={createPost}>
+    <form action={createPost} className="px-4">
       <ImageInput name="photo" />
       <Textarea
         name="caption"

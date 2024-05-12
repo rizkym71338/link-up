@@ -12,11 +12,11 @@ export const sidebarLinks = [
     route: '/create-post',
     label: 'Create Post',
   },
-  {
-    icon: UsersIcon,
-    route: '/people',
-    label: 'People',
-  },
+  // {
+  //   icon: UsersIcon,
+  //   route: '/people',
+  //   label: 'People',
+  // },
   {
     icon: BookmarkIcon,
     route: '/saved-posts',

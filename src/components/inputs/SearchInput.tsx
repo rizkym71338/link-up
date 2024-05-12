@@ -18,7 +18,7 @@ export const SearchInput = () => {
   return (
     <div className="relative flex w-full">
       <input
-        type="search"
+        type="text"
         className="w-full rounded-lg bg-dark-2 px-3 py-2 text-small-semibold focus:outline-none"
         placeholder="Search post, people, ..."
         value={search}
