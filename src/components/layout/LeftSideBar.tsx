@@ -1,15 +1,14 @@
 import Link from 'next/link'
-import { auth } from '@clerk/nextjs/server'
 
 import { Menu, NextImage } from '@/components'
-import { nullSafe, prisma } from '@/libs'
+import { nullSafe } from '@/libs'
+import { Post, User } from '@prisma/client'
 
-export const LeftSideBar = async () => {
-  const user = await prisma.user.findFirst({
-    where: { clerkId: auth().userId },
-    include: { posts: true },
-  })
+interface LeftSideBarProps {
+  user: User & { posts: Post[] }
+}
 
+export const LeftSideBar = ({ user }: LeftSideBarProps) => {
   const info = [
     {
       value: nullSafe(user?.posts.length, '0'),
@@ -64,7 +63,7 @@ export const LeftSideBar = async () => {
 
       <hr className="mb-4 border-dark-2" />
 
-      <Menu />
+      <Menu user={nullSafe(user)} />
 
       <hr className="my-4 border-dark-2" />
 

@@ -16,12 +16,13 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
   const user = await prisma.user.findFirst({
     where: { clerkId: auth().userId },
+    include: { posts: true },
   })
 
   return (
     <ClerkProvider>
       <main className="flex">
-        <LeftSideBar />
+        <LeftSideBar user={nullSafe(user)} />
         <MainContainer>{children}</MainContainer>
         <RightSideBar />
       </main>

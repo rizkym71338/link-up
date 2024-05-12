@@ -1,10 +1,10 @@
 'use client'
 
 import { useTransition } from 'react'
-import { UserMinusIcon, UserPlusIcon } from '@heroicons/react/24/outline'
 
 import { followOrUnFollowUser } from '@/actions'
 import { Loader } from '@/components'
+import { cn } from '@/libs'
 
 interface FollowOrUnFollowButtonProps {
   followId: string
@@ -21,15 +21,19 @@ export const FollowOrUnFollowButton = ({
     startTransition(async () => await followOrUnFollowUser(followId))
   }
 
-  const Icon = () => {
-    if (isFollwed)
-      return <UserMinusIcon className="h-8 w-8 cursor-pointer text-red-500" />
-    return <UserPlusIcon className="h-8 w-8 cursor-pointer" />
-  }
-
   return (
-    <button onClick={onClick}>
-      {isPending ? <Loader className="h-8" /> : <Icon />}
+    <button onClick={onClick} className="flex items-center gap-2">
+      {isPending && (
+        <Loader className={cn('h-5', isFollwed && 'border-red-500')} />
+      )}
+      <p
+        className={cn(
+          'text-small-semibold',
+          isFollwed ? 'text-red-500' : 'text-purple-1',
+        )}
+      >
+        {isFollwed ? 'Unfollow' : 'Follow'}
+      </p>
     </button>
   )
 }

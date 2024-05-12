@@ -1,16 +1,11 @@
 import Link from 'next/link'
 import { auth } from '@clerk/nextjs/server'
 import { LikedPost, Post, SavedPost, User } from '@prisma/client'
-import { PencilSquareIcon } from '@heroicons/react/24/outline'
-
-import {
-  DropdownMenu,
-  LikeOrUnLikeButton,
-  NextImage,
-  SaveOrUnSaveButton,
-} from '@/components'
-import { nullSafe, prisma } from '@/libs'
 import { EllipsisHorizontalIcon } from '@heroicons/react/24/solid'
+
+import { LikeOrUnLikeButton, SaveOrUnSaveButton } from '@/components'
+import { DropdownMenu, NextImage } from '@/components'
+import { nullSafe, prisma } from '@/libs'
 
 interface PostCardProps {
   post: Post & { author: User; likes: LikedPost[]; saves: SavedPost[] }
@@ -49,7 +44,7 @@ export const PostCard = async ({ post }: PostCardProps) => {
           <NextImage
             src={nullSafe(post.author?.profilePhoto)}
             alt="profile photo"
-            className="h-12 w-12 rounded-full"
+            className="h-8 w-8 rounded-full"
             useSkeleton
           />
         </Link>
@@ -58,11 +53,8 @@ export const PostCard = async ({ post }: PostCardProps) => {
           href={`/profile/${nullSafe(post.author?.id)}/posts`}
           className="w-full"
         >
-          <p className="mb-1 text-small-semibold">
+          <p className="text-small-semibold">
             {nullSafe(post.author?.firstName)} {nullSafe(post.author?.lastName)}
-          </p>
-          <p className="text-subtle-medium text-light-2">
-            @{nullSafe(post.author?.username)}
           </p>
         </Link>
 
