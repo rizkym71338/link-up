@@ -27,7 +27,7 @@ export default async function SavedPage({ params }: SavedPageProps) {
     <section>
       <ProfileCard user={user} />
 
-      <ProfileTab />
+      <ProfileTab className="mb-4" />
 
       {posts.length === 0 && <div className="text-center">No posts</div>}
 
