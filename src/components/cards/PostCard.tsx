@@ -1,14 +1,19 @@
 import Link from 'next/link'
 import { auth } from '@clerk/nextjs/server'
-import { LikedPost, Post, SavedPost, User } from '@prisma/client'
+import { LikedPost, Post, SavedPost, User, Comment } from '@prisma/client'
 import { EllipsisHorizontalIcon } from '@heroicons/react/24/solid'
 
 import { LikeOrUnLikeButton, SaveOrUnSaveButton } from '@/components'
-import { DropdownMenu, NextImage } from '@/components'
+import { DropdownMenu, NextImage, CommentInput } from '@/components'
 import { nullSafe, prisma, timeAgo } from '@/libs'
 
 interface PostCardProps {
-  post: Post & { author: User; likes: LikedPost[]; saves: SavedPost[] }
+  post: Post & {
+    author: User
+    likes: LikedPost[]
+    saves: SavedPost[]
+    comments: Comment[]
+  }
 }
 
 export const PostCard = async ({ post }: PostCardProps) => {
@@ -80,18 +85,19 @@ export const PostCard = async ({ post }: PostCardProps) => {
 
       <p className="mb-1 px-4 md:px-0">{nullSafe(post.caption)}</p>
 
-      <p className="mb-4 px-4 text-sm text-purple-1 md:px-0">
+      <p className="mb-2 px-4 text-sm text-purple-1 md:px-0">
         {nullSafe(post.tag)}
       </p>
 
-      <div className="flex items-center gap-2 px-4 md:px-0">
-        <input
-          type="text"
-          placeholder="Add a comment..."
-          className="w-full rounded-lg border-none bg-transparent pl-0 text-sm focus:outline-none"
-        />
-        <p className="cursor-pointer text-small-semibold text-purple-1">Send</p>
-      </div>
+      {post.comments.length !== 0 && (
+        <Link href={`/post/${post.id}`}>
+          <p className="mb-2 px-4 text-small-semibold md:px-0">
+            View all {nullSafe(post.comments.length, '0')} comments
+          </p>
+        </Link>
+      )}
+
+      <CommentInput postId={post.id} isCard />
     </div>
   )
 }

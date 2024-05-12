@@ -16,6 +16,7 @@ model User {
   email        String?     @unique
   profilePhoto String?
   posts        Post[]
+  comments     Comment[]
   savedPosts   SavedPost[]
   likedPosts   LikedPost[]
   followers    User[]      @relation("UserFollows", fields: [followersIds], references: [id])
@@ -30,11 +31,22 @@ model Post {
   caption   String?
   postPhoto String?
   tag       String?
+  comments  Comment[]
   likes     LikedPost[]
   saves     SavedPost[]
   author    User?       @relation(fields: [authorId], references: [id])
   authorId  String?     @db.ObjectId
   createdAt DateTime    @default(now())
+}
+
+model Comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  message   String?
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  String?  @db.ObjectId
+  Post      Post?    @relation(fields: [postId], references: [id])
+  postId    String?  @db.ObjectId
+  createdAt DateTime @default(now())
 }
 
 model SavedPost {

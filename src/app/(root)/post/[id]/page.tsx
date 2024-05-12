@@ -4,7 +4,7 @@ import { auth } from '@clerk/nextjs/server'
 import { EllipsisHorizontalIcon } from '@heroicons/react/24/solid'
 
 import { LikeOrUnLikeButton, SaveOrUnSaveButton } from '@/components'
-import { DropdownMenu, NextImage } from '@/components'
+import { DropdownMenu, NextImage, CommentInput } from '@/components'
 import { nullSafe, prisma, timeAgo } from '@/libs'
 
 interface PostPageProps {
@@ -15,7 +15,12 @@ export default async function PostPage({ params }: PostPageProps) {
   const post = await prisma.post
     .findFirst({
       where: { id: params.id },
-      include: { likes: true, author: true, saves: true },
+      include: {
+        likes: true,
+        author: true,
+        saves: true,
+        comments: { include: { author: true } },
+      },
     })
     .catch(() => notFound())
 
@@ -82,39 +87,47 @@ export default async function PostPage({ params }: PostPageProps) {
         />
       </Link>
 
-      <div className="mb-2 flex items-center justify-between px-4 text-small-semibold md:px-0">
+      <div className="mb-4 flex items-center justify-between px-4 text-small-semibold md:px-0">
         <LikeOrUnLikeButton post={nullSafe(post)} isLiked={!!likedPost} />
         <SaveOrUnSaveButton post={nullSafe(post)} isSaved={!!savedPost} />
       </div>
 
       <p className="mb-1 px-4 md:px-0">{nullSafe(post.caption)}</p>
 
-      <p className="mb-2 px-4 text-sm text-purple-1 md:px-0">
+      <p className="mb-4 px-4 text-sm text-purple-1 md:px-0">
         {nullSafe(post.tag)}
       </p>
 
-      <div className="border-t border-dark-2 px-4 py-2 md:px-0">
-        {Array.from({ length: 20 }).map((_, index) => (
-          <div key={index} className="flex gap-2 py-1">
-            <div className="h-8 w-8 rounded-full bg-dark-2" />
-            <div>
-              <p className="text-sm">
-                <span className="font-semibold">username</span> comment
-              </p>
-              <p className="text-tiny-medium text-light-2">1 hour ago</p>
+      {post.comments.length !== 0 && (
+        <div className="border-t border-dark-2 px-4 py-2 md:px-0">
+          {post.comments.map((comment) => (
+            <div key={comment.id} className="flex gap-2 py-2">
+              <NextImage
+                src={nullSafe(comment.author?.profilePhoto)}
+                alt={nullSafe(comment.author?.username)}
+                className="h-8 w-8 rounded-full"
+                useSkeleton
+              />
+              <div>
+                <p className="text-sm">
+                  <Link
+                    href={`/profile/${nullSafe(comment.author?.id)}`}
+                    className="font-semibold"
+                  >
+                    {nullSafe(comment.author?.username)}
+                  </Link>{' '}
+                  {nullSafe(comment.message)}
+                </p>
+                <p className="text-tiny-medium text-light-2">
+                  {timeAgo(comment.createdAt)}
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
-      <div className="sticky bottom-[53px] flex items-center gap-2 border-t border-dark-2 bg-purple-2 px-4 py-2 md:bottom-0 md:px-0">
-        <input
-          type="text"
-          placeholder="Add a comment..."
-          className="w-full rounded-lg border-none bg-transparent pl-0 text-sm focus:outline-none"
-        />
-        <p className="cursor-pointer text-small-semibold text-purple-1">Send</p>
-      </div>
+      <CommentInput postId={nullSafe(post.id)} />
     </section>
   )
 }

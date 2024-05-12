@@ -3,7 +3,7 @@ import { prisma } from '@/libs'
 
 export default async function RootPage() {
   const posts = await prisma.post.findMany({
-    include: { author: true, likes: true, saves: true },
+    include: { author: true, likes: true, saves: true, comments: true },
     orderBy: { createdAt: 'desc' },
   })
 
