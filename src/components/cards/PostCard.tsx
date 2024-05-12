@@ -5,7 +5,7 @@ import { EllipsisHorizontalIcon } from '@heroicons/react/24/solid'
 
 import { LikeOrUnLikeButton, SaveOrUnSaveButton } from '@/components'
 import { DropdownMenu, NextImage } from '@/components'
-import { nullSafe, prisma } from '@/libs'
+import { nullSafe, prisma, timeAgo } from '@/libs'
 
 interface PostCardProps {
   post: Post & { author: User; likes: LikedPost[]; saves: SavedPost[] }
@@ -54,7 +54,10 @@ export const PostCard = async ({ post }: PostCardProps) => {
           className="w-full"
         >
           <p className="text-small-semibold">
-            {nullSafe(post.author?.firstName)} {nullSafe(post.author?.lastName)}
+            {nullSafe(post.author?.firstName)} {nullSafe(post.author?.lastName)}{' '}
+            <span className="text-subtle-medium text-light-2">
+              • {timeAgo(post.createdAt)}
+            </span>
           </p>
         </Link>
 
