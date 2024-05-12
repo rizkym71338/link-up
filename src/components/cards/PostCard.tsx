@@ -93,7 +93,7 @@ export const PostCard = async ({ post }: PostCardProps) => {
           placeholder="Add a comment..."
           className="w-full rounded-lg border-none bg-transparent pl-0 focus:outline-none"
         />
-        <p className="cursor-pointer text-subtle-medium text-purple-1">Send</p>
+        <p className="cursor-pointer font-semibold text-purple-1">Send</p>
       </div>
     </div>
   )
