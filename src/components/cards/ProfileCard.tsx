@@ -3,6 +3,7 @@ import { auth } from '@clerk/nextjs/server'
 
 import { FollowOrUnFollowButton, NextImage } from '@/components'
 import { nullSafe, prisma } from '@/libs'
+import Link from 'next/link'
 
 interface ProfileCardProps {
   user: User & { posts: Post[] }
@@ -21,14 +22,17 @@ export const ProfileCard = async ({ user }: ProfileCardProps) => {
     {
       value: nullSafe(user?.posts.length, '0'),
       label: 'Posts',
+      prefix: '',
     },
     {
       value: nullSafe(user?.followersIds.length, '0'),
       label: 'Followers',
+      prefix: 'followers',
     },
     {
       value: nullSafe(user?.followingIds.length, '0'),
       label: 'Following',
+      prefix: 'following',
     },
   ]
 
@@ -62,11 +66,15 @@ export const ProfileCard = async ({ user }: ProfileCardProps) => {
       </div>
 
       <div className="mb-4 flex items-center gap-4">
-        {info.map(({ value, label }, index) => (
-          <div key={index} className="w-full text-center">
+        {info.map(({ value, label, prefix }, index) => (
+          <Link
+            key={index}
+            href={`/profile/${user.id}/${prefix}`}
+            className="w-full text-center"
+          >
             <p className="text-base-bold">{nullSafe(value)}</p>
             <p className="text-small-semibold">{nullSafe(label)}</p>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
