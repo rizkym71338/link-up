@@ -13,10 +13,9 @@ interface SaveOrUnSaveButtonProps {
   isSaved: boolean
 }
 
-export const SaveOrUnSaveButton = ({
-  post,
-  isSaved,
-}: SaveOrUnSaveButtonProps) => {
+export const SaveOrUnSaveButton = (props: SaveOrUnSaveButtonProps) => {
+  const { post, isSaved } = props
+
   const [isPending, startTransition] = useTransition()
 
   const onClick = () => {

@@ -15,10 +15,16 @@ interface BottomBarProps {
 export const BottomBar = ({ user }: BottomBarProps) => {
   const pathname = usePathname()
 
+  const menus = [
+    ...sidebarLinks,
+    { icon: UserIcon, label: 'Profile', route: `/profile/${user.id}` },
+  ]
+
   return (
     <div className="fixed bottom-0 z-10 flex w-full items-center justify-around border-t border-dark-2 bg-purple-2 px-4 py-2 md:hidden">
-      {sidebarLinks.map(({ icon: Icon, route }) => {
-        const isActive = pathname === route
+      {menus.map(({ icon: Icon, route, label }) => {
+        const isActive =
+          label === 'Profile' ? pathname.includes(route) : pathname === route
         return (
           <Link
             key={route}
@@ -32,16 +38,6 @@ export const BottomBar = ({ user }: BottomBarProps) => {
           </Link>
         )
       })}
-
-      <Link
-        href={`/profile/${user.id}`}
-        className={cn(
-          'flex flex-col items-center justify-center gap-2 rounded-lg p-2',
-          pathname.includes(`/profile/${user.id}`) && 'bg-purple-1',
-        )}
-      >
-        <UserIcon className="h-5 w-5" />
-      </Link>
     </div>
   )
 }

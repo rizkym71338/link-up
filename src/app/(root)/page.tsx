@@ -1,19 +1,22 @@
+import { auth } from '@clerk/nextjs/server'
+
 import { PostCard } from '@/components'
-import { prisma } from '@/libs'
+import { nullSafe, prisma } from '@/libs'
 
 export default async function RootPage() {
+  const user = await prisma.user.findFirst({
+    where: { clerkId: auth().userId },
+  })
+
   const posts = await prisma.post.findMany({
     include: { author: true, likes: true, saves: true, comments: true },
     orderBy: { createdAt: 'desc' },
   })
 
-  if (posts.length === 0)
-    return <div className="text-center">No posts found</div>
-
   return (
     <section className="-mt-4 divide-y divide-dark-2">
       {posts.map((post) => (
-        <PostCard key={post.id} post={post as any} />
+        <PostCard key={post.id} post={nullSafe(post)} user={nullSafe(user)} />
       ))}
     </section>
   )

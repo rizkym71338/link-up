@@ -14,10 +14,9 @@ interface LikeOrUnLikeButtonProps {
   isLiked: boolean
 }
 
-export const LikeOrUnLikeButton = ({
-  post,
-  isLiked,
-}: LikeOrUnLikeButtonProps) => {
+export const LikeOrUnLikeButton = (props: LikeOrUnLikeButtonProps) => {
+  const { post, isLiked } = props
+
   const [isPending, startTransition] = useTransition()
 
   const onClick = () => {

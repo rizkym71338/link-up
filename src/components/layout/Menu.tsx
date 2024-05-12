@@ -16,10 +16,16 @@ interface MenuProps {
 export const Menu = ({ user }: MenuProps) => {
   const pathname = usePathname()
 
+  const menus = [
+    ...sidebarLinks,
+    { icon: UserIcon, label: 'Profile', route: `/profile/${user.id}` },
+  ]
+
   return (
     <Fragment>
-      {sidebarLinks.map(({ icon: Icon, label, route }) => {
-        const isActive = pathname === route
+      {menus.map(({ icon: Icon, label, route }) => {
+        const isActive =
+          label === 'Profile' ? pathname.includes(route) : pathname === route
         return (
           <Link
             key={route}
@@ -34,17 +40,6 @@ export const Menu = ({ user }: MenuProps) => {
           </Link>
         )
       })}
-
-      <Link
-        href={`/profile/${user.id}`}
-        className={cn(
-          'mb-2 flex items-center rounded-lg px-3 py-2 transition-all hover:bg-purple-1',
-          pathname.includes(`/profile/${user.id}`) && 'bg-purple-1',
-        )}
-      >
-        <UserIcon className="mr-3 h-5 w-5" />
-        <p>Profile</p>
-      </Link>
     </Fragment>
   )
 }

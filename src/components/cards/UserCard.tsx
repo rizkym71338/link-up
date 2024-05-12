@@ -3,17 +3,14 @@ import { auth } from '@clerk/nextjs/server'
 import { User } from '@prisma/client'
 
 import { FollowOrUnFollowButton, NextImage } from '@/components'
-import { nullSafe, prisma } from '@/libs'
+import { nullSafe } from '@/libs'
 
 interface UserCardProps {
   user: User
+  currentUser: User
 }
 
-export const UserCard = async ({ user }: UserCardProps) => {
-  const currentUser = await prisma.user.findFirst({
-    where: { clerkId: auth().userId },
-  })
-
+export const UserCard = async ({ user, currentUser }: UserCardProps) => {
   const isFollowed = currentUser?.followingIds.includes(user.id)
 
   const isCurrentUser = user.clerkId === nullSafe(auth().userId)

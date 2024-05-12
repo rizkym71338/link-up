@@ -13,6 +13,7 @@ interface CommentInputProps {
 
 export const CommentInput = ({ postId, isCard }: CommentInputProps) => {
   const [message, setMessage] = useState('')
+
   const [isPending, startTransition] = useTransition()
 
   const onClick = () => {

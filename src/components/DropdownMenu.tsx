@@ -1,14 +1,10 @@
 'use client'
 
-import { nullSafe } from '@/libs'
-import {
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-  Transition,
-} from '@headlessui/react'
 import Link from 'next/link'
+import { Menu, MenuButton, MenuItem } from '@headlessui/react'
+import { MenuItems, Transition } from '@headlessui/react'
+
+import { nullSafe } from '@/libs'
 
 interface DropdownMenuProps {
   button: JSX.Element
@@ -41,7 +37,7 @@ export const DropdownMenu = ({ button, items }: DropdownMenuProps) => {
               <MenuItem key={index}>
                 {asLink ? (
                   <Link
-                    href={nullSafe(href) as string}
+                    href={nullSafe(href)}
                     className="block w-full px-3 py-1.5 text-start hover:bg-dark-2"
                   >
                     {label}

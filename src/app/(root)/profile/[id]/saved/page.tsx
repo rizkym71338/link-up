@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import { auth } from '@clerk/nextjs/server'
 
 import { ProfileCard, ProfilePostCard, ProfileTab } from '@/components'
 import { prisma } from '@/libs'
@@ -17,6 +18,12 @@ export default async function SavedPage({ params }: SavedPageProps) {
 
   if (!user) return notFound()
 
+  const currentUser = await prisma.user.findFirst({
+    where: { clerkId: auth().userId },
+  })
+
+  if (!currentUser) return notFound()
+
   const posts = await prisma.post.findMany({
     where: { saves: { some: { userId: user?.id } } },
     include: { likes: true },
@@ -25,7 +32,7 @@ export default async function SavedPage({ params }: SavedPageProps) {
 
   return (
     <section>
-      <ProfileCard user={user} />
+      <ProfileCard user={user} currentUser={currentUser} />
 
       <ProfileTab className="mb-4" />
 

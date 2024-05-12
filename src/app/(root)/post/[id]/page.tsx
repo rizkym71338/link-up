@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { auth } from '@clerk/nextjs/server'
 import { EllipsisHorizontalIcon } from '@heroicons/react/24/solid'
+import { EllipsisVerticalIcon } from '@heroicons/react/24/solid'
 
 import { LikeOrUnLikeButton, SaveOrUnSaveButton } from '@/components'
 import { DropdownMenu, NextImage, CommentInput } from '@/components'
@@ -51,10 +52,7 @@ export default async function PostPage({ params }: PostPageProps) {
   return (
     <section className="relative">
       <div className="mb-4 flex items-center gap-2 px-4 md:px-0">
-        <Link
-          href={`/profile/${nullSafe(post.author?.id)}`}
-          className="flex-none"
-        >
+        <Link href={`/profile/${post.author?.id}`} className="flex-none">
           <NextImage
             src={nullSafe(post.author?.profilePhoto)}
             alt="profile photo"
@@ -63,9 +61,9 @@ export default async function PostPage({ params }: PostPageProps) {
           />
         </Link>
 
-        <Link href={`/profile/${nullSafe(post.author?.id)}`} className="w-full">
+        <Link href={`/profile/${post.author?.id}`} className="w-full">
           <p className="text-small-semibold">
-            {nullSafe(post.author?.firstName)} {nullSafe(post.author?.lastName)}{' '}
+            {post.author?.firstName} {post.author?.lastName}{' '}
             <span className="text-subtle-medium text-light-2">
               • {timeAgo(post.createdAt)}
             </span>
@@ -78,7 +76,7 @@ export default async function PostPage({ params }: PostPageProps) {
         />
       </div>
 
-      <Link href={`/post/${nullSafe(post.id)}`}>
+      <Link href={`/post/${post.id}`}>
         <NextImage
           src={nullSafe(post.postPhoto)}
           alt="post photo"
@@ -88,15 +86,13 @@ export default async function PostPage({ params }: PostPageProps) {
       </Link>
 
       <div className="mb-4 flex items-center justify-between px-4 text-small-semibold md:px-0">
-        <LikeOrUnLikeButton post={nullSafe(post)} isLiked={!!likedPost} />
-        <SaveOrUnSaveButton post={nullSafe(post)} isSaved={!!savedPost} />
+        <LikeOrUnLikeButton post={post} isLiked={!!likedPost} />
+        <SaveOrUnSaveButton post={post} isSaved={!!savedPost} />
       </div>
 
-      <p className="mb-1 px-4 md:px-0">{nullSafe(post.caption)}</p>
+      <p className="mb-1 px-4 md:px-0">{post.caption}</p>
 
-      <p className="mb-4 px-4 text-sm text-purple-1 md:px-0">
-        {nullSafe(post.tag)}
-      </p>
+      <p className="mb-4 px-4 text-sm text-purple-1 md:px-0">{post.tag}</p>
 
       {post.comments.length !== 0 && (
         <div className="border-t border-dark-2 px-4 py-2 md:px-0">
@@ -108,20 +104,21 @@ export default async function PostPage({ params }: PostPageProps) {
                 className="h-8 w-8 rounded-full"
                 useSkeleton
               />
-              <div>
+              <div className="w-full">
                 <p className="text-sm">
                   <Link
-                    href={`/profile/${nullSafe(comment.author?.id)}`}
+                    href={`/profile/${comment.author?.id}`}
                     className="font-semibold"
                   >
-                    {nullSafe(comment.author?.username)}
+                    {comment.author?.username}
                   </Link>{' '}
-                  {nullSafe(comment.message)}
+                  {comment.message}
                 </p>
                 <p className="text-tiny-medium text-light-2">
                   {timeAgo(comment.createdAt)}
                 </p>
               </div>
+              <EllipsisVerticalIcon className="h-5 w-5 cursor-pointer" />
             </div>
           ))}
         </div>

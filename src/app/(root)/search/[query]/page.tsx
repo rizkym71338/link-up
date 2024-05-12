@@ -1,4 +1,5 @@
 import { auth } from '@clerk/nextjs/server'
+import { notFound } from 'next/navigation'
 
 import { UserCard } from '@/components'
 import { prisma } from '@/libs'
@@ -8,6 +9,12 @@ interface SearchPageProps {
 }
 
 export default async function SearchPage({ params }: SearchPageProps) {
+  const user = await prisma.user.findFirst({
+    where: { clerkId: auth().userId },
+  })
+
+  if (!user) return notFound()
+
   const users = await prisma.user.findMany({
     where: {
       OR: [
@@ -25,7 +32,7 @@ export default async function SearchPage({ params }: SearchPageProps) {
       {users.length === 0 && <div className="text-center">No people found</div>}
 
       {users.map((user) => (
-        <UserCard key={user.id} user={user} />
+        <UserCard key={user.id} user={user} currentUser={user} />
       ))}
     </section>
   )
