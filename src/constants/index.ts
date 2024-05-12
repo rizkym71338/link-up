@@ -1,5 +1,4 @@
-import { HeartIcon, HomeIcon } from '@heroicons/react/24/outline'
-import { BookmarkIcon, FolderPlusIcon } from '@heroicons/react/24/outline'
+import { HomeIcon, FolderPlusIcon } from '@heroicons/react/24/outline'
 
 export const sidebarLinks = [
   {
@@ -12,16 +11,6 @@ export const sidebarLinks = [
     route: '/create-post',
     label: 'Create Post',
   },
-  {
-    icon: BookmarkIcon,
-    route: '/saved-posts',
-    label: 'Saved Posts',
-  },
-  {
-    icon: HeartIcon,
-    route: '/liked-posts',
-    label: 'Liked Posts',
-  },
 ]
 
 export const pageTitles = [
@@ -30,8 +19,8 @@ export const pageTitles = [
     title: 'Feeds',
   },
   {
-    url: '/edit-profile',
-    title: 'Edit Profile',
+    url: '/post',
+    title: 'Post',
   },
   {
     url: '/create-post',
@@ -49,31 +38,19 @@ export const pageTitles = [
     url: '/profile',
     title: 'Profile',
   },
-  {
-    url: '/saved-posts',
-    title: 'Saved Posts',
-  },
-  {
-    url: '/liked-posts',
-    title: 'Liked Posts',
-  },
-  {
-    url: '/people',
-    title: 'People',
-  },
 ]
 
 export const profileTabs = [
   {
-    prefix: 'posts',
+    prefix: '',
     name: 'Posts',
   },
   {
-    prefix: 'followers',
-    name: 'Followers',
+    prefix: 'liked',
+    name: 'Liked',
   },
   {
-    prefix: 'following',
-    name: 'Following',
+    prefix: 'saved',
+    name: 'Saved',
   },
 ]

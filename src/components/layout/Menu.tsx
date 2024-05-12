@@ -36,7 +36,7 @@ export const Menu = ({ user }: MenuProps) => {
       })}
 
       <Link
-        href={`/profile/${user.id}/posts`}
+        href={`/profile/${user.id}`}
         className={cn(
           'mb-2 flex items-center rounded-lg px-3 py-2 transition-all hover:bg-purple-1',
           pathname.includes(`/profile/${user.id}`) && 'bg-purple-1',

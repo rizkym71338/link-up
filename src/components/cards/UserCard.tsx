@@ -20,7 +20,7 @@ export const UserCard = async ({ user }: UserCardProps) => {
 
   return (
     <div className="flex items-center gap-2 px-4 py-4 md:px-0">
-      <Link href={`/profile/${nullSafe(user?.id)}/posts`} className="flex-none">
+      <Link href={`/profile/${nullSafe(user?.id)}`} className="flex-none">
         <NextImage
           src={nullSafe(user?.profilePhoto)}
           alt="profile photo"
@@ -29,7 +29,7 @@ export const UserCard = async ({ user }: UserCardProps) => {
         />
       </Link>
 
-      <Link href={`/profile/${nullSafe(user?.id)}/posts`} className="w-full">
+      <Link href={`/profile/${nullSafe(user?.id)}`} className="w-full">
         <p className="mb-1 text-small-semibold">
           {nullSafe(user?.firstName)} {nullSafe(user?.lastName)}
         </p>

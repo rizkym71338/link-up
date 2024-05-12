@@ -1,8 +1,8 @@
 import Link from 'next/link'
+import { Post, User } from '@prisma/client'
 
 import { Menu, NextImage } from '@/components'
 import { nullSafe } from '@/libs'
-import { Post, User } from '@prisma/client'
 
 interface LeftSideBarProps {
   user: User & { posts: Post[] }
@@ -35,7 +35,7 @@ export const LeftSideBar = ({ user }: LeftSideBarProps) => {
         />
       </Link>
 
-      <Link href={`/profile/${nullSafe(user?.id)}/posts`}>
+      <Link href={`/profile/${nullSafe(user.id)}`}>
         <NextImage
           src={nullSafe(user?.profilePhoto)}
           alt="profile-photo"

@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 
-import { PostCard, ProfileCard, ProfileTab } from '@/components'
+import { ProfileCard, ProfilePostCard, ProfileTab } from '@/components'
 import { prisma } from '@/libs'
 
 interface ProfilePageProps {
@@ -19,21 +19,21 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 
   const posts = await prisma.post.findMany({
     where: { authorId: params.id },
-    include: { author: true, likes: true },
+    include: { likes: true },
     orderBy: { createdAt: 'desc' },
   })
 
   return (
     <section>
-      <ProfileCard user={user as any} />
+      <ProfileCard user={user} />
 
       <ProfileTab />
 
       {posts.length === 0 && <div className="text-center">No posts</div>}
 
-      <div className="divide-y divide-dark-2">
+      <div className="grid grid-cols-2 gap-1 py-4">
         {posts.map((post) => (
-          <PostCard key={post.id} post={post as any} />
+          <ProfilePostCard key={post.id} post={post} />
         ))}
       </div>
     </section>

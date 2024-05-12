@@ -1,8 +1,8 @@
 import { Post, User } from '@prisma/client'
+import { auth } from '@clerk/nextjs/server'
 
 import { FollowOrUnFollowButton, NextImage } from '@/components'
 import { nullSafe, prisma } from '@/libs'
-import { auth } from '@clerk/nextjs/server'
 
 interface ProfileCardProps {
   user: User & { posts: Post[] }
@@ -33,39 +33,42 @@ export const ProfileCard = async ({ user }: ProfileCardProps) => {
   ]
 
   return (
-    <div className="mb-4 flex gap-4 px-4 md:px-0">
-      <NextImage
-        src={nullSafe(user?.profilePhoto)}
-        alt="profile"
-        className="h-24 w-24 rounded-full"
-        useSkeleton
-      />
+    <div className="mb-4 px-4 md:px-0">
+      <div className="mb-4 flex items-center gap-4">
+        <NextImage
+          src={nullSafe(user?.profilePhoto)}
+          alt="profile"
+          className="h-24 w-24 rounded-full"
+          useSkeleton
+        />
 
-      <div className="w-full">
-        <p className="mb-1 text-small-semibold">
-          {nullSafe(user?.firstName)} {nullSafe(user?.lastName)}
-        </p>
+        <div className="w-full">
+          <p className="mb-1 text-body-bold">
+            {nullSafe(user?.firstName)} {nullSafe(user?.lastName)}
+          </p>
 
-        <p className="mb-4 text-subtle-medium text-light-2">
-          @{nullSafe(user?.username)}
-        </p>
-
-        <div className="mb-4 flex items-center gap-4">
-          {info.map(({ value, label }, index) => (
-            <div key={index} className="text-center">
-              <p className="text-base-bold">{nullSafe(value)}</p>
-              <p className="text-tiny-medium">{nullSafe(label)}</p>
-            </div>
-          ))}
+          <p className="text-subtle-medium text-light-2">
+            @{nullSafe(user?.username)}
+          </p>
         </div>
+
+        {!isCurrentUser && (
+          <FollowOrUnFollowButton
+            followId={nullSafe(user?.id)}
+            isFollwed={isFollowed!}
+            className="mb-auto"
+          />
+        )}
       </div>
 
-      {!isCurrentUser && (
-        <FollowOrUnFollowButton
-          followId={nullSafe(user?.id)}
-          isFollwed={isFollowed!}
-        />
-      )}
+      <div className="mb-4 flex items-center gap-4">
+        {info.map(({ value, label }, index) => (
+          <div key={index} className="w-full text-center">
+            <p className="text-base-bold">{nullSafe(value)}</p>
+            <p className="text-small-semibold">{nullSafe(label)}</p>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

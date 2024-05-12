@@ -1,17 +1,26 @@
 import Link from 'next/link'
+import { notFound } from 'next/navigation'
 import { auth } from '@clerk/nextjs/server'
-import { LikedPost, Post, SavedPost, User } from '@prisma/client'
 import { EllipsisHorizontalIcon } from '@heroicons/react/24/solid'
 
 import { LikeOrUnLikeButton, SaveOrUnSaveButton } from '@/components'
 import { DropdownMenu, NextImage } from '@/components'
 import { nullSafe, prisma, timeAgo } from '@/libs'
 
-interface PostCardProps {
-  post: Post & { author: User; likes: LikedPost[]; saves: SavedPost[] }
+interface PostPageProps {
+  params: { id: string }
 }
 
-export const PostCard = async ({ post }: PostCardProps) => {
+export default async function PostPage({ params }: PostPageProps) {
+  const post = await prisma.post
+    .findFirst({
+      where: { id: params.id },
+      include: { likes: true, author: true, saves: true },
+    })
+    .catch(() => notFound())
+
+  if (!post) return notFound()
+
   const user = await prisma.user.findFirst({
     where: { clerkId: auth().userId },
   })
@@ -35,7 +44,7 @@ export const PostCard = async ({ post }: PostCardProps) => {
     })
 
   return (
-    <div className="w-full py-4">
+    <section>
       <div className="mb-4 flex items-center gap-2 px-4 md:px-0">
         <Link
           href={`/profile/${nullSafe(post.author?.id)}`}
@@ -92,6 +101,6 @@ export const PostCard = async ({ post }: PostCardProps) => {
         />
         <p className="cursor-pointer text-small-semibold text-purple-1">Send</p>
       </div>
-    </div>
+    </section>
   )
 }

@@ -9,11 +9,13 @@ import { cn } from '@/libs'
 interface FollowOrUnFollowButtonProps {
   followId: string
   isFollwed: boolean
+  className?: string
 }
 
 export const FollowOrUnFollowButton = ({
   followId,
   isFollwed,
+  className,
 }: FollowOrUnFollowButtonProps) => {
   const [isPending, startTransition] = useTransition()
 
@@ -22,7 +24,10 @@ export const FollowOrUnFollowButton = ({
   }
 
   return (
-    <button onClick={onClick} className="flex items-center gap-2">
+    <button
+      onClick={onClick}
+      className={cn('flex items-center gap-2', className)}
+    >
       {isPending && (
         <Loader className={cn('h-5', isFollwed && 'border-red-500')} />
       )}
