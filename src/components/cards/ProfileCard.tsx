@@ -38,12 +38,12 @@ export const ProfileCard = async ({ user }: ProfileCardProps) => {
         <NextImage
           src={nullSafe(user?.profilePhoto)}
           alt="profile"
-          className="h-24 w-24 rounded-full"
+          className="h-20 w-20 rounded-full"
           useSkeleton
         />
 
         <div className="w-full">
-          <p className="mb-1 text-body-bold">
+          <p className="mb-1 line-clamp-2 font-semibold">
             {nullSafe(user?.firstName)} {nullSafe(user?.lastName)}
           </p>
 
