@@ -44,13 +44,15 @@ export const LeftSideBar = ({ user }: LeftSideBarProps) => {
         />
       </Link>
 
-      <p className="mb-1 text-center text-small-bold">
-        {nullSafe(user?.firstName)} {nullSafe(user?.lastName)}
-      </p>
+      <Link href={`/profile/${nullSafe(user.id)}`}>
+        <p className="mb-1 text-center text-small-bold">
+          {nullSafe(user?.firstName)} {nullSafe(user?.lastName)}
+        </p>
 
-      <p className="mb-4 text-center text-subtle-medium text-light-2">
-        @{nullSafe(user?.username)}
-      </p>
+        <p className="mb-4 text-center text-subtle-medium text-light-2">
+          @{nullSafe(user?.username)}
+        </p>
+      </Link>
 
       <div className="mb-4 flex items-center">
         {info.map(({ value, label }, index) => (

@@ -16,7 +16,7 @@ export const BottomBar = ({ user }: BottomBarProps) => {
   const pathname = usePathname()
 
   return (
-    <div className="fixed bottom-0 z-10 flex w-full items-center justify-around overflow-hidden rounded-t-3xl border-t border-dark-2 bg-purple-2 p-4 md:hidden">
+    <div className="fixed bottom-0 z-10 flex w-full items-center justify-around border-t border-dark-2 bg-purple-2 px-4 py-2 md:hidden">
       {sidebarLinks.map(({ icon: Icon, route }) => {
         const isActive = pathname === route
         return (
