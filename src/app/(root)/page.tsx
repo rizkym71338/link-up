@@ -11,7 +11,7 @@ export default async function RootPage() {
     return <div className="text-center">No posts found</div>
 
   return (
-    <section className="divide-y divide-dark-2">
+    <section className="-mt-4 divide-y divide-dark-2">
       {posts.map((post) => (
         <PostCard key={post.id} post={post as any} />
       ))}
