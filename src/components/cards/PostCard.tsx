@@ -75,7 +75,7 @@ export const PostCard = async ({ post }: PostCardProps) => {
       <NextImage
         src={nullSafe(post.postPhoto)}
         alt="post photo"
-        className="mb-4 aspect-video w-full border border-dark-2 bg-dark-2 object-cover md:rounded-md"
+        className="mb-4 aspect-video w-full border-dark-2 bg-dark-2 object-cover md:rounded-md md:border"
         useSkeleton
       />
 
