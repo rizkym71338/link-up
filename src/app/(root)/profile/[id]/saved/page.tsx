@@ -31,7 +31,7 @@ export default async function SavedPage({ params }: SavedPageProps) {
 
       {posts.length === 0 && <div className="text-center">No posts</div>}
 
-      <div className="grid grid-cols-2 gap-1 py-4">
+      <div className="grid grid-cols-2 gap-1">
         {posts.map((post) => (
           <ProfilePostCard key={post.id} post={post} />
         ))}
