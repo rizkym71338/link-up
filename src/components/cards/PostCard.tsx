@@ -3,8 +3,14 @@ import { auth } from '@clerk/nextjs/server'
 import { LikedPost, Post, SavedPost, User } from '@prisma/client'
 import { PencilSquareIcon } from '@heroicons/react/24/outline'
 
-import { LikeOrUnLikeButton, NextImage, SaveOrUnSaveButton } from '@/components'
+import {
+  DropdownMenu,
+  LikeOrUnLikeButton,
+  NextImage,
+  SaveOrUnSaveButton,
+} from '@/components'
 import { nullSafe, prisma } from '@/libs'
+import { EllipsisHorizontalIcon } from '@heroicons/react/24/solid'
 
 interface PostCardProps {
   post: Post & { author: User; likes: LikedPost[]; saves: SavedPost[] }
@@ -25,9 +31,17 @@ export const PostCard = async ({ post }: PostCardProps) => {
 
   const isCurrentUser = auth().userId === nullSafe(post.author?.clerkId)
 
+  const dropdownItems: any = [{ label: 'Copy Link' }]
+  isCurrentUser &&
+    dropdownItems.push({
+      label: 'Edit Post',
+      asLink: true,
+      href: `/edit-post/${nullSafe(post.id)}`,
+    })
+
   return (
-    <div className="w-full rounded-lg bg-dark-1 p-4">
-      <div className="mb-4 flex items-center gap-2">
+    <div className="w-full py-4">
+      <div className="mb-4 flex items-center gap-2 px-4 md:px-0">
         <Link
           href={`/profile/${nullSafe(post.author?.id)}/posts`}
           className="flex-none"
@@ -52,28 +66,31 @@ export const PostCard = async ({ post }: PostCardProps) => {
           </p>
         </Link>
 
-        {isCurrentUser && (
-          <Link href={`/edit-post/${nullSafe(post.id)}`}>
-            <PencilSquareIcon className="h-5 w-5 transition-all hover:text-purple-1" />
-          </Link>
-        )}
+        <DropdownMenu
+          button={<EllipsisHorizontalIcon className="h-5 w-5" />}
+          items={dropdownItems}
+        />
       </div>
-
-      <p className="mb-4 text-body-normal">{nullSafe(post.caption)}</p>
 
       <NextImage
         src={nullSafe(post.postPhoto)}
         alt="post photo"
-        className="mb-4 aspect-video w-full rounded-md bg-dark-2 object-cover"
+        className="mb-4 aspect-video w-full border border-dark-2 bg-dark-2 object-cover md:rounded-md"
         useSkeleton
       />
 
-      <p className="mb-4 text-base text-purple-1">{nullSafe(post.tag)}</p>
-
-      <div className="flex items-center justify-between text-small-semibold">
+      <div className="mb-4 flex items-center justify-between px-4 text-small-semibold md:px-0">
         <LikeOrUnLikeButton post={nullSafe(post)} isLiked={!!likedPost} />
         <SaveOrUnSaveButton post={nullSafe(post)} isSaved={!!savedPost} />
       </div>
+
+      <p className="mb-1 px-4 text-body-normal md:px-0">
+        {nullSafe(post.caption)}
+      </p>
+
+      <p className="px-4 text-base text-purple-1 md:px-0">
+        {nullSafe(post.tag)}
+      </p>
     </div>
   )
 }

@@ -21,14 +21,16 @@ export default async function SearchPage({ params }: SearchPageProps) {
   })
 
   return (
-    <section className="flex flex-col gap-4">
+    <section>
       <SearchTab />
 
       {users.length === 0 && <div className="text-center">No people found</div>}
 
-      {users.map((user) => (
-        <UserCard key={user.id} user={user} />
-      ))}
+      <div className="divide-y divide-dark-2">
+        {users.map((user) => (
+          <UserCard key={user.id} user={user} />
+        ))}
+      </div>
     </section>
   )
 }

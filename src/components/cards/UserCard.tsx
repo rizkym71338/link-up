@@ -19,7 +19,7 @@ export const UserCard = async ({ user }: UserCardProps) => {
   const isCurrentUser = user.clerkId === nullSafe(auth().userId)
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 px-4 py-4 md:px-0">
       <Link href={`/profile/${nullSafe(user?.id)}/posts`} className="flex-none">
         <NextImage
           src={nullSafe(user?.profilePhoto)}

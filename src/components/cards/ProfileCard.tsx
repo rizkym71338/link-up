@@ -33,7 +33,7 @@ export const ProfileCard = async ({ user }: ProfileCardProps) => {
   ]
 
   return (
-    <div className="flex gap-4">
+    <div className="mb-4 flex gap-4 px-4 md:px-0">
       <NextImage
         src={nullSafe(user?.profilePhoto)}
         alt="profile"

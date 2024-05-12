@@ -13,7 +13,7 @@ export default async function PeoplePage() {
     return <div className="text-center">No users found</div>
 
   return (
-    <section className="flex flex-col gap-4">
+    <section className="divide-y divide-dark-2">
       {users.map((user) => (
         <UserCard key={user.id} user={user} />
       ))}

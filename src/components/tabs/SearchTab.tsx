@@ -12,7 +12,7 @@ export const SearchTab = () => {
   const currentPrefix = pathname.split('/')[2]
 
   return (
-    <div className="flex justify-center gap-4">
+    <div className="flex justify-center gap-4 border-b border-dark-2 px-4 pb-4 md:px-0">
       {searchTabs.map(({ name, prefix }) => (
         <TabButton
           key={prefix}

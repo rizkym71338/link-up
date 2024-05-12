@@ -18,14 +18,16 @@ export default async function SearchPage({ params }: SearchPageProps) {
   })
 
   return (
-    <section className="flex flex-col gap-4">
+    <section className="flex flex-col">
       <SearchTab />
 
       {posts.length === 0 && <div className="text-center">No posts found</div>}
 
-      {posts.map((post) => (
-        <PostCard key={post.id} post={post as any} />
-      ))}
+      <div className="divide-y divide-dark-2">
+        {posts.map((post) => (
+          <PostCard key={post.id} post={post as any} />
+        ))}
+      </div>
     </section>
   )
 }

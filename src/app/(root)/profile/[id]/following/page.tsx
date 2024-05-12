@@ -23,7 +23,7 @@ export default async function FollowingPage({ params }: FollowingPageProps) {
   })
 
   return (
-    <section className="flex flex-col gap-4">
+    <section>
       <ProfileCard user={user as any} />
 
       <ProfileTab />
@@ -32,9 +32,11 @@ export default async function FollowingPage({ params }: FollowingPageProps) {
         <div className="text-center">No followings</div>
       )}
 
-      {followings.map((following) => (
-        <UserCard key={following.id} user={following} />
-      ))}
+      <div className="divide-y divide-dark-2">
+        {followings.map((following) => (
+          <UserCard key={following.id} user={following} />
+        ))}
+      </div>
     </section>
   )
 }

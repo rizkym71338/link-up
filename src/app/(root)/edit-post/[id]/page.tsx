@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import { auth } from '@clerk/nextjs/server'
 
 import { ImageInput, SubmitButton, TextInput, Textarea } from '@/components'
 import { nullSafe, prisma } from '@/libs'
@@ -12,10 +13,13 @@ export default async function EditPostPage({ params }: EditPostPageProps) {
   const post = await prisma.post
     .findFirst({
       where: { id: params.id },
+      include: { author: true },
     })
     .catch(() => notFound())
 
   if (!post) return notFound()
+
+  if (post?.author?.clerkId !== auth().userId) return notFound()
 
   return (
     <form action={editPost.bind(null, nullSafe(post?.id))}>

@@ -19,8 +19,8 @@ export const MainContainer = ({ children }: MainContainerProps) => {
   return (
     <div className="w-full">
       <TopBar />
-      <div className="mx-auto w-full max-w-xl p-4 pb-28">
-        <h1 className="mb-4 text-heading3-bold">{page?.title}</h1>
+      <div className="mx-auto w-full max-w-xl py-4 pb-20 md:px-4">
+        <h1 className="mb-4 px-4 text-heading3-bold md:px-0">{page?.title}</h1>
         {children}
       </div>
     </div>

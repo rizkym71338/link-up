@@ -18,7 +18,7 @@ export default async function SavedPostsPage() {
     return <div className="text-center">No posts found</div>
 
   return (
-    <section className="flex flex-col gap-4">
+    <section className="divide-y divide-dark-2">
       {posts.map((post) => (
         <PostCard key={post.id} post={post as any} />
       ))}
