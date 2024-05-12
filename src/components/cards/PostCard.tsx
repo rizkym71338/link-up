@@ -26,7 +26,7 @@ export const PostCard = async ({ post }: PostCardProps) => {
 
   const isCurrentUser = auth().userId === nullSafe(post.author?.clerkId)
 
-  const dropdownItems: any = [{ label: 'Copy Link' }]
+  const dropdownItems: any = [{ label: 'Report Post' }]
   isCurrentUser &&
     dropdownItems.push({
       label: 'Edit Post',
