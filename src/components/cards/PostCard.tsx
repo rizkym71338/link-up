@@ -79,11 +79,9 @@ export const PostCard = async ({ post }: PostCardProps) => {
         <SaveOrUnSaveButton post={nullSafe(post)} isSaved={!!savedPost} />
       </div>
 
-      <p className="mb-1 px-4 text-body-normal md:px-0">
-        {nullSafe(post.caption)}
-      </p>
+      <p className="mb-1 px-4 md:px-0">{nullSafe(post.caption)}</p>
 
-      <p className="mb-4 px-4 text-base text-purple-1 md:px-0">
+      <p className="mb-4 px-4 text-sm text-purple-1 md:px-0">
         {nullSafe(post.tag)}
       </p>
 
@@ -91,9 +89,9 @@ export const PostCard = async ({ post }: PostCardProps) => {
         <input
           type="text"
           placeholder="Add a comment..."
-          className="w-full rounded-lg border-none bg-transparent pl-0 focus:outline-none"
+          className="w-full rounded-lg border-none bg-transparent pl-0 text-sm focus:outline-none"
         />
-        <p className="cursor-pointer font-semibold text-purple-1">Send</p>
+        <p className="cursor-pointer text-small-semibold text-purple-1">Send</p>
       </div>
     </div>
   )
