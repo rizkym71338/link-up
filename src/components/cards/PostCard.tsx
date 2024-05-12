@@ -83,9 +83,18 @@ export const PostCard = async ({ post }: PostCardProps) => {
         {nullSafe(post.caption)}
       </p>
 
-      <p className="px-4 text-base text-purple-1 md:px-0">
+      <p className="mb-4 px-4 text-base text-purple-1 md:px-0">
         {nullSafe(post.tag)}
       </p>
+
+      <div className="flex items-center gap-2 px-4 md:px-0">
+        <input
+          type="text"
+          placeholder="Add a comment..."
+          className="w-full rounded-lg border-none bg-transparent pl-0 focus:outline-none"
+        />
+        <p className="cursor-pointer text-subtle-medium text-purple-1">Send</p>
+      </div>
     </div>
   )
 }
