@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { UserIcon } from '@heroicons/react/24/outline'
 import { Notification, User } from '@prisma/client'
 
+import { readAllNotification } from '@/actions'
 import { sidebarLinks } from '@/constants'
 import { cn } from '@/libs'
 
@@ -30,6 +31,11 @@ export const BottomBar = ({ user, notifications }: BottomBarProps) => {
           <Link
             key={route}
             href={route}
+            onClick={async () => {
+              if (label === 'Notification') {
+                await readAllNotification()
+              }
+            }}
             className={cn(
               'relative flex flex-col items-center justify-center gap-2 rounded-lg p-2',
               isActive && 'bg-purple-1',
