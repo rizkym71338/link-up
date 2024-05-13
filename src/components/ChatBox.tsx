@@ -24,6 +24,7 @@ export const ChatBox = ({ currentUser, recipientUser }: ChatBoxProps) => {
 
     const { channel } = useChannel('direct-message', (message) => {
       setMessages((previousMessages) => [...previousMessages, message])
+      window.scrollTo(0, document.body.scrollHeight)
     })
 
     return (
