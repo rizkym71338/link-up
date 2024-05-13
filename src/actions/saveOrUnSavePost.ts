@@ -1,9 +1,9 @@
 'use server'
 
+import { revalidatePath } from 'next/cache'
 import { auth } from '@clerk/nextjs/server'
 
 import { prisma } from '@/libs'
-import { revalidatePath } from 'next/cache'
 
 export const saveOrUnSavePost = async (postId: string) => {
   const user = await prisma.user.findFirst({

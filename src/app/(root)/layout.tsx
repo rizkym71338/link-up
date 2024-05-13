@@ -28,10 +28,15 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     orderBy: { createdAt: 'desc' },
   })
 
+  const notifications = await prisma.notification.findMany({
+    where: { recipientId: user.id, isRead: false },
+    orderBy: { createdAt: 'desc' },
+  })
+
   return (
     <ClerkProvider>
       <main className="flex">
-        <LeftSideBar user={user} />
+        <LeftSideBar user={user} notifications={notifications} />
         <MainContainer>{children}</MainContainer>
         <RightSideBar users={users} currentUser={user} />
       </main>

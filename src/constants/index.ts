@@ -1,4 +1,4 @@
-import { HomeIcon, FolderPlusIcon } from '@heroicons/react/24/outline'
+import { HomeIcon, FolderPlusIcon, BellIcon } from '@heroicons/react/24/outline'
 
 export const sidebarLinks = [
   {
@@ -10,6 +10,11 @@ export const sidebarLinks = [
     icon: FolderPlusIcon,
     route: '/create-post',
     label: 'Create Post',
+  },
+  {
+    icon: BellIcon,
+    route: '/notification',
+    label: 'Notification',
   },
 ]
 
@@ -37,6 +42,10 @@ export const pageTitles = [
   {
     url: '/profile',
     title: 'Profile',
+  },
+  {
+    url: '/notification',
+    title: 'Notification',
   },
 ]
 

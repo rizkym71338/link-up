@@ -8,35 +8,38 @@ datasource db {
 }
 
 model User {
-  id           String      @id @default(auto()) @map("_id") @db.ObjectId
-  clerkId      String?     @unique
-  firstName    String?
-  lastName     String?
-  username     String?
-  email        String?     @unique
-  profilePhoto String?
-  posts        Post[]
-  comments     Comment[]
-  savedPosts   SavedPost[]
-  likedPosts   LikedPost[]
-  followers    User[]      @relation("UserFollows", fields: [followersIds], references: [id])
-  followersIds String[]    @db.ObjectId
-  following    User[]      @relation("UserFollows", fields: [followingIds], references: [id])
-  followingIds String[]    @db.ObjectId
-  createdAt    DateTime    @default(now())
+  id                     String         @id @default(auto()) @map("_id") @db.ObjectId
+  clerkId                String?        @unique
+  firstName              String?
+  lastName               String?
+  username               String?
+  email                  String?        @unique
+  profilePhoto           String?
+  posts                  Post[]
+  comments               Comment[]
+  savedPosts             SavedPost[]
+  likedPosts             LikedPost[]
+  authorNotifications    Notification[] @relation("AuthorNotification")
+  recipientNotifications Notification[] @relation("RecipientNotification")
+  followers              User[]         @relation("UserFollows", fields: [followersIds], references: [id])
+  followersIds           String[]       @db.ObjectId
+  following              User[]         @relation("UserFollows", fields: [followingIds], references: [id])
+  followingIds           String[]       @db.ObjectId
+  createdAt              DateTime       @default(now())
 }
 
 model Post {
-  id        String      @id @default(auto()) @map("_id") @db.ObjectId
-  caption   String?
-  postPhoto String?
-  tag       String?
-  comments  Comment[]
-  likes     LikedPost[]
-  saves     SavedPost[]
-  author    User?       @relation(fields: [authorId], references: [id])
-  authorId  String?     @db.ObjectId
-  createdAt DateTime    @default(now())
+  id                String         @id @default(auto()) @map("_id") @db.ObjectId
+  caption           String?
+  postPhoto         String?
+  tag               String?
+  comments          Comment[]
+  likes             LikedPost[]
+  saves             SavedPost[]
+  likeNotifications Notification[]
+  author            User?          @relation(fields: [authorId], references: [id])
+  authorId          String?        @db.ObjectId
+  createdAt         DateTime       @default(now())
 }
 
 model Comment {
@@ -47,6 +50,25 @@ model Comment {
   Post      Post?    @relation(fields: [postId], references: [id])
   postId    String?  @db.ObjectId
   createdAt DateTime @default(now())
+}
+
+model Notification {
+  id          String            @id @default(auto()) @map("_id") @db.ObjectId
+  type        TypeNotification?
+  isRead      Boolean?
+  message     String?
+  author      User?             @relation("AuthorNotification", fields: [authorId], references: [id])
+  authorId    String?           @db.ObjectId
+  recipient   User?             @relation("RecipientNotification", fields: [recipientId], references: [id])
+  recipientId String?           @db.ObjectId
+  post        Post?             @relation(fields: [postId], references: [id])
+  postId      String?           @db.ObjectId
+  createdAt   DateTime          @default(now())
+}
+
+enum TypeNotification {
+  following
+  likePost
 }
 
 model SavedPost {

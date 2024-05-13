@@ -1,14 +1,15 @@
 import Link from 'next/link'
-import { Post, User } from '@prisma/client'
+import { Notification, Post, User } from '@prisma/client'
 
 import { Menu, NextImage, ProfileStatistic } from '@/components'
 import { nullSafe } from '@/libs'
 
 interface LeftSideBarProps {
   user: User & { posts: Post[] }
+  notifications: Notification[]
 }
 
-export const LeftSideBar = ({ user }: LeftSideBarProps) => {
+export const LeftSideBar = ({ user, notifications }: LeftSideBarProps) => {
   return (
     <div className="custom-scrollbar sticky left-0 top-0 hidden h-screen w-full max-w-[300px] overflow-auto border-r border-dark-2 p-4 md:block">
       <Link href="/">
@@ -43,7 +44,7 @@ export const LeftSideBar = ({ user }: LeftSideBarProps) => {
 
       <hr className="mb-4 border-dark-2" />
 
-      <Menu user={user} />
+      <Menu user={user} notifications={notifications} />
 
       <hr className="my-4 border-dark-2" />
 
