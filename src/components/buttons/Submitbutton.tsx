@@ -13,7 +13,7 @@ export function SubmitButton() {
       type="submit"
       disabled={pending}
       className={cn(
-        'my-4 flex w-full items-center justify-center rounded-lg bg-purple-1 px-3 py-2 transition-all hover:bg-pink-1',
+        'my-4 flex w-full items-center justify-center rounded-md bg-purple-1 px-3 py-2 transition-all hover:bg-pink-1',
         pending && 'cursor-not-allowed opacity-50',
       )}
     >

@@ -22,7 +22,7 @@ export const SearchInput = () => {
     <div className="relative flex w-full">
       <input
         type="text"
-        className="w-full rounded-lg bg-dark-2 px-3 py-2 text-small-semibold focus:outline-none"
+        className="w-full rounded-md bg-dark-2 px-3 py-2 text-small-semibold focus:outline-none"
         placeholder="Search post, people, ..."
         value={search}
         onChange={(event) => setSearch(event.target.value)}

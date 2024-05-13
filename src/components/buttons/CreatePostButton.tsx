@@ -12,7 +12,7 @@ export const CreatePostButton = ({ className }: CreatePostButtonProps) => {
     <Link
       href="/create-post"
       className={cn(
-        'flex items-center gap-2 rounded-lg bg-gradient-to-l from-pink-1 to-purple-1 px-3 py-2 text-small-semibold',
+        'flex items-center gap-2 rounded-md bg-gradient-to-l from-pink-1 to-purple-1 px-3 py-2 text-small-semibold',
         className,
       )}
     >

@@ -28,7 +28,7 @@ export const ImageInput = ({ name, defaultValue }: ImageInputProps) => {
       {({ open }) => (
         <div
           onClick={() => open()}
-          className="mb-4 flex aspect-video cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-dark-1"
+          className="mb-4 flex aspect-video cursor-pointer items-center justify-center overflow-hidden rounded-md bg-dark-1"
         >
           {imagePreview ? (
             <NextImage

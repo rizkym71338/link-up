@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import { LikedPost, Post } from '@prisma/client'
+import { HeartIcon } from '@heroicons/react/24/solid'
 
 import { NextImage } from '@/components'
 import { nullSafe } from '@/libs'
-import { HeartIcon } from '@heroicons/react/24/solid'
 
 interface ProfilePostCardProps {
   post: Post & { likes: LikedPost[] }

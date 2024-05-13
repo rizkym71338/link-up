@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import { auth } from '@clerk/nextjs/server'
 
 import { ChatBox } from '@/components'
-import { prisma } from '@/libs'
+import { nullSafe, prisma } from '@/libs'
 
 interface DirectPageProps {
   params: { id: string }
@@ -23,7 +23,11 @@ export default async function DirectPage({ params }: DirectPageProps) {
 
   return (
     <section>
-      <ChatBox currentUser={currentUser} recipientUser={recipientUser} />
+      <ChatBox
+        currentUser={currentUser}
+        recipientUser={recipientUser}
+        ABLY_KEY={nullSafe(process.env.ABLY_KEY)}
+      />
     </section>
   )
 }

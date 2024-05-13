@@ -12,11 +12,9 @@ interface FollowOrUnFollowButtonProps {
   className?: string
 }
 
-export const FollowOrUnFollowButton = ({
-  followId,
-  isFollwed,
-  className,
-}: FollowOrUnFollowButtonProps) => {
+export const FollowOrUnFollowButton = (props: FollowOrUnFollowButtonProps) => {
+  const { followId, isFollwed, className } = props
+
   const [isPending, startTransition] = useTransition()
 
   const onClick = () => {

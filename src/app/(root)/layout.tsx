@@ -14,12 +14,10 @@ interface RootLayoutProps {
 export default async function RootLayout({ children }: RootLayoutProps) {
   if (!auth().userId) redirect('/sign-in')
 
-  const user = await prisma.user
-    .findFirst({
-      where: { clerkId: auth().userId },
-      include: { posts: true },
-    })
-    .catch(() => notFound())
+  const user = await prisma.user.findFirst({
+    where: { clerkId: auth().userId },
+    include: { posts: true },
+  })
 
   if (!user) return notFound()
 

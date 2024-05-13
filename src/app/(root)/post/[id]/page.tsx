@@ -31,26 +31,28 @@ export default async function PostPage({ params }: PostPageProps) {
     where: { clerkId: auth().userId },
   })
 
+  if (!user) return notFound()
+
   const likedPost = await prisma.likedPost.findFirst({
-    where: { postId: post.id, userId: user?.id },
+    where: { postId: post.id, userId: user.id },
   })
 
   const savedPost = await prisma.savedPost.findFirst({
-    where: { postId: post.id, userId: user?.id },
+    where: { postId: post.id, userId: user.id },
   })
 
-  const isCurrentUser = auth().userId === nullSafe(post.author?.clerkId)
+  const isCurrentUser = auth().userId === post.author?.clerkId
 
   const dropdownItems: any = [{ label: 'Report Post' }]
   isCurrentUser &&
     dropdownItems.push({
       label: 'Edit Post',
       asLink: true,
-      href: `/edit-post/${nullSafe(post.id)}`,
+      href: `/edit-post/${post.id}`,
     })
 
   return (
-    <section className="relative">
+    <section className="pb-14 md:pb-[17px]">
       <div className="mb-4 flex items-center gap-2 px-4 md:px-0">
         <Link href={`/profile/${post.author?.id}`} className="flex-none">
           <NextImage
@@ -124,7 +126,7 @@ export default async function PostPage({ params }: PostPageProps) {
         </div>
       )}
 
-      <CommentInput postId={nullSafe(post.id)} />
+      <CommentInput postId={post.id} />
     </section>
   )
 }

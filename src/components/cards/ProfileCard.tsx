@@ -13,7 +13,7 @@ interface ProfileCardProps {
 export const ProfileCard = async ({ user, currentUser }: ProfileCardProps) => {
   const isFollowed = currentUser?.followingIds.includes(user.id)
 
-  const isCurrentUser = user.clerkId === nullSafe(auth().userId)
+  const isCurrentUser = user.clerkId === auth().userId
 
   return (
     <div className="mb-4 px-4 md:px-0">

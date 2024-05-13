@@ -37,7 +37,7 @@ export const BottomBar = ({ user, notifications }: BottomBarProps) => {
               }
             }}
             className={cn(
-              'relative flex flex-col items-center justify-center gap-2 rounded-lg p-2',
+              'relative flex flex-col items-center justify-center gap-2 rounded-md p-2',
               isActive && 'bg-purple-1',
             )}
           >

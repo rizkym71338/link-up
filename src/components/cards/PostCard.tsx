@@ -23,10 +23,10 @@ export const PostCard = async ({ post, user }: PostCardProps) => {
   })
 
   const savedPost = await prisma.savedPost.findFirst({
-    where: { postId: post.id, userId: user?.id },
+    where: { postId: post.id, userId: user.id },
   })
 
-  const isCurrentUser = auth().userId === nullSafe(post.author?.clerkId)
+  const isCurrentUser = auth().userId === post.author.clerkId
 
   const dropdownItems: any = [{ label: 'Report Post' }]
   isCurrentUser &&

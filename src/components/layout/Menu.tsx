@@ -38,7 +38,7 @@ export const Menu = ({ user, notifications }: MenuProps) => {
               }
             }}
             className={cn(
-              'relative mb-2 flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:bg-purple-1',
+              'relative mb-2 flex items-center gap-3 rounded-md px-3 py-2 transition-all hover:bg-purple-1',
               isActive && 'bg-purple-1',
             )}
           >
