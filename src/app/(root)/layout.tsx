@@ -40,7 +40,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         <MainContainer>{children}</MainContainer>
         <RightSideBar users={users} currentUser={user} />
       </main>
-      <BottomBar user={user} />
+      <BottomBar user={user} notifications={notifications} />
     </ClerkProvider>
   )
 }
