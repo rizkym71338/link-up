@@ -48,7 +48,7 @@ export const ChatBox = ({ currentUser, recipientUser }: ChatBoxProps) => {
                     useSkeleton
                   />
                   <p className="text-subtle-medium text-light-2">
-                    {user.username}
+                    {user.firstName} {user.lastName}
                   </p>
                 </div>
                 <p className="text-sm">{message.data.message}</p>
@@ -57,7 +57,7 @@ export const ChatBox = ({ currentUser, recipientUser }: ChatBoxProps) => {
           })}
         </div>
 
-        <div className="fixed bottom-[53px] flex w-full max-w-xl gap-4 border-t border-dark-2 px-4 py-4 md:px-0">
+        <div className="fixed bottom-[53px] flex w-full max-w-xl gap-4 border-t border-dark-2 bg-purple-2 px-4 py-4 md:bottom-0 md:px-0">
           <input
             type="text"
             className="w-full bg-transparent focus-within:outline-none"
