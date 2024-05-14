@@ -14,16 +14,16 @@ interface PostCardProps {
     saves: SavedPost[]
     comments: Comment[]
   }
-  user: User
+  currentUser: User
 }
 
-export const PostCard = async ({ post, user }: PostCardProps) => {
+export const PostCard = async ({ post, currentUser }: PostCardProps) => {
   const likedPost = await prisma.likedPost.findFirst({
-    where: { postId: post.id, userId: user.id },
+    where: { postId: post.id, userId: currentUser.id },
   })
 
   const savedPost = await prisma.savedPost.findFirst({
-    where: { postId: post.id, userId: user.id },
+    where: { postId: post.id, userId: currentUser.id },
   })
 
   const isCurrentUser = auth().userId === post.author.clerkId

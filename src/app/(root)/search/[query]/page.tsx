@@ -1,31 +1,18 @@
-import { auth } from '@clerk/nextjs/server'
 import { notFound } from 'next/navigation'
 
+import { findCurrentUser, searchUser } from '@/services'
 import { UserCard } from '@/components'
-import { prisma } from '@/libs'
 
 interface SearchPageProps {
   params: { query: string }
 }
 
 export default async function SearchPage({ params }: SearchPageProps) {
-  const currentUser = await prisma.user.findFirst({
-    where: { clerkId: auth().userId },
-  })
+  const currentUser = await findCurrentUser()
 
   if (!currentUser) return notFound()
 
-  const users = await prisma.user.findMany({
-    where: {
-      OR: [
-        { username: { contains: params.query, mode: 'insensitive' } },
-        { firstName: { contains: params.query, mode: 'insensitive' } },
-        { lastName: { contains: params.query, mode: 'insensitive' } },
-      ],
-      NOT: { clerkId: auth().userId },
-    },
-    orderBy: { createdAt: 'desc' },
-  })
+  const users = await searchUser(params.query)
 
   return (
     <section className="-mt-4 divide-y divide-dark-2">

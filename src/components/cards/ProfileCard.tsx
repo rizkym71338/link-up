@@ -42,7 +42,7 @@ export const ProfileCard = async ({ user, currentUser }: ProfileCardProps) => {
         )}
       </div>
 
-      <ProfileStatistic user={user} />
+      <ProfileStatistic currentUser={user} />
     </div>
   )
 }

@@ -1,23 +1,17 @@
 import { notFound } from 'next/navigation'
-import { auth } from '@clerk/nextjs/server'
 
+import { findCurrentUser, findUser } from '@/services'
 import { ChatBox } from '@/components'
-import { nullSafe, prisma } from '@/libs'
+import { nullSafe } from '@/libs'
 
 interface DirectPageProps {
   params: { id: string }
 }
 
 export default async function DirectPage({ params }: DirectPageProps) {
-  const currentUser = await prisma.user.findFirst({
-    where: { clerkId: auth().userId },
-  })
+  const currentUser = await findCurrentUser()
 
-  const recipientUser = await prisma.user
-    .findFirst({
-      where: { id: params.id },
-    })
-    .catch(() => notFound())
+  const recipientUser = await findUser({ where: { id: params.id } })
 
   if (!currentUser || !recipientUser) return notFound()
 

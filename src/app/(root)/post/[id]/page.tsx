@@ -6,6 +6,7 @@ import { EllipsisVerticalIcon } from '@heroicons/react/24/solid'
 
 import { LikeOrUnLikeButton, SaveOrUnSaveButton } from '@/components'
 import { DropdownMenu, NextImage, CommentInput } from '@/components'
+import { findCurrentUser, findPost } from '@/services'
 import { nullSafe, prisma, timeAgo } from '@/libs'
 
 interface PostPageProps {
@@ -13,32 +14,28 @@ interface PostPageProps {
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const post = await prisma.post
-    .findFirst({
-      where: { id: params.id },
-      include: {
-        likes: true,
-        author: true,
-        saves: true,
-        comments: { include: { author: true } },
-      },
-    })
-    .catch(() => notFound())
+  const currentUser = await findCurrentUser()
+
+  if (!currentUser) return notFound()
+
+  const post = await findPost({
+    where: { id: params.id },
+    include: {
+      likes: true,
+      author: true,
+      saves: true,
+      comments: { include: { author: true } },
+    },
+  })
 
   if (!post) return notFound()
 
-  const user = await prisma.user.findFirst({
-    where: { clerkId: auth().userId },
-  })
-
-  if (!user) return notFound()
-
   const likedPost = await prisma.likedPost.findFirst({
-    where: { postId: post.id, userId: user.id },
+    where: { postId: post.id, userId: currentUser.id },
   })
 
   const savedPost = await prisma.savedPost.findFirst({
-    where: { postId: post.id, userId: user.id },
+    where: { postId: post.id, userId: currentUser.id },
   })
 
   const isCurrentUser = auth().userId === post.author?.clerkId

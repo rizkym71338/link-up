@@ -2,20 +2,19 @@ import { notFound } from 'next/navigation'
 import { auth } from '@clerk/nextjs/server'
 
 import { ImageInput, SubmitButton, TextInput, Textarea } from '@/components'
-import { nullSafe, prisma } from '@/libs'
+import { findPost } from '@/services'
 import { editPost } from '@/actions'
+import { nullSafe } from '@/libs'
 
 interface EditPostPageProps {
   params: { id: string }
 }
 
 export default async function EditPostPage({ params }: EditPostPageProps) {
-  const post = await prisma.post
-    .findFirst({
-      where: { id: params.id },
-      include: { author: true },
-    })
-    .catch(() => notFound())
+  const post = await findPost({
+    where: { id: params.id },
+    include: { author: true },
+  })
 
   if (!post) return notFound()
 

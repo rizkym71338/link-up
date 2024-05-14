@@ -10,16 +10,16 @@ import { sidebarLinks } from '@/constants'
 import { cn } from '@/libs'
 
 interface BottomBarProps {
-  user: User
+  currentUser: User
   notifications: Notification[]
 }
 
-export const BottomBar = ({ user, notifications }: BottomBarProps) => {
+export const BottomBar = ({ currentUser, notifications }: BottomBarProps) => {
   const pathname = usePathname()
 
   const menus = [
     ...sidebarLinks,
-    { icon: UserIcon, label: 'Profile', route: `/profile/${user.id}` },
+    { icon: UserIcon, label: 'Profile', route: `/profile/${currentUser.id}` },
   ]
 
   return (

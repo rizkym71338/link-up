@@ -1,21 +1,16 @@
-import { auth } from '@clerk/nextjs/server'
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
+import { findCurrentUser, findManyUser } from '@/services'
 import { NextImage } from '@/components'
-import { nullSafe, prisma } from '@/libs'
-import Link from 'next/link'
+import { nullSafe } from '@/libs'
 
 export default async function DirectMessagePage() {
-  const currentUser = await prisma.user.findFirst({
-    where: { clerkId: auth().userId },
-  })
+  const currentUser = await findCurrentUser()
 
   if (!currentUser) return notFound()
 
-  const users = await prisma.user.findMany({
-    where: { NOT: { clerkId: auth().userId } },
-    orderBy: { createdAt: 'desc' },
-  })
+  const users = await findManyUser({ where: { id: { not: currentUser.id } } })
 
   return (
     <section className="-mt-4 divide-y divide-dark-2">

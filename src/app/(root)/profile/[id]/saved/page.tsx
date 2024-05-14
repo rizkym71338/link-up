@@ -1,38 +1,33 @@
 import { notFound } from 'next/navigation'
-import { auth } from '@clerk/nextjs/server'
 
 import { ProfileCard, ProfilePostCard, ProfileTab } from '@/components'
-import { prisma } from '@/libs'
+import { findCurrentUser, findManyPost, findUser } from '@/services'
+import { nullSafe } from '@/libs'
 
 interface SavedPageProps {
   params: { id: string }
 }
 
 export default async function SavedPage({ params }: SavedPageProps) {
-  const user = await prisma.user
-    .findFirst({
-      where: { id: params.id },
-      include: { posts: true },
-    })
-    .catch(() => notFound())
-
-  if (!user) return notFound()
-
-  const currentUser = await prisma.user.findFirst({
-    where: { clerkId: auth().userId },
-  })
+  const currentUser = await findCurrentUser()
 
   if (!currentUser) return notFound()
 
-  const posts = await prisma.post.findMany({
-    where: { saves: { some: { userId: user?.id } } },
+  const user = await findUser({
+    where: { id: params.id },
+    include: { posts: true },
+  })
+
+  if (!user) return notFound()
+
+  const posts = await findManyPost({
+    where: { saves: { some: { userId: user.id } } },
     include: { likes: true },
-    orderBy: { createdAt: 'desc' },
   })
 
   return (
     <section>
-      <ProfileCard user={user} currentUser={currentUser} />
+      <ProfileCard user={nullSafe(user)} currentUser={currentUser} />
 
       <ProfileTab className="mb-4" />
 
@@ -40,7 +35,7 @@ export default async function SavedPage({ params }: SavedPageProps) {
 
       <div className="grid grid-cols-2 gap-1">
         {posts.map((post) => (
-          <ProfilePostCard key={post.id} post={post} />
+          <ProfilePostCard key={post.id} post={nullSafe(post)} />
         ))}
       </div>
     </section>

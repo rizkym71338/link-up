@@ -3,9 +3,10 @@ import { notFound, redirect } from 'next/navigation'
 import { ClerkProvider } from '@clerk/nextjs'
 import { auth } from '@clerk/nextjs/server'
 
+import { findCurrentUser, findManyUser, findManyNotification } from '@/services'
 import { LeftSideBar, RightSideBar } from '@/components'
 import { BottomBar, MainContainer } from '@/components'
-import { prisma } from '@/libs'
+import { nullSafe } from '@/libs'
 
 interface RootLayoutProps {
   children: ReactNode
@@ -14,31 +15,29 @@ interface RootLayoutProps {
 export default async function RootLayout({ children }: RootLayoutProps) {
   if (!auth().userId) redirect('/sign-in')
 
-  const user = await prisma.user.findFirst({
-    where: { clerkId: auth().userId },
-    include: { posts: true },
+  const currentUser = await findCurrentUser({ include: { posts: true } })
+
+  if (!currentUser) return notFound()
+
+  const users = await findManyUser({
+    where: { clerkId: { not: currentUser.clerkId } },
   })
 
-  if (!user) return notFound()
-
-  const users = await prisma.user.findMany({
-    where: { clerkId: { not: auth().userId } },
-    orderBy: { createdAt: 'desc' },
-  })
-
-  const notifications = await prisma.notification.findMany({
-    where: { recipientId: user.id, isRead: false },
-    orderBy: { createdAt: 'desc' },
+  const notifications = await findManyNotification({
+    where: { recipientId: currentUser.id, isRead: false },
   })
 
   return (
     <ClerkProvider>
       <main className="flex">
-        <LeftSideBar user={user} notifications={notifications} />
+        <LeftSideBar
+          currentUser={nullSafe(currentUser)}
+          notifications={notifications}
+        />
         <MainContainer>{children}</MainContainer>
-        <RightSideBar users={users} currentUser={user} />
+        <RightSideBar users={users} currentUser={currentUser} />
       </main>
-      <BottomBar user={user} notifications={notifications} />
+      <BottomBar currentUser={currentUser} notifications={notifications} />
     </ClerkProvider>
   )
 }

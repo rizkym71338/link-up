@@ -7,12 +7,12 @@ import { Post, User } from '@prisma/client'
 import { cn, nullSafe } from '@/libs'
 
 interface ProfileStatisticProps {
-  user: User & { posts: Post[] }
+  currentUser: User & { posts: Post[] }
   className?: string
 }
 
 export const ProfileStatistic = (props: ProfileStatisticProps) => {
-  const { user, className } = props
+  const { currentUser, className } = props
 
   const pathname = usePathname()
 
@@ -20,17 +20,17 @@ export const ProfileStatistic = (props: ProfileStatisticProps) => {
 
   const info = [
     {
-      value: nullSafe(user.posts.length, '0'),
+      value: nullSafe(currentUser.posts.length, '0'),
       label: 'Posts',
       prefix: '',
     },
     {
-      value: nullSafe(user?.followersIds.length, '0'),
+      value: nullSafe(currentUser?.followersIds.length, '0'),
       label: 'Followers',
       prefix: 'followers',
     },
     {
-      value: nullSafe(user?.followingIds.length, '0'),
+      value: nullSafe(currentUser?.followingIds.length, '0'),
       label: 'Following',
       prefix: 'following',
     },
@@ -41,7 +41,7 @@ export const ProfileStatistic = (props: ProfileStatisticProps) => {
       {info.map(({ value, label, prefix }, index) => (
         <Link
           key={index}
-          href={`/profile/${user.id}/${prefix}`}
+          href={`/profile/${currentUser.id}/${prefix}`}
           className={cn(
             'w-full text-center transition-all hover:text-purple-1',
             currentPrefix === prefix && prefix !== '' && 'text-purple-1',

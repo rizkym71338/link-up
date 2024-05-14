@@ -1,37 +1,30 @@
 import { notFound } from 'next/navigation'
-import { auth } from '@clerk/nextjs/server'
 
+import { findCurrentUser, findManyUser, findUser } from '@/services'
 import { ProfileCard, ProfileTab, UserCard } from '@/components'
-import { prisma } from '@/libs'
+import { nullSafe } from '@/libs'
 
 interface FollowingPageProps {
   params: { id: string }
 }
 
 export default async function FollowingPage({ params }: FollowingPageProps) {
-  const user = await prisma.user
-    .findFirst({
-      where: { id: params.id },
-      include: { posts: true },
-    })
-    .catch(() => notFound())
-
-  if (!user) return notFound()
-
-  const currentUser = await prisma.user.findFirst({
-    where: { clerkId: auth().userId },
-  })
+  const currentUser = await findCurrentUser()
 
   if (!currentUser) return notFound()
 
-  const followings = await prisma.user.findMany({
+  const user = await findUser({
+    where: { id: params.id },
+    include: { posts: true },
+  })
+
+  const followings = await findManyUser({
     where: { followersIds: { has: params.id } },
-    orderBy: { createdAt: 'desc' },
   })
 
   return (
     <section>
-      <ProfileCard user={user} currentUser={currentUser} />
+      <ProfileCard user={nullSafe(user)} currentUser={currentUser} />
 
       <ProfileTab />
 
