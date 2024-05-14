@@ -3,19 +3,21 @@
 import * as Ably from 'ably'
 import { useState, useTransition } from 'react'
 import { AblyProvider, ChannelProvider, useChannel } from 'ably/react'
-import { User } from '@prisma/client'
+import { Chat, User } from '@prisma/client'
 
 import { NextImage, Loader } from '@/components'
 import { cn, nullSafe } from '@/libs'
+import { createChat } from '@/actions'
 
 interface ChatBoxProps {
   currentUser: User
   recipientUser: User
+  chats: Chat & { author: User; recipient: User }[]
   ABLY_KEY: string
 }
 
 export const ChatBox = (props: ChatBoxProps) => {
-  const { currentUser, recipientUser, ABLY_KEY } = props
+  const { currentUser, recipientUser, ABLY_KEY, chats } = props
 
   const client = new Ably.Realtime({
     key: ABLY_KEY,
@@ -24,16 +26,40 @@ export const ChatBox = (props: ChatBoxProps) => {
 
   const AblyPubSub = () => {
     const [input, setInput] = useState('')
-    const [messages, setMessages] = useState<Ably.Message[]>([])
+    const [messages, setMessages] = useState<any>(chats)
 
     const [isPending, startTransition] = useTransition()
 
     const { channel } = useChannel('direct-message', (message) => {
       startTransition(async () => {
-        const { author } = message.data
+        const { author, recipient } = message.data
+        if (author.id === recipientUser.id) {
+          const chat = {
+            isRead: false,
+            message: message.data.message,
+            author,
+            recipient,
+            createdAt: new Date(),
+          }
 
-        if (author.id === currentUser.id || author.id === recipientUser.id) {
-          setMessages((previousMessages) => [...previousMessages, message])
+          setMessages((previousMessages: any) => [...previousMessages, chat])
+
+          setTimeout(() => {
+            window.scrollTo({
+              top: document.body.scrollHeight,
+              behavior: 'smooth',
+            })
+          }, 100)
+        }
+
+        if (author.id === currentUser.id) {
+          const chat = await createChat({
+            authorId: author.id,
+            recipientId: recipient.id,
+            message: message.data.message,
+          })
+
+          setMessages((previousMessages: any) => [...previousMessages, chat])
 
           setTimeout(() => {
             window.scrollTo({
@@ -57,21 +83,20 @@ export const ChatBox = (props: ChatBoxProps) => {
     return (
       <section>
         <div className="flex flex-col gap-1 px-4 pb-[70px] md:px-0 md:pb-[17px]">
-          {messages.map((message: any, index) => {
-            const isAuthor = message.data.author.id === currentUser.id
+          {messages.map((message: any, index: number) => {
+            const isAuthor = message.author.id === currentUser.id
             const user = isAuthor ? currentUser : recipientUser
             let isFirst = true
             if (index > 0) {
-              isFirst =
-                messages[index - 1].data.author.id !== message.data.author.id
+              isFirst = messages[index - 1].author.id !== message.author.id
             }
 
             return (
               <BubbleChat
-                key={message.id}
+                key={index}
                 isAuthor={isAuthor}
                 isFirst={isFirst}
-                message={message.data.message}
+                message={message.message}
                 user={user}
               />
             )
