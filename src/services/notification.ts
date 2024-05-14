@@ -1,13 +1,16 @@
-import { Prisma } from '@prisma/client'
-
 import { prisma } from '@/libs'
 
-export const findManyNotification = async (
-  props?: Prisma.NotificationFindManyArgs,
+export const findManyNotificationNoRead = async (recipientId: string) => {
+  return await prisma.notification.findMany({
+    where: { recipientId, isRead: false },
+  })
+}
+
+export const findManyNotificationByRecipientId = async (
+  recipientId: string,
 ) => {
   return await prisma.notification.findMany({
-    ...props,
-    include: { ...props?.include },
-    orderBy: { createdAt: 'desc' },
+    where: { recipientId },
+    include: { author: true, post: true },
   })
 }

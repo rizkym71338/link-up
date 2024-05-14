@@ -1,21 +1,44 @@
-import { Prisma } from '@prisma/client'
-
 import { prisma } from '@/libs'
 
-export const findManyPost = async (props?: Prisma.PostFindManyArgs) => {
+export const findManyPost = async () => {
   return await prisma.post.findMany({
-    ...props,
-    include: { ...props?.include },
+    include: { author: true, likes: true, saves: true, comments: true },
     orderBy: { createdAt: 'desc' },
   })
 }
 
-export const findPost = async (props?: Prisma.PostFindFirstArgs) => {
+export const findManyPostByAuthorId = async (authorId: string) => {
+  return await prisma.post.findMany({
+    where: { authorId },
+    include: { author: true, likes: true, saves: true, comments: true },
+    orderBy: { createdAt: 'desc' },
+  })
+}
+
+export const findManyPostBySavedUserId = async (userId: string) => {
+  return await prisma.post.findMany({
+    where: { saves: { some: { userId } } },
+    include: { author: true, likes: true, saves: true, comments: true },
+    orderBy: { createdAt: 'desc' },
+  })
+}
+
+export const findManyPostByLikedUserId = async (userId: string) => {
+  return await prisma.post.findMany({
+    where: { likes: { some: { userId } } },
+    include: { author: true, likes: true, saves: true, comments: true },
+    orderBy: { createdAt: 'desc' },
+  })
+}
+
+export const findPostById = async (postId: string) => {
   return await prisma.post.findFirst({
-    ...props,
+    where: { id: postId },
     include: {
-      ...props?.include,
-      comments: { include: { author: props?.include?.author } },
+      likes: true,
+      author: true,
+      saves: true,
+      comments: { include: { author: true } },
     },
   })
 }

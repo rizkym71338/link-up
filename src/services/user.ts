@@ -1,28 +1,36 @@
 import { auth } from '@clerk/nextjs/server'
-import { Prisma } from '@prisma/client'
 
 import { prisma } from '@/libs'
 
-export const findCurrentUser = async (props?: Prisma.UserFindFirstArgs) => {
+export const findCurrentUser = async () => {
   return await prisma.user.findFirst({
-    ...props,
-    include: { ...props?.include },
     where: { clerkId: auth().userId },
+    include: { posts: true },
   })
 }
 
-export const findUser = async (props?: Prisma.UserFindFirstArgs) => {
+export const findUserById = async (userId: string) => {
   return await prisma.user.findFirst({
-    ...props,
-    include: { ...props?.include },
+    where: { id: userId },
+    include: { posts: true },
   })
 }
 
-export const findManyUser = async (props?: Prisma.UserFindManyArgs) => {
+export const findManyUserWithoutCurrentUser = async () => {
   return await prisma.user.findMany({
-    ...props,
-    include: { ...props?.include },
-    orderBy: { createdAt: 'desc' },
+    where: { clerkId: { not: auth().userId } },
+  })
+}
+
+export const findManyUserFollowingById = async (userId: string) => {
+  return await prisma.user.findMany({
+    where: { followersIds: { has: userId } },
+  })
+}
+
+export const findManyUserFollowerById = async (userId: string) => {
+  return await prisma.user.findMany({
+    where: { followingIds: { has: userId } },
   })
 }
 

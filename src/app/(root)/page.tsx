@@ -9,9 +9,7 @@ export default async function RootPage() {
 
   if (!currentUser) return notFound()
 
-  const posts = await findManyPost({
-    include: { author: true, likes: true, saves: true, comments: true },
-  })
+  const posts = await findManyPost()
 
   return (
     <section className="-mt-4 divide-y divide-dark-2">

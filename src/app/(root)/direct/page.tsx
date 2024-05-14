@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
-import { findCurrentUser, findManyUser } from '@/services'
+import { findCurrentUser, findManyUserWithoutCurrentUser } from '@/services'
 import { NextImage } from '@/components'
 import { nullSafe } from '@/libs'
 
@@ -10,7 +10,7 @@ export default async function DirectMessagePage() {
 
   if (!currentUser) return notFound()
 
-  const users = await findManyUser({ where: { id: { not: currentUser.id } } })
+  const users = await findManyUserWithoutCurrentUser()
 
   return (
     <section className="-mt-4 divide-y divide-dark-2">

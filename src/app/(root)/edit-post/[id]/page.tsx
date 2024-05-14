@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import { auth } from '@clerk/nextjs/server'
 
 import { ImageInput, SubmitButton, TextInput, Textarea } from '@/components'
-import { findPost } from '@/services'
+import { findPostById } from '@/services'
 import { editPost } from '@/actions'
 import { nullSafe } from '@/libs'
 
@@ -11,10 +11,7 @@ interface EditPostPageProps {
 }
 
 export default async function EditPostPage({ params }: EditPostPageProps) {
-  const post = await findPost({
-    where: { id: params.id },
-    include: { author: true },
-  })
+  const post = await findPostById(params.id)
 
   if (!post) return notFound()
 

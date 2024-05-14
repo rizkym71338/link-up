@@ -1,6 +1,12 @@
 import { notFound } from 'next/navigation'
 
-import { findCurrentUser, findManyUser, findUser } from '@/services'
+import {
+  findCurrentUser,
+  findManyUser,
+  findManyUserFollowerById,
+  findUser,
+  findUserById,
+} from '@/services'
 import { ProfileCard, ProfileTab, UserCard } from '@/components'
 import { nullSafe } from '@/libs'
 
@@ -13,18 +19,15 @@ export default async function FollowersPage({ params }: FollowersPageProps) {
 
   if (!currentUser) return notFound()
 
-  const user = await findUser({
-    where: { id: params.id },
-    include: { posts: true },
-  })
+  const user = await findUserById(params.id)
 
-  const followers = await findManyUser({
-    where: { followingIds: { has: params.id } },
-  })
+  if (!user) return notFound()
+
+  const followers = await findManyUserFollowerById(user.id)
 
   return (
     <section>
-      <ProfileCard user={nullSafe(user)} currentUser={currentUser} />
+      <ProfileCard user={user} currentUser={currentUser} />
 
       <ProfileTab />
 

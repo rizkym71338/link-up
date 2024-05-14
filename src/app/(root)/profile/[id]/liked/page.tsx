@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation'
 
 import { ProfileCard, ProfilePostCard, ProfileTab } from '@/components'
-import { findCurrentUser, findManyPost, findUser } from '@/services'
-import { nullSafe } from '@/libs'
+import { findCurrentUser, findUserById } from '@/services'
+import { findManyPostByLikedUserId } from '@/services'
 
 interface LikedPageProps {
   params: { id: string }
@@ -13,19 +13,15 @@ export default async function LikedPage({ params }: LikedPageProps) {
 
   if (!currentUser) return notFound()
 
-  const user = await findUser({
-    where: { id: params.id },
-    include: { posts: true },
-  })
+  const user = await findUserById(params.id)
 
-  const posts = await findManyPost({
-    where: { likes: { some: { userId: user?.id } } },
-    include: { likes: true },
-  })
+  if (!user) return notFound()
+
+  const posts = await findManyPostByLikedUserId(user.id)
 
   return (
     <section>
-      <ProfileCard user={nullSafe(user)} currentUser={currentUser} />
+      <ProfileCard user={user} currentUser={currentUser} />
 
       <ProfileTab className="mb-4" />
 
@@ -33,7 +29,7 @@ export default async function LikedPage({ params }: LikedPageProps) {
 
       <div className="grid grid-cols-2 gap-1">
         {posts.map((post) => (
-          <ProfilePostCard key={post.id} post={nullSafe(post)} />
+          <ProfilePostCard key={post.id} post={post} />
         ))}
       </div>
     </section>

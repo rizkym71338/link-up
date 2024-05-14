@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 
-import { findCurrentUser, findManyNotification } from '@/services'
+import { findCurrentUser, findManyNotificationByRecipientId } from '@/services'
 import { NotificationCard } from '@/components'
 import { nullSafe } from '@/libs'
 
@@ -9,10 +9,7 @@ export default async function NotificationPage() {
 
   if (!currentUser) return notFound()
 
-  const notifications = await findManyNotification({
-    where: { recipientId: currentUser.id },
-    include: { author: true, post: true },
-  })
+  const notifications = await findManyNotificationByRecipientId(currentUser.id)
 
   return (
     <section className="-mt-4 divide-y divide-dark-2">

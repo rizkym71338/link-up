@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 
-import { findCurrentUser, findUser } from '@/services'
+import { findCurrentUser, findUserById } from '@/services'
 import { ChatBox } from '@/components'
 import { nullSafe } from '@/libs'
 
@@ -11,7 +11,7 @@ interface DirectPageProps {
 export default async function DirectPage({ params }: DirectPageProps) {
   const currentUser = await findCurrentUser()
 
-  const recipientUser = await findUser({ where: { id: params.id } })
+  const recipientUser = await findUserById(params.id)
 
   if (!currentUser || !recipientUser) return notFound()
 

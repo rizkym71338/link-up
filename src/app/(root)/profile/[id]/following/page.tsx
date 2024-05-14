@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation'
 
-import { findCurrentUser, findManyUser, findUser } from '@/services'
 import { ProfileCard, ProfileTab, UserCard } from '@/components'
-import { nullSafe } from '@/libs'
+import { findCurrentUser, findUserById } from '@/services'
+import { findManyUserFollowingById } from '@/services'
 
 interface FollowingPageProps {
   params: { id: string }
@@ -13,18 +13,15 @@ export default async function FollowingPage({ params }: FollowingPageProps) {
 
   if (!currentUser) return notFound()
 
-  const user = await findUser({
-    where: { id: params.id },
-    include: { posts: true },
-  })
+  const user = await findUserById(params.id)
 
-  const followings = await findManyUser({
-    where: { followersIds: { has: params.id } },
-  })
+  if (!user) return notFound()
+
+  const followings = await findManyUserFollowingById(user.id)
 
   return (
     <section>
-      <ProfileCard user={nullSafe(user)} currentUser={currentUser} />
+      <ProfileCard user={user} currentUser={currentUser} />
 
       <ProfileTab />
 

@@ -6,7 +6,7 @@ import { EllipsisVerticalIcon } from '@heroicons/react/24/solid'
 
 import { LikeOrUnLikeButton, SaveOrUnSaveButton } from '@/components'
 import { DropdownMenu, NextImage, CommentInput } from '@/components'
-import { findCurrentUser, findPost } from '@/services'
+import { findCurrentUser, findPost, findPostById } from '@/services'
 import { nullSafe, prisma, timeAgo } from '@/libs'
 
 interface PostPageProps {
@@ -18,15 +18,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
   if (!currentUser) return notFound()
 
-  const post = await findPost({
-    where: { id: params.id },
-    include: {
-      likes: true,
-      author: true,
-      saves: true,
-      comments: { include: { author: true } },
-    },
-  })
+  const post = await findPostById(params.id)
 
   if (!post) return notFound()
 
