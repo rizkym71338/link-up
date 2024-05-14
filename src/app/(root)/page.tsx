@@ -12,7 +12,7 @@ export default async function RootPage() {
   const posts = await findManyPost()
 
   return (
-    <section className="-mt-4 divide-y divide-dark-2">
+    <section className="divide-y divide-dark-2">
       {posts.map((post) => (
         <PostCard
           key={post.id}

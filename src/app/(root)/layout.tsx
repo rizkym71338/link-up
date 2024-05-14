@@ -4,9 +4,8 @@ import { ClerkProvider } from '@clerk/nextjs'
 import { auth } from '@clerk/nextjs/server'
 
 import { findCurrentUser, findManyNotificationNoRead } from '@/services'
+import { BottomBar, MainContainer, LeftSideBar } from '@/components'
 import { findManyUserWithoutCurrentUser } from '@/services'
-import { LeftSideBar, RightSideBar } from '@/components'
-import { BottomBar, MainContainer } from '@/components'
 
 interface RootLayoutProps {
   children: ReactNode
@@ -28,7 +27,6 @@ export default async function RootLayout({ children }: RootLayoutProps) {
       <main className="flex">
         <LeftSideBar currentUser={currentUser} notifications={notifications} />
         <MainContainer>{children}</MainContainer>
-        {/* <RightSideBar users={users} currentUser={currentUser} /> */}
       </main>
       <BottomBar currentUser={currentUser} notifications={notifications} />
     </ClerkProvider>

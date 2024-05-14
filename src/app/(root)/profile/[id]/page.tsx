@@ -27,7 +27,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 
       {posts.length === 0 && <div className="text-center">No posts</div>}
 
-      <div className="grid grid-cols-2 gap-1">
+      <div className="mb-4 grid grid-cols-2 gap-1">
         {posts.map((post) => (
           <ProfilePostCard key={post.id} post={post} />
         ))}

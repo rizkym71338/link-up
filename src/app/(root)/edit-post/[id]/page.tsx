@@ -18,7 +18,7 @@ export default async function EditPostPage({ params }: EditPostPageProps) {
   if (post.author?.clerkId !== auth().userId) return notFound()
 
   return (
-    <form action={editPost.bind(null, post.id)} className="px-4">
+    <form action={editPost.bind(null, post.id)} className="px-4 pt-4">
       <ImageInput name="photo" defaultValue={nullSafe(post.postPhoto)} />
       <Textarea
         name="caption"

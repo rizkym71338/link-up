@@ -41,7 +41,7 @@ export default async function PostPage({ params }: PostPageProps) {
     })
 
   return (
-    <section className="pb-14 md:pb-[17px]">
+    <section className="pb-14 pt-4">
       <div className="mb-4 flex items-center gap-2 px-4 md:px-0">
         <Link href={`/profile/${post.author?.id}`} className="flex-none">
           <NextImage

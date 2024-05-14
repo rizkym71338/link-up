@@ -16,7 +16,7 @@ export const ProfileCard = async ({ user, currentUser }: ProfileCardProps) => {
   const isCurrentUser = user.clerkId === auth().userId
 
   return (
-    <div className="mb-4 px-4 md:px-0">
+    <div className="mb-4 px-4 pt-4 md:px-0">
       <div className="mb-4 flex items-center gap-4">
         <NextImage
           src={nullSafe(user.profilePhoto)}

@@ -13,7 +13,7 @@ export default async function DirectMessagePage() {
   const users = await findManyUserWithoutCurrentUser()
 
   return (
-    <section className="-mt-4 divide-y divide-dark-2">
+    <section className="divide-y divide-dark-2">
       {users.length === 0 && <div className="text-center">No people found</div>}
 
       {users.map((user) => (

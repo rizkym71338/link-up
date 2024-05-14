@@ -15,7 +15,7 @@ export default async function SearchPage({ params }: SearchPageProps) {
   const users = await searchUser(params.query)
 
   return (
-    <section className="-mt-4 divide-y divide-dark-2">
+    <section className="divide-y divide-dark-2">
       {users.length === 0 && <div className="text-center">No people found</div>}
 
       {users.map((user) => (

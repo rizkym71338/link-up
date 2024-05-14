@@ -12,7 +12,7 @@ export default async function NotificationPage() {
   const notifications = await findManyNotificationByRecipientId(currentUser.id)
 
   return (
-    <section className="-mt-4 divide-y divide-dark-2">
+    <section className="divide-y divide-dark-2">
       {notifications.length === 0 && (
         <div className="text-center">No notification found</div>
       )}
