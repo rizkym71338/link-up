@@ -30,14 +30,18 @@ export const ChatBox = (props: ChatBoxProps) => {
 
     const { channel } = useChannel('direct-message', (message) => {
       startTransition(async () => {
-        setMessages((previousMessages) => [...previousMessages, message])
+        const { author } = message.data
 
-        setTimeout(() => {
-          window.scrollTo({
-            top: document.body.scrollHeight,
-            behavior: 'smooth',
-          })
-        }, 100)
+        if (author.id === currentUser.id || author.id === recipientUser.id) {
+          setMessages((previousMessages) => [...previousMessages, message])
+
+          setTimeout(() => {
+            window.scrollTo({
+              top: document.body.scrollHeight,
+              behavior: 'smooth',
+            })
+          }, 100)
+        }
       })
     })
 
@@ -52,31 +56,24 @@ export const ChatBox = (props: ChatBoxProps) => {
 
     return (
       <section>
-        <div className="flex flex-col gap-4 px-4 pb-[70px] md:px-0 md:pb-[17px]">
-          {messages.map((message: any) => {
+        <div className="flex flex-col gap-1 px-4 pb-[70px] md:px-0 md:pb-[17px]">
+          {messages.map((message: any, index) => {
             const isAuthor = message.data.author.id === currentUser.id
             const user = isAuthor ? currentUser : recipientUser
+            let isFirst = true
+            if (index > 0) {
+              isFirst =
+                messages[index - 1].data.author.id !== message.data.author.id
+            }
+
             return (
-              <div
+              <BubbleChat
                 key={message.id}
-                className={cn(
-                  'max-w-xs rounded-md bg-dark-1 p-4',
-                  isAuthor && 'ml-auto',
-                )}
-              >
-                <div className="flex items-center gap-2 border-b border-dark-2 pb-3">
-                  <NextImage
-                    src={nullSafe(user.profilePhoto)}
-                    alt="profile"
-                    className="h-5 w-5 rounded-full"
-                    useSkeleton
-                  />
-                  <p className="text-small-semibold text-light-2">
-                    {user.firstName} {user.lastName}
-                  </p>
-                </div>
-                <p className="pt-2 text-sm">{message.data.message}</p>
-              </div>
+                isAuthor={isAuthor}
+                isFirst={isFirst}
+                message={message.data.message}
+                user={user}
+              />
             )
           })}
         </div>
@@ -110,5 +107,56 @@ export const ChatBox = (props: ChatBoxProps) => {
         <AblyPubSub />
       </ChannelProvider>
     </AblyProvider>
+  )
+}
+
+interface ChatBubbleProps {
+  user: User
+  isAuthor: boolean
+  isFirst: boolean
+  message: string
+}
+
+const BubbleChat = ({ isAuthor, isFirst, message, user }: ChatBubbleProps) => {
+  return (
+    <div
+      className={cn(
+        'relative w-fit max-w-xs rounded-b-md bg-dark-1 p-4',
+        isAuthor ? 'ml-auto mr-2 rounded-l-md' : 'ml-2 rounded-r-md',
+        !isFirst && 'rounded-md',
+      )}
+    >
+      <div
+        className={cn(
+          'absolute top-0 aspect-square h-4 overflow-hidden bg-dark-1',
+          isAuthor ? '-right-4' : '-left-4',
+          !isFirst && 'hidden',
+        )}
+      >
+        <div
+          className={cn(
+            'h-full w-full translate-y-1/2 scale-[200%] rounded-full bg-purple-2',
+            isAuthor ? 'translate-x-1/2' : '-translate-x-1/2',
+          )}
+        />
+      </div>
+      <div
+        className={cn(
+          'flex items-center gap-2 border-b border-dark-2 pb-3',
+          !isFirst && 'hidden',
+        )}
+      >
+        <NextImage
+          src={nullSafe(user.profilePhoto)}
+          alt="profile"
+          className="h-5 w-5 rounded-full"
+          useSkeleton
+        />
+        <p className="text-small-semibold text-light-2">
+          {user.firstName} {user.lastName}
+        </p>
+      </div>
+      <p className={cn('text-sm', isFirst && 'pt-2')}>{message}</p>
+    </div>
   )
 }
