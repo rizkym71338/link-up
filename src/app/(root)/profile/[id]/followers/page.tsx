@@ -1,14 +1,8 @@
 import { notFound } from 'next/navigation'
 
-import {
-  findCurrentUser,
-  findManyUser,
-  findManyUserFollowerById,
-  findUser,
-  findUserById,
-} from '@/services'
 import { ProfileCard, ProfileTab, UserCard } from '@/components'
-import { nullSafe } from '@/libs'
+import { findCurrentUser, findUserById } from '@/services'
+import { findManyUserFollowerById } from '@/services'
 
 interface FollowersPageProps {
   params: { id: string }
