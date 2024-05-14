@@ -1,11 +1,12 @@
 'use client'
 
 import * as Ably from 'ably'
-import { useState, useTransition } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import { AblyProvider, ChannelProvider, useChannel } from 'ably/react'
 import { Chat, User } from '@prisma/client'
+import { Zoom } from 'react-awesome-reveal'
 
-import { BubbleChat, ChatInput, NextImage } from '@/components'
+import { ChatBubble, ChatInput, NextImage } from '@/components'
 import { createChat } from '@/actions'
 import { nullSafe } from '@/libs'
 
@@ -23,6 +24,19 @@ export const ChatBox = (props: ChatBoxProps) => {
     key: ABLY_KEY,
     clientId: 'vibe-zone',
   })
+
+  const scrollToBottom = () => {
+    setTimeout(() => {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth',
+      })
+    }, 100)
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [])
 
   const AblyPubSub = () => {
     const [messages, setMessages] = useState<any>(chats)
@@ -52,12 +66,7 @@ export const ChatBox = (props: ChatBoxProps) => {
         if (author.id === recipientUser.id || author.id === currentUser.id) {
           setMessages((value: any) => [...value, chat])
 
-          setTimeout(() => {
-            window.scrollTo({
-              top: document.body.scrollHeight,
-              behavior: 'smooth',
-            })
-          }, 100)
+          scrollToBottom()
         }
       })
     })
@@ -68,7 +77,7 @@ export const ChatBox = (props: ChatBoxProps) => {
           <NextImage
             src={nullSafe(recipientUser.profilePhoto)}
             alt={nullSafe(recipientUser.username)}
-            className="h-8 w-8 rounded-full"
+            className="h-12 w-12 rounded-full"
             useSkeleton
           />
           <div className="mb-2 w-full">
@@ -91,14 +100,15 @@ export const ChatBox = (props: ChatBoxProps) => {
                 : true
 
             return (
-              <BubbleChat
-                key={index}
-                isAuthor={isAuthor}
-                isFirst={isFirst}
-                message={message.message}
-                createdAt={message.createdAt}
-                user={user}
-              />
+              <Zoom key={index} duration={800} triggerOnce>
+                <ChatBubble
+                  isAuthor={isAuthor}
+                  isFirst={isFirst}
+                  message={message.message}
+                  createdAt={message.createdAt}
+                  user={user}
+                />
+              </Zoom>
             )
           })}
         </div>

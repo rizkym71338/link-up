@@ -1,6 +1,6 @@
 import { User } from '@prisma/client'
 
-import { cn, nullSafe, timeAgo } from '@/libs'
+import { cn, nullSafe, time } from '@/libs'
 import { NextImage } from '@/components'
 
 interface ChatBubbleProps {
@@ -11,7 +11,7 @@ interface ChatBubbleProps {
   createdAt: Date
 }
 
-export const BubbleChat = (props: ChatBubbleProps) => {
+export const ChatBubble = (props: ChatBubbleProps) => {
   const { isAuthor, isFirst, message, user, createdAt } = props
   return (
     <div
@@ -53,7 +53,7 @@ export const BubbleChat = (props: ChatBubbleProps) => {
       </div>
       <p className={cn('pb-2 text-sm', isFirst && 'pt-2')}>{message}</p>
       <p className="text-right text-tiny-medium text-light-2">
-        {timeAgo(createdAt)}
+        {time(createdAt)}
       </p>
     </div>
   )
