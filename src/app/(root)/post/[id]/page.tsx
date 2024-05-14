@@ -6,7 +6,7 @@ import { EllipsisVerticalIcon } from '@heroicons/react/24/solid'
 
 import { LikeOrUnLikeButton, SaveOrUnSaveButton } from '@/components'
 import { DropdownMenu, NextImage, CommentInput } from '@/components'
-import { findCurrentUser, findPost, findPostById } from '@/services'
+import { findCurrentUser, findPostById } from '@/services'
 import { nullSafe, prisma, timeAgo } from '@/libs'
 
 interface PostPageProps {
