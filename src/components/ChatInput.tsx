@@ -26,6 +26,7 @@ export const ChatInput = (props: ChatInputProps) => {
     })
     setInput('')
   }
+
   return (
     <div className="fixed bottom-[53px] left-0 flex w-full justify-center bg-purple-2 md:bottom-0 md:pl-[316px] md:pr-4">
       <div className="flex w-full max-w-xl items-center gap-4 border-t border-dark-2 px-4 py-4 md:max-w-[544px] md:px-0">
