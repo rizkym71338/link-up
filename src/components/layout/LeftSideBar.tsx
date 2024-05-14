@@ -13,7 +13,7 @@ export const LeftSideBar = (props: LeftSideBarProps) => {
   const { currentUser, notifications } = props
 
   return (
-    <div className="custom-scrollbar sticky left-0 top-0 hidden h-screen w-full max-w-[300px] overflow-auto border-r border-dark-2 p-4 md:block">
+    <div className="custom-scrollbar sticky left-0 top-0 z-10 h-screen w-full max-w-[300px] overflow-auto border-r border-dark-2 bg-purple-2 p-4 max-md:hidden">
       <Link href="/">
         <NextImage
           src="/assets/logo.png"

@@ -28,7 +28,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
       <main className="flex">
         <LeftSideBar currentUser={currentUser} notifications={notifications} />
         <MainContainer>{children}</MainContainer>
-        <RightSideBar users={users} currentUser={currentUser} />
+        {/* <RightSideBar users={users} currentUser={currentUser} /> */}
       </main>
       <BottomBar currentUser={currentUser} notifications={notifications} />
     </ClerkProvider>

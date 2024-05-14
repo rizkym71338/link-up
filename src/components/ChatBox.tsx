@@ -30,36 +30,28 @@ export const ChatBox = (props: ChatBoxProps) => {
 
     const [isPending, startTransition] = useTransition()
 
-    const { channel } = useChannel('direct-message', (message) => {
+    const { channel } = useChannel('direct-message', (value) => {
       startTransition(async () => {
-        const { author, recipient } = message.data
-        if (author.id === recipientUser.id) {
-          const chat = {
-            isRead: false,
-            message: message.data.message,
-            author,
-            recipient,
-            createdAt: new Date(),
-          }
+        const { author, recipient, message } = value.data
 
-          setMessages((previousMessages: any) => [...previousMessages, chat])
-
-          setTimeout(() => {
-            window.scrollTo({
-              top: document.body.scrollHeight,
-              behavior: 'smooth',
-            })
-          }, 100)
+        const chat = {
+          author,
+          recipient,
+          message,
+          isRead: false,
+          createdAt: new Date(),
         }
 
         if (author.id === currentUser.id) {
-          const chat = await createChat({
+          await createChat({
             authorId: author.id,
             recipientId: recipient.id,
-            message: message.data.message,
+            message,
           })
+        }
 
-          setMessages((previousMessages: any) => [...previousMessages, chat])
+        if (author.id === recipientUser.id || author.id === currentUser.id) {
+          setMessages((value: any) => [...value, chat])
 
           setTimeout(() => {
             window.scrollTo({
@@ -103,24 +95,26 @@ export const ChatBox = (props: ChatBoxProps) => {
           })}
         </div>
 
-        <div className="fixed bottom-[53px] flex w-full max-w-[544px] gap-4 border-t border-dark-2 bg-purple-2 px-4 py-4 md:bottom-0 md:px-0">
-          <input
-            type="text"
-            placeholder="Type a message"
-            className="w-full bg-transparent text-sm focus:outline-none"
-            value={input}
-            onChange={(event) => setInput(event.target.value)}
-            onKeyDownCapture={(event) =>
-              event.key === 'Enter' && !isPending && onClick()
-            }
-          />
-          <button
-            onClick={onClick}
-            disabled={isPending || input === ''}
-            className="text-small-semibold text-purple-1"
-          >
-            {isPending ? <Loader className="h-5" /> : 'Send'}
-          </button>
+        <div className="fixed bottom-[53px] left-0 flex w-full justify-center bg-purple-2 md:bottom-0 md:pl-[316px] md:pr-4">
+          <div className="flex w-full max-w-xl items-center gap-4 border-t border-dark-2 px-4 py-4 md:max-w-[544px] md:px-0">
+            <input
+              type="text"
+              placeholder="Type a message"
+              className="w-full bg-transparent text-sm focus:outline-none"
+              value={input}
+              onChange={(event) => setInput(event.target.value)}
+              onKeyDownCapture={(event) =>
+                event.key === 'Enter' && !isPending && onClick()
+              }
+            />
+            <button
+              onClick={onClick}
+              disabled={isPending || input === ''}
+              className="text-small-semibold text-purple-1"
+            >
+              {isPending ? <Loader className="h-5" /> : 'Send'}
+            </button>
+          </div>
         </div>
       </section>
     )
