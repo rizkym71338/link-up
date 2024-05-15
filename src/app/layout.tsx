@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 
 import { ProgressBarProvider } from '@/components'
 import { cn } from '@/libs'
+
 import '@/styles/globals.css'
 
 export const metadata: Metadata = {

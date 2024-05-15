@@ -4,11 +4,9 @@ import * as Ably from 'ably'
 import { useEffect, useState, useTransition } from 'react'
 import { AblyProvider, ChannelProvider, useChannel } from 'ably/react'
 import { Chat, User } from '@prisma/client'
-import { Zoom } from 'react-awesome-reveal'
 
-import { ChatBubble, ChatInput, NextImage } from '@/components'
+import { ChatHeader, ChatInput, ChatList } from '@/components'
 import { createChat, readAllChat } from '@/actions'
-import { nullSafe } from '@/libs'
 
 interface ChatBoxProps {
   currentUser: User
@@ -90,52 +88,19 @@ export const ChatBox = (props: ChatBoxProps) => {
 
     return (
       <section>
-        <div className="sticky top-0 z-10 flex items-center gap-4 border-b border-dark-2 bg-purple-2 px-4 py-4 md:top-[69px] md:px-0">
-          <NextImage
-            src={nullSafe(recipientUser.profilePhoto)}
-            alt={nullSafe(recipientUser.username)}
-            className="h-12 w-12 rounded-full"
-            useSkeleton
-          />
-          <div className="mb-2 w-full">
-            <p>
-              {recipientUser.firstName} {recipientUser.lastName}
-            </p>
-            <p className="text-subtle-medium text-light-2">
-              @{recipientUser.username}
-            </p>
-          </div>
-        </div>
+        <ChatHeader recipientUser={recipientUser} />
 
-        <div className="flex flex-col gap-1 px-4 pb-16 pt-4 md:px-0 md:pb-[64px] md:pt-4">
-          {messages.map((message: any, index: number) => {
-            const isAuthor = message.author.id === currentUser.id
-            const user = isAuthor ? currentUser : recipientUser
-            const isFirst =
-              index > 0
-                ? messages[index - 1].author.id !== message.author.id
-                : true
-
-            return (
-              <Zoom key={index} duration={800} triggerOnce>
-                <ChatBubble
-                  isAuthor={isAuthor}
-                  isFirst={isFirst}
-                  isRead={message.isRead}
-                  message={message.message}
-                  createdAt={message.createdAt}
-                  user={user}
-                />
-              </Zoom>
-            )
-          })}
-        </div>
-
-        <ChatInput
+        <ChatList
+          messages={messages}
           currentUser={currentUser}
           recipientUser={recipientUser}
+        />
+
+        <ChatInput
           channel={channel}
           isPending={isPending}
+          currentUser={currentUser}
+          recipientUser={recipientUser}
         />
       </section>
     )

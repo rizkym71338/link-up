@@ -5,7 +5,6 @@ import { auth } from '@clerk/nextjs/server'
 
 import { findCurrentUser, findManyNotificationNoRead } from '@/services'
 import { BottomBar, MainContainer, LeftSideBar } from '@/components'
-import { findManyUserWithoutCurrentUser } from '@/services'
 
 interface RootLayoutProps {
   children: ReactNode
@@ -17,8 +16,6 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   const currentUser = await findCurrentUser()
 
   if (!currentUser) return notFound()
-
-  const users = await findManyUserWithoutCurrentUser()
 
   const notifications = await findManyNotificationNoRead(currentUser.id)
 

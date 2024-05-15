@@ -35,7 +35,7 @@ export const findManyUserFollowerById = async (userId: string) => {
 }
 
 export const searchUser = async (query: string) => {
-  return prisma.user.findMany({
+  return await prisma.user.findMany({
     where: {
       OR: [
         { username: { contains: query, mode: 'insensitive' } },

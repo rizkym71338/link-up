@@ -1,8 +1,10 @@
+'use client'
+
 import { User } from '@prisma/client'
+import { CheckCircleIcon } from '@heroicons/react/24/outline'
 
 import { cn, nullSafe, time } from '@/libs'
 import { NextImage } from '@/components'
-import { CheckCircleIcon } from '@heroicons/react/24/outline'
 
 interface ChatBubbleProps {
   user: User

@@ -1,11 +1,10 @@
 import Link from 'next/link'
-import { auth } from '@clerk/nextjs/server'
 import { LikedPost, Post, SavedPost, User, Comment } from '@prisma/client'
 import { EllipsisHorizontalIcon } from '@heroicons/react/24/solid'
 
 import { LikeOrUnLikeButton, SaveOrUnSaveButton } from '@/components'
 import { DropdownMenu, NextImage, CommentInput } from '@/components'
-import { nullSafe, prisma, timeAgo } from '@/libs'
+import { nullSafe, timeAgo } from '@/libs'
 
 interface PostCardProps {
   post: Post & {
@@ -18,15 +17,15 @@ interface PostCardProps {
 }
 
 export const PostCard = async ({ post, currentUser }: PostCardProps) => {
-  const likedPost = await prisma.likedPost.findFirst({
-    where: { postId: post.id, userId: currentUser.id },
-  })
+  const likedPost = post.likes.find(
+    (liked) => liked.userId === currentUser.id && liked.postId === post.id,
+  )
 
-  const savedPost = await prisma.savedPost.findFirst({
-    where: { postId: post.id, userId: currentUser.id },
-  })
+  const savedPost = post.saves.find(
+    (saved) => saved.postId === post.id && saved.userId === currentUser.id,
+  )
 
-  const isCurrentUser = auth().userId === post.author.clerkId
+  const isCurrentUser = currentUser.clerkId === post.author.clerkId
 
   const dropdownItems: any = [{ label: 'Report Post' }]
   isCurrentUser &&
