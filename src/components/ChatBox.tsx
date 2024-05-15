@@ -7,7 +7,7 @@ import { Chat, User } from '@prisma/client'
 import { Zoom } from 'react-awesome-reveal'
 
 import { ChatBubble, ChatInput, NextImage } from '@/components'
-import { createChat } from '@/actions'
+import { createChat, readAllChat } from '@/actions'
 import { nullSafe } from '@/libs'
 
 interface ChatBoxProps {
@@ -35,8 +35,14 @@ export const ChatBox = (props: ChatBoxProps) => {
   }
 
   useEffect(() => {
+    const readChat = async () =>
+      await readAllChat({
+        authorId: recipientUser.id,
+        recipientId: currentUser.id,
+      })
+    readChat()
     scrollToBottom()
-  }, [])
+  }, [currentUser.id, recipientUser.id])
 
   const AblyPubSub = () => {
     const [messages, setMessages] = useState<any>(chats)
@@ -47,15 +53,18 @@ export const ChatBox = (props: ChatBoxProps) => {
       startTransition(async () => {
         const { author, recipient, message } = value.data
 
+        const isAuthor = author.id === currentUser.id
+        const isRecipient = author.id === recipientUser.id
+
         const chat = {
           author,
           recipient,
           message,
-          isRead: false,
+          isRead: isRecipient,
           createdAt: new Date(),
         }
 
-        if (author.id === currentUser.id) {
+        if (isAuthor) {
           await createChat({
             authorId: author.id,
             recipientId: recipient.id,
@@ -63,9 +72,17 @@ export const ChatBox = (props: ChatBoxProps) => {
           })
         }
 
-        if (author.id === recipientUser.id || author.id === currentUser.id) {
-          setMessages((value: any) => [...value, chat])
+        if (isRecipient) {
+          setTimeout(async () => {
+            await readAllChat({
+              authorId: author.id,
+              recipientId: recipient.id,
+            })
+          }, 100)
+        }
 
+        if (isRecipient || isAuthor) {
+          setMessages((value: any) => [...value, chat])
           scrollToBottom()
         }
       })
@@ -104,6 +121,7 @@ export const ChatBox = (props: ChatBoxProps) => {
                 <ChatBubble
                   isAuthor={isAuthor}
                   isFirst={isFirst}
+                  isRead={message.isRead}
                   message={message.message}
                   createdAt={message.createdAt}
                   user={user}

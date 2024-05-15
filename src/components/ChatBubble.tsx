@@ -2,17 +2,19 @@ import { User } from '@prisma/client'
 
 import { cn, nullSafe, time } from '@/libs'
 import { NextImage } from '@/components'
+import { CheckCircleIcon } from '@heroicons/react/24/outline'
 
 interface ChatBubbleProps {
   user: User
   isAuthor: boolean
   isFirst: boolean
+  isRead: boolean
   message: string
   createdAt: Date
 }
 
 export const ChatBubble = (props: ChatBubbleProps) => {
-  const { isAuthor, isFirst, message, user, createdAt } = props
+  const { isAuthor, isFirst, message, user, isRead, createdAt } = props
   return (
     <div
       className={cn(
@@ -52,9 +54,14 @@ export const ChatBubble = (props: ChatBubbleProps) => {
         </p>
       </div>
       <p className={cn('pb-2 text-sm', isFirst && 'pt-2')}>{message}</p>
-      <p className="text-right text-tiny-medium text-light-2">
-        {time(createdAt)}
-      </p>
+      <div className="flex items-center justify-end gap-2 text-light-2">
+        <p className="text-right text-tiny-medium">{time(createdAt)}</p>
+        {isAuthor && (
+          <CheckCircleIcon
+            className={cn('h-4 w-4', isRead && 'text-green-500')}
+          />
+        )}
+      </div>
     </div>
   )
 }
