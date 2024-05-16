@@ -31,11 +31,7 @@ export default async function FollowersPage({ params }: FollowersPageProps) {
 
       <div className="divide-y divide-dark-2">
         {followers.map((follower) => (
-          <UserCard
-            key={follower.id}
-            user={follower}
-            currentUser={currentUser}
-          />
+          <UserCard key={follower.id} user={follower} />
         ))}
       </div>
     </section>

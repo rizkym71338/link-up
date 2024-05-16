@@ -31,11 +31,7 @@ export default async function FollowingPage({ params }: FollowingPageProps) {
 
       <div className="divide-y divide-dark-2">
         {followings.map((following) => (
-          <UserCard
-            key={following.id}
-            user={following}
-            currentUser={currentUser}
-          />
+          <UserCard key={following.id} user={following} />
         ))}
       </div>
     </section>
