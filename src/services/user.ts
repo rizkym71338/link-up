@@ -35,9 +35,7 @@ export const findManyUserFollowerById = async (userId: string) => {
 }
 
 export const searchUser = async (query: string, offset = 0) => {
-  const response = await fetch(
-    `http://localhost:3000/api/search?query=${query}&offset=${offset}`,
-  )
+  const response = await fetch(`/api/search?query=${query}&offset=${offset}`)
 
   return response.json()
 }
