@@ -62,6 +62,11 @@ export const ChatBox = (props: ChatBoxProps) => {
           createdAt: new Date(),
         }
 
+        if (isRecipient || isAuthor) {
+          setMessages((value: any) => [...value, chat])
+          scrollToBottom()
+        }
+
         if (isAuthor) {
           await createChat({
             authorId: author.id,
@@ -77,11 +82,6 @@ export const ChatBox = (props: ChatBoxProps) => {
               recipientId: recipient.id,
             })
           }, 100)
-        }
-
-        if (isRecipient || isAuthor) {
-          setMessages((value: any) => [...value, chat])
-          scrollToBottom()
         }
       })
     })
