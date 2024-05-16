@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation'
 
 import { findCurrentUser, findManyUserWithoutCurrentUser } from '@/services'
 import { NextImage } from '@/components'
-import { nullSafe } from '@/libs'
 
 export default async function DirectMessagePage() {
   const currentUser = await findCurrentUser()
@@ -23,7 +22,7 @@ export default async function DirectMessagePage() {
           className="flex items-center gap-2 px-4 py-4 md:px-0"
         >
           <NextImage
-            src={nullSafe(user.profilePhoto)}
+            src={user.profilePhoto || ''}
             alt="profile photo"
             className="h-12 w-12 rounded-full"
             useSkeleton

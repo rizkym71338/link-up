@@ -1,25 +1,27 @@
+'use client'
+
 import Link from 'next/link'
-import { auth } from '@clerk/nextjs/server'
 import { User } from '@prisma/client'
 
 import { FollowOrUnFollowButton, NextImage } from '@/components'
-import { nullSafe } from '@/libs'
+import { authStore } from '@/stores'
 
 interface UserCardProps {
   user: User
-  currentUser: User
 }
 
-export const UserCard = async ({ user, currentUser }: UserCardProps) => {
-  const isFollowed = currentUser?.followingIds.includes(user.id)
+export const UserCard = ({ user }: UserCardProps) => {
+  const auth = authStore((state) => state.user)
 
-  const isCurrentUser = user.clerkId === auth().userId
+  const isFollowed = auth?.followingIds.includes(user.id) || false
+
+  const isCurrentUser = user.id === auth?.id
 
   return (
     <div className="flex items-center gap-2 px-4 py-4 md:px-0">
       <Link href={`/profile/${user.id}`} className="flex-none">
         <NextImage
-          src={nullSafe(user.profilePhoto)}
+          src={user.profilePhoto || ''}
           alt="profile photo"
           className="h-12 w-12 rounded-full"
           useSkeleton
@@ -34,7 +36,7 @@ export const UserCard = async ({ user, currentUser }: UserCardProps) => {
       </Link>
 
       {!isCurrentUser && (
-        <FollowOrUnFollowButton followId={user.id} isFollwed={isFollowed!} />
+        <FollowOrUnFollowButton followId={user.id} isFollwed={isFollowed} />
       )}
     </div>
   )

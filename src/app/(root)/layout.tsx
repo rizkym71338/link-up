@@ -5,6 +5,7 @@ import { auth } from '@clerk/nextjs/server'
 
 import { findCurrentUser, findManyNotificationNoRead } from '@/services'
 import { BottomBar, MainContainer, LeftSideBar } from '@/components'
+import { AuthProvider } from '@/components/AuthProvider'
 
 interface RootLayoutProps {
   children: ReactNode
@@ -21,11 +22,16 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
   return (
     <ClerkProvider>
-      <main className="flex">
-        <LeftSideBar currentUser={currentUser} notifications={notifications} />
-        <MainContainer>{children}</MainContainer>
-      </main>
-      <BottomBar currentUser={currentUser} notifications={notifications} />
+      <AuthProvider currentUser={currentUser}>
+        <main className="flex">
+          <LeftSideBar
+            currentUser={currentUser}
+            notifications={notifications}
+          />
+          <MainContainer>{children}</MainContainer>
+        </main>
+        <BottomBar currentUser={currentUser} notifications={notifications} />
+      </AuthProvider>
     </ClerkProvider>
   )
 }

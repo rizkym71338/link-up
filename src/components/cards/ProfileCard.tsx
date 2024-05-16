@@ -3,7 +3,6 @@ import { auth } from '@clerk/nextjs/server'
 
 import { NextImage, ProfileStatistic } from '@/components'
 import { FollowOrUnFollowButton } from '@/components'
-import { nullSafe } from '@/libs'
 
 interface ProfileCardProps {
   user: User & { posts: Post[] }
@@ -19,7 +18,7 @@ export const ProfileCard = async ({ user, currentUser }: ProfileCardProps) => {
     <div className="mb-4 px-4 pt-4 md:px-0">
       <div className="mb-4 flex items-center gap-4">
         <NextImage
-          src={nullSafe(user.profilePhoto)}
+          src={user.profilePhoto || ''}
           alt="profile"
           className="h-20 w-20 rounded-full"
           useSkeleton

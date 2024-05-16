@@ -4,7 +4,7 @@ import { useParams, usePathname } from 'next/navigation'
 
 import { TabButton } from '@/components'
 import { profileTabs } from '@/constants'
-import { cn, nullSafe } from '@/libs'
+import { cn } from '@/libs'
 
 interface ProfileTabProps {
   className?: string
@@ -14,7 +14,7 @@ export const ProfileTab = ({ className }: ProfileTabProps) => {
   const pathname = usePathname()
   const params = useParams()
 
-  const currentPrefix = nullSafe(pathname.split('/')[3])
+  const currentPrefix = pathname.split('/')[3] || ''
 
   return (
     <div

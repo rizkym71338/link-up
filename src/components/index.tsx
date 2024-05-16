@@ -4,6 +4,7 @@ export * from '@/components/inputs'
 export * from '@/components/layout'
 export * from '@/components/tabs'
 export * from '@/components/chat'
+export * from '@/components/lists'
 
 export * from '@/components/DropdownMenu'
 export * from '@/components/Loader'

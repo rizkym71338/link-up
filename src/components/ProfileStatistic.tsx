@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Post, User } from '@prisma/client'
 
-import { cn, nullSafe } from '@/libs'
+import { cn } from '@/libs'
 
 interface ProfileStatisticProps {
   currentUser: User & { posts: Post[] }
@@ -16,21 +16,21 @@ export const ProfileStatistic = (props: ProfileStatisticProps) => {
 
   const pathname = usePathname()
 
-  const currentPrefix = nullSafe(pathname.split('/')[3])
+  const currentPrefix = pathname.split('/')[3] || ''
 
   const info = [
     {
-      value: nullSafe(currentUser.posts.length, '0'),
+      value: currentUser.posts.length || '0',
       label: 'Posts',
       prefix: '',
     },
     {
-      value: nullSafe(currentUser?.followersIds.length, '0'),
+      value: currentUser?.followersIds.length || '0',
       label: 'Followers',
       prefix: 'followers',
     },
     {
-      value: nullSafe(currentUser?.followingIds.length, '0'),
+      value: currentUser?.followingIds.length || '0',
       label: 'Following',
       prefix: 'following',
     },

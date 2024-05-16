@@ -34,16 +34,10 @@ export const findManyUserFollowerById = async (userId: string) => {
   })
 }
 
-export const searchUser = async (query: string) => {
-  return await prisma.user.findMany({
-    where: {
-      OR: [
-        { username: { contains: query, mode: 'insensitive' } },
-        { firstName: { contains: query, mode: 'insensitive' } },
-        { lastName: { contains: query, mode: 'insensitive' } },
-      ],
-      NOT: { clerkId: auth().userId },
-    },
-    orderBy: { createdAt: 'desc' },
-  })
+export const searchUser = async (query: string, offset = 0) => {
+  const response = await fetch(
+    `http://localhost:3000/api/search?query=${query}&offset=${offset}`,
+  )
+
+  return response.json()
 }

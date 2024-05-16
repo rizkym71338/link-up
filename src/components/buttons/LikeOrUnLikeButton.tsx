@@ -1,13 +1,11 @@
 'use client'
 
-import { useTransition } from 'react'
+import { useState } from 'react'
 import { HeartIcon as HeartOutlineIcon } from '@heroicons/react/24/outline'
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid'
 import { LikedPost, Post } from '@prisma/client'
 
 import { likeOrUnLikePost } from '@/actions'
-import { Loader } from '@/components'
-import { nullSafe } from '@/libs'
 
 interface LikeOrUnLikeButtonProps {
   post: Post & { likes: LikedPost[] }
@@ -15,12 +13,15 @@ interface LikeOrUnLikeButtonProps {
 }
 
 export const LikeOrUnLikeButton = (props: LikeOrUnLikeButtonProps) => {
-  const { post, isLiked } = props
+  const { post } = props
 
-  const [isPending, startTransition] = useTransition()
+  const [isLiked, setIsLiked] = useState(props.isLiked)
+  const [likes, setLikes] = useState(post.likes.length || 0)
 
-  const onClick = () => {
-    startTransition(async () => await likeOrUnLikePost(post.id))
+  const onClick = async () => {
+    await likeOrUnLikePost(post.id)
+    setIsLiked(!isLiked)
+    setLikes(likes + (isLiked ? -1 : 1))
   }
 
   const Icon = () => {
@@ -30,8 +31,8 @@ export const LikeOrUnLikeButton = (props: LikeOrUnLikeButtonProps) => {
 
   return (
     <button onClick={onClick} className="flex items-center gap-2">
-      {isPending ? <Loader className="h-5" /> : <Icon />}
-      <p>{nullSafe(post.likes.length, '0')}</p>
+      <Icon />
+      <p>{likes}</p>
     </button>
   )
 }

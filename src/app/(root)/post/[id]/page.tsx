@@ -7,7 +7,7 @@ import { EllipsisVerticalIcon } from '@heroicons/react/24/solid'
 import { LikeOrUnLikeButton, SaveOrUnSaveButton } from '@/components'
 import { DropdownMenu, NextImage, CommentInput } from '@/components'
 import { findCurrentUser, findPostById } from '@/services'
-import { nullSafe, prisma, timeAgo } from '@/libs'
+import { prisma, timeAgo } from '@/libs'
 
 interface PostPageProps {
   params: { id: string }
@@ -45,7 +45,7 @@ export default async function PostPage({ params }: PostPageProps) {
       <div className="mb-4 flex items-center gap-2 px-4 md:px-0">
         <Link href={`/profile/${post.author?.id}`} className="flex-none">
           <NextImage
-            src={nullSafe(post.author?.profilePhoto)}
+            src={post.author?.profilePhoto || ''}
             alt="profile photo"
             className="h-8 w-8 rounded-full"
             useSkeleton
@@ -69,7 +69,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
       <Link href={`/post/${post.id}`}>
         <NextImage
-          src={nullSafe(post.postPhoto)}
+          src={post.postPhoto || ''}
           alt="post photo"
           className="mb-4 aspect-video w-full border-dark-2 bg-dark-2 object-cover md:rounded-md md:border"
           useSkeleton
@@ -90,8 +90,8 @@ export default async function PostPage({ params }: PostPageProps) {
           {post.comments.map((comment) => (
             <div key={comment.id} className="flex gap-2 py-2">
               <NextImage
-                src={nullSafe(comment.author?.profilePhoto)}
-                alt={nullSafe(comment.author?.username)}
+                src={comment.author?.profilePhoto || ''}
+                alt={comment.author?.username || ''}
                 className="h-8 w-8 rounded-full"
                 useSkeleton
               />

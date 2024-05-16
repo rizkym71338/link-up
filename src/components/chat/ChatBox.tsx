@@ -11,7 +11,7 @@ import { createChat, readAllChat } from '@/actions'
 interface ChatBoxProps {
   currentUser: User
   recipientUser: User
-  chats: Chat & { author: User; recipient: User }[]
+  chats: Chat[] & { author: User | null; recipient: User | null }[]
   ABLY_KEY: string
 }
 

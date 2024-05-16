@@ -2,10 +2,10 @@ import Link from 'next/link'
 import { Notification, Post, User } from '@prisma/client'
 
 import { FollowOrUnFollowButton, NextImage } from '@/components'
-import { nullSafe, timeAgo } from '@/libs'
+import { timeAgo } from '@/libs'
 
 interface NotificationCardProps {
-  notification: Notification & { author: User; post: Post }
+  notification: Notification & { author: User | null; post: Post | null }
   isFollowed: boolean
 }
 
@@ -16,7 +16,7 @@ export const NotificationCard = (props: NotificationCardProps) => {
     <div className="flex items-center gap-2 px-4 py-4 md:px-0">
       <Link href={`/profile/${notification.authorId}`} className="flex-none">
         <NextImage
-          src={nullSafe(notification.author?.profilePhoto)}
+          src={notification.author?.profilePhoto || ''}
           alt="profile photo"
           className="h-12 w-12 rounded-full"
           useSkeleton
@@ -35,7 +35,7 @@ export const NotificationCard = (props: NotificationCardProps) => {
 
       {notification.type === 'following' && (
         <FollowOrUnFollowButton
-          followId={nullSafe(notification.authorId)}
+          followId={notification.authorId || ''}
           isFollwed={isFollowed}
         />
       )}
@@ -43,8 +43,8 @@ export const NotificationCard = (props: NotificationCardProps) => {
       {notification.type === 'likePost' && (
         <Link href={`/post/${notification.postId}`} className="flex-none">
           <NextImage
-            src={nullSafe(notification.post?.postPhoto)}
-            alt={nullSafe(notification.post?.caption)}
+            src={notification.post?.postPhoto || ''}
+            alt={notification.post?.caption || ''}
             className="aspect-[4/3] h-12 w-fit rounded object-cover"
             useSkeleton
           />

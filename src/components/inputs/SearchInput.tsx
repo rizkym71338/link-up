@@ -5,14 +5,12 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 
-import { nullSafe } from '@/libs'
-
 export const SearchInput = () => {
   const params = useParams()
 
   const linkRef = useRef<HTMLAnchorElement>(null)
 
-  const [search, setSearch] = useState(nullSafe(params.query))
+  const [search, setSearch] = useState(params.query || '')
 
   const Icon = () => {
     const icon = (

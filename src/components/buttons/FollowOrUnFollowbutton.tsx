@@ -1,9 +1,8 @@
 'use client'
 
-import { useTransition } from 'react'
+import { useState } from 'react'
 
 import { followOrUnFollowUser } from '@/actions'
-import { Loader } from '@/components'
 import { cn } from '@/libs'
 
 interface FollowOrUnFollowButtonProps {
@@ -13,30 +12,25 @@ interface FollowOrUnFollowButtonProps {
 }
 
 export const FollowOrUnFollowButton = (props: FollowOrUnFollowButtonProps) => {
-  const { followId, isFollwed, className } = props
+  const { followId, className } = props
 
-  const [isPending, startTransition] = useTransition()
+  const [isFollowed, setIsFollowed] = useState(props.isFollwed)
 
-  const onClick = () => {
-    startTransition(async () => await followOrUnFollowUser(followId))
+  const onClick = async () => {
+    await followOrUnFollowUser(followId)
+    setIsFollowed(!isFollowed)
   }
 
   return (
     <button
       onClick={onClick}
-      className={cn('flex items-center gap-2', className)}
-    >
-      {isPending && (
-        <Loader className={cn('h-5', isFollwed && 'border-red-500')} />
+      className={cn(
+        'text-small-semibold',
+        isFollowed ? 'text-red-500' : 'text-purple-1',
+        className,
       )}
-      <p
-        className={cn(
-          'text-small-semibold',
-          isFollwed ? 'text-red-500' : 'text-purple-1',
-        )}
-      >
-        {isFollwed ? 'Unfollow' : 'Follow'}
-      </p>
+    >
+      {isFollowed ? 'Unfollow' : 'Follow'}
     </button>
   )
 }

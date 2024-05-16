@@ -1,31 +1,35 @@
+'use client'
+
 import Link from 'next/link'
 import { LikedPost, Post, SavedPost, User, Comment } from '@prisma/client'
 import { EllipsisHorizontalIcon } from '@heroicons/react/24/solid'
 
 import { LikeOrUnLikeButton, SaveOrUnSaveButton } from '@/components'
 import { DropdownMenu, NextImage, CommentInput } from '@/components'
-import { nullSafe, timeAgo } from '@/libs'
+import { authStore } from '@/stores'
+import { timeAgo } from '@/libs'
 
 interface PostCardProps {
   post: Post & {
-    author: User
+    author: User | null
     likes: LikedPost[]
     saves: SavedPost[]
     comments: Comment[]
   }
-  currentUser: User
 }
 
-export const PostCard = async ({ post, currentUser }: PostCardProps) => {
+export const PostCard = ({ post }: PostCardProps) => {
+  const auth = authStore((state) => state.user)
+
   const likedPost = post.likes.find(
-    (liked) => liked.userId === currentUser.id && liked.postId === post.id,
+    (liked) => liked.userId === auth?.id && liked.postId === post.id,
   )
 
   const savedPost = post.saves.find(
-    (saved) => saved.postId === post.id && saved.userId === currentUser.id,
+    (saved) => saved.postId === post.id && saved.userId === auth?.id,
   )
 
-  const isCurrentUser = currentUser.clerkId === post.author.clerkId
+  const isCurrentUser = auth?.clerkId === post.author?.clerkId
 
   const dropdownItems: any = [{ label: 'Report Post' }]
   isCurrentUser &&
@@ -38,18 +42,18 @@ export const PostCard = async ({ post, currentUser }: PostCardProps) => {
   return (
     <div className="w-full py-4">
       <div className="mb-4 flex items-center gap-2 px-4 md:px-0">
-        <Link href={`/profile/${post.author.id}`} className="flex-none">
+        <Link href={`/profile/${post.author?.id}`} className="flex-none">
           <NextImage
-            src={nullSafe(post.author.profilePhoto)}
+            src={post.author?.profilePhoto || ''}
             alt="profile photo"
             className="h-8 w-8 rounded-full"
             useSkeleton
           />
         </Link>
 
-        <Link href={`/profile/${post.author.id}`} className="w-full">
+        <Link href={`/profile/${post.author?.id}`} className="w-full">
           <p className="text-small-semibold">
-            {post.author.firstName} {post.author.lastName}{' '}
+            {post.author?.firstName} {post.author?.lastName}{' '}
             <span className="text-subtle-medium text-light-2">
               • {timeAgo(post.createdAt)}
             </span>
@@ -64,7 +68,7 @@ export const PostCard = async ({ post, currentUser }: PostCardProps) => {
 
       <Link href={`/post/${post.id}`}>
         <NextImage
-          src={nullSafe(post.postPhoto)}
+          src={post.postPhoto || ''}
           alt="post photo"
           className="mb-4 aspect-video w-full border-dark-2 bg-dark-2 object-cover md:rounded-md md:border"
           useSkeleton
@@ -83,7 +87,7 @@ export const PostCard = async ({ post, currentUser }: PostCardProps) => {
       {post.comments.length !== 0 && (
         <Link href={`/post/${post.id}`}>
           <p className="mb-2 px-4 text-small-semibold md:px-0">
-            View {nullSafe(post.comments.length, '0')} comment
+            View {post.comments.length || '0'} comment
             {post.comments.length > 1 && 's'}
           </p>
         </Link>

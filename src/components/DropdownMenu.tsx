@@ -4,8 +4,6 @@ import Link from 'next/link'
 import { Menu, MenuButton, MenuItem } from '@headlessui/react'
 import { MenuItems, Transition } from '@headlessui/react'
 
-import { nullSafe } from '@/libs'
-
 interface DropdownMenuProps {
   button: JSX.Element
   items: {
@@ -35,9 +33,9 @@ export const DropdownMenu = ({ button, items }: DropdownMenuProps) => {
           {items.map(({ label, asLink, href, onClick }, index) => {
             return (
               <MenuItem key={index}>
-                {asLink ? (
+                {asLink && href ? (
                   <Link
-                    href={nullSafe(href)}
+                    href={href}
                     className="block w-full px-3 py-1.5 text-start hover:bg-dark-2"
                   >
                     {label}

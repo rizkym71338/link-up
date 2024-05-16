@@ -1,8 +1,9 @@
+'use client'
+
 import Link from 'next/link'
 import { Notification, Post, User } from '@prisma/client'
 
 import { Menu, NextImage, ProfileStatistic } from '@/components'
-import { nullSafe } from '@/libs'
 
 interface LeftSideBarProps {
   currentUser: User & { posts: Post[] }
@@ -25,7 +26,7 @@ export const LeftSideBar = (props: LeftSideBarProps) => {
 
       <Link href={`/profile/${currentUser.id}`}>
         <NextImage
-          src={nullSafe(currentUser.profilePhoto)}
+          src={currentUser.profilePhoto || ''}
           alt="profile-photo"
           className="mx-auto mb-2 h-16 w-16 rounded-full"
           useSkeleton

@@ -5,7 +5,6 @@ import { CldUploadWidget } from 'next-cloudinary'
 import { PhotoIcon } from '@heroicons/react/24/outline'
 
 import { NextImage } from '@/components'
-import { nullSafe } from '@/libs'
 
 interface ImageInputProps {
   name: string
@@ -13,16 +12,14 @@ interface ImageInputProps {
 }
 
 export const ImageInput = ({ name, defaultValue }: ImageInputProps) => {
-  const [imagePreview, setImagePreview] = useState<string>(
-    nullSafe(defaultValue),
-  )
+  const [imagePreview, setImagePreview] = useState(defaultValue || '')
 
   return (
     <CldUploadWidget
       uploadPreset="vibe-zone"
       onSuccess={(result) => {
         const image = result?.info as any
-        setImagePreview(nullSafe(image?.secure_url))
+        setImagePreview(image?.secure_url || '')
       }}
     >
       {({ open }) => (

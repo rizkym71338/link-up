@@ -3,7 +3,7 @@
 import { User } from '@prisma/client'
 import { CheckCircleIcon } from '@heroicons/react/24/outline'
 
-import { cn, nullSafe, time } from '@/libs'
+import { cn, time } from '@/libs'
 import { NextImage } from '@/components'
 
 interface ChatBubbleProps {
@@ -46,7 +46,7 @@ export const ChatBubble = (props: ChatBubbleProps) => {
         )}
       >
         <NextImage
-          src={nullSafe(user.profilePhoto)}
+          src={user.profilePhoto || ''}
           alt="profile"
           className="h-5 w-5 rounded-full"
           useSkeleton

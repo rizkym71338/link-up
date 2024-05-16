@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation'
 
 import { findCurrentUser, findManyNotificationByRecipientId } from '@/services'
 import { NotificationCard } from '@/components'
-import { nullSafe } from '@/libs'
 
 export default async function NotificationPage() {
   const currentUser = await findCurrentUser()
@@ -19,13 +18,13 @@ export default async function NotificationPage() {
 
       {notifications.map((notification) => {
         const isFollowed = currentUser?.followingIds.includes(
-          nullSafe(notification.authorId),
+          notification.authorId || '',
         )
 
         return (
           <NotificationCard
             key={notification.id}
-            notification={nullSafe(notification)}
+            notification={notification}
             isFollowed={isFollowed}
           />
         )

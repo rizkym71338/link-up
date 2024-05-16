@@ -1,5 +1,12 @@
 import { prisma } from '@/libs'
 
+export const getPosts = async (offset = 0) => {
+  const response = await fetch(
+    `http://localhost:3000/api/posts?offset=${offset}`,
+  )
+  return response.json()
+}
+
 export const findManyPost = async () => {
   return await prisma.post.findMany({
     include: { author: true, likes: true, saves: true, comments: true },
