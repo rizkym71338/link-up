@@ -16,8 +16,8 @@ export const FollowOrUnFollowButton = (props: FollowOrUnFollowButtonProps) => {
 
   const [isFollowed, setIsFollowed] = useState(props.isFollwed)
 
-  const onClick = async () => {
-    await followOrUnFollowUser(followId)
+  const onClick = () => {
+    followOrUnFollowUser(followId)
     setIsFollowed(!isFollowed)
   }
 

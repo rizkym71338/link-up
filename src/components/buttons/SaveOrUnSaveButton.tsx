@@ -17,8 +17,8 @@ export const SaveOrUnSaveButton = (props: SaveOrUnSaveButtonProps) => {
 
   const [isSaved, setIsSaved] = useState(props.isSaved)
 
-  const onClick = async () => {
-    await saveOrUnSavePost(post.id)
+  const onClick = () => {
+    saveOrUnSavePost(post.id)
     setIsSaved(!isSaved)
   }
 

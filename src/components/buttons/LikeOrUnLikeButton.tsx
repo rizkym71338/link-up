@@ -18,8 +18,8 @@ export const LikeOrUnLikeButton = (props: LikeOrUnLikeButtonProps) => {
   const [isLiked, setIsLiked] = useState(props.isLiked)
   const [likes, setLikes] = useState(post.likes.length || 0)
 
-  const onClick = async () => {
-    await likeOrUnLikePost(post.id)
+  const onClick = () => {
+    likeOrUnLikePost(post.id)
     setIsLiked(!isLiked)
     setLikes(likes + (isLiked ? -1 : 1))
   }
