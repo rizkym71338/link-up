@@ -3,24 +3,26 @@
 import { Fragment } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { Notification, User } from '@prisma/client'
+import { Notification } from '@prisma/client'
 import { UserIcon } from '@heroicons/react/24/outline'
 
 import { readAllNotification } from '@/actions'
 import { sidebarLinks } from '@/constants'
+import { authStore } from '@/stores'
 import { cn } from '@/libs'
 
 interface MenuProps {
-  currentUser: User
   notifications: Notification[]
 }
 
-export const Menu = ({ currentUser, notifications }: MenuProps) => {
+export const Menu = ({ notifications }: MenuProps) => {
   const pathname = usePathname()
+
+  const auth = authStore((state) => state.user)
 
   const menus = [
     ...sidebarLinks,
-    { icon: UserIcon, label: 'Profile', route: `/profile/${currentUser.id}` },
+    { icon: UserIcon, label: 'Profile', route: `/profile/${auth?.id}` },
   ]
 
   return (

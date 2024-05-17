@@ -2,35 +2,34 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Post, User } from '@prisma/client'
 
+import { authStore } from '@/stores'
 import { cn } from '@/libs'
 
 interface ProfileStatisticProps {
-  currentUser: User & { posts: Post[] }
   className?: string
 }
 
-export const ProfileStatistic = (props: ProfileStatisticProps) => {
-  const { currentUser, className } = props
-
+export const ProfileStatistic = ({ className }: ProfileStatisticProps) => {
   const pathname = usePathname()
+
+  const auth = authStore((state) => state.user)
 
   const currentPrefix = pathname.split('/')[3] || ''
 
   const info = [
     {
-      value: currentUser.posts.length || '0',
+      value: auth?.posts.length || '0',
       label: 'Posts',
       prefix: '',
     },
     {
-      value: currentUser?.followersIds.length || '0',
+      value: auth?.followersIds.length || '0',
       label: 'Followers',
       prefix: 'followers',
     },
     {
-      value: currentUser?.followingIds.length || '0',
+      value: auth?.followingIds.length || '0',
       label: 'Following',
       prefix: 'following',
     },
@@ -38,19 +37,30 @@ export const ProfileStatistic = (props: ProfileStatisticProps) => {
 
   return (
     <div className={cn('flex items-center gap-4', className)}>
-      {info.map(({ value, label, prefix }, index) => (
-        <Link
-          key={index}
-          href={`/profile/${currentUser.id}/${prefix}`}
-          className={cn(
-            'w-full text-center transition-all hover:text-purple-1',
-            currentPrefix === prefix && prefix !== '' && 'text-purple-1',
-          )}
-        >
-          <p className="text-base-bold">{value}</p>
-          <p className="text-tiny-medium">{label}</p>
-        </Link>
-      ))}
+      {info.map(({ value, label, prefix }, index) => {
+        if (!auth) {
+          return (
+            <div
+              key={index}
+              className="h-10 w-full animate-pulse rounded-md bg-dark-2"
+            />
+          )
+        }
+
+        return (
+          <Link
+            key={index}
+            href={`/profile/${auth?.id}/${prefix}`}
+            className={cn(
+              'w-full text-center transition-all hover:text-purple-1',
+              currentPrefix === prefix && prefix !== '' && 'text-purple-1',
+            )}
+          >
+            <p className="text-base-bold">{value}</p>
+            <p className="text-tiny-medium">{label}</p>
+          </Link>
+        )
+      })}
     </div>
   )
 }
