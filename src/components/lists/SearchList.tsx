@@ -54,31 +54,12 @@ export const SearchList = () => {
           No users found
         </div>
       )}
-      {!endReached && (
-        <div ref={ref} className="divide-y divide-dark-2">
-          {Array.from({ length: 15 }).map((_, index) => (
-            <SearchListSkeleton key={index} />
-          ))}
-        </div>
-      )}
+      {!endReached && <Loader ref={ref} className="mx-auto my-4 h-8" />}
       {endReached && users.length > 0 && (
         <div className="my-4 text-center text-small-semibold">
           No more users
         </div>
       )}
     </Suspense>
-  )
-}
-
-const SearchListSkeleton = () => {
-  return (
-    <div className="flex items-center gap-4 py-4">
-      <div className="h-12 w-12 flex-none animate-pulse rounded-full bg-dark-2" />
-      <div className="flex w-full flex-col gap-2">
-        <div className="h-4 w-full animate-pulse rounded-md bg-dark-2" />
-        <div className="h-3 w-full animate-pulse rounded-md bg-dark-2" />
-      </div>
-      <div className="h-12 w-12 flex-none animate-pulse rounded-md bg-dark-2" />
-    </div>
   )
 }

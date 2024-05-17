@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 
-import { PostCard } from '@/components'
+import { PostCard, Loader } from '@/components'
 import { getPosts } from '@/services'
 
 export const PostList = () => {
@@ -48,13 +48,7 @@ export const PostList = () => {
       {endReached && posts.length === 0 && (
         <div className="py-4 text-center text-small-semibold">No Posts</div>
       )}
-      {!endReached && (
-        <div ref={ref} className="divide-y divide-dark-2">
-          {Array.from({ length: 5 }).map((_, index) => (
-            <PostCardSkeleton key={index} />
-          ))}
-        </div>
-      )}
+      {!endReached && <Loader ref={ref} className="mx-auto my-4 h-8" />}
       {endReached && posts.length > 0 && (
         <div className="py-4 text-center text-small-semibold">
           No more Posts
@@ -66,21 +60,9 @@ export const PostList = () => {
 
 const PostCardSkeleton = () => {
   return (
-    <div className="flex animate-pulse flex-col py-4">
-      <div className="mb-4 flex items-center gap-4">
-        <div className="h-8 w-8 flex-none rounded-full bg-dark-2" />
-        <div className="h-4 w-full rounded-md bg-dark-2" />
-        <div className="h-4 w-4 rounded-md bg-dark-2" />
-      </div>
-      <div className="mb-4 aspect-video w-full rounded-md bg-dark-2" />
-      <div className="mb-4 flex items-center justify-between gap-4">
-        <div className="h-5 w-5 rounded-md bg-dark-2" />
-        <div className="h-5 w-5 rounded-md bg-dark-2" />
-      </div>
-      <div className="mb-2 h-4 w-full rounded-md bg-dark-2" />
-      <div className="mb-2 h-4 w-full rounded-md bg-dark-2" />
-      <div className="mb-4 h-3 w-full rounded-md bg-dark-2" />
-      <div className="h-8 w-full rounded-md bg-dark-2" />
+    <div className="animate-pulse">
+      <div className="mb-4 h-4 w-1/3 rounded-md bg-dark-2" />
+      <div className="mb-4 h-4 w-1/2 rounded-md bg-dark-2" />
     </div>
   )
 }
