@@ -2,15 +2,19 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { Post, User } from '@prisma/client'
 
 import { authStore } from '@/stores'
 import { cn } from '@/libs'
 
 interface ProfileStatisticProps {
+  user?: User & { posts: Post[] }
   className?: string
 }
 
-export const ProfileStatistic = ({ className }: ProfileStatisticProps) => {
+export const ProfileStatistic = (props: ProfileStatisticProps) => {
+  const { user, className } = props
+
   const pathname = usePathname()
 
   const auth = authStore((state) => state.user)
@@ -19,17 +23,21 @@ export const ProfileStatistic = ({ className }: ProfileStatisticProps) => {
 
   const info = [
     {
-      value: auth?.posts.length || '0',
+      value: user ? user.posts.length || '0' : auth?.posts.length || '0',
       label: 'Posts',
       prefix: '',
     },
     {
-      value: auth?.followersIds.length || '0',
+      value: user
+        ? user.followersIds.length || '0'
+        : auth?.followersIds.length || '0',
       label: 'Followers',
       prefix: 'followers',
     },
     {
-      value: auth?.followingIds.length || '0',
+      value: user
+        ? user.followingIds.length || '0'
+        : auth?.followingIds.length || '0',
       label: 'Following',
       prefix: 'following',
     },
@@ -50,7 +58,7 @@ export const ProfileStatistic = ({ className }: ProfileStatisticProps) => {
         return (
           <Link
             key={index}
-            href={`/profile/${auth?.id}/${prefix}`}
+            href={`/profile/${user ? user.id : auth?.id}/${prefix}`}
             className={cn(
               'w-full text-center transition-all hover:text-purple-1',
               currentPrefix === prefix && prefix !== '' && 'text-purple-1',
