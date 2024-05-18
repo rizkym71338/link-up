@@ -1,39 +1,18 @@
+import axios from 'axios'
+
 import { prisma } from '@/libs'
 
-export const getPosts = async (offset = 0) => {
-  const response = await fetch(`/api/posts?offset=${offset}`)
-  return response.json()
+interface GetPostsProps {
+  offset?: number
+  size?: number
+  authorId?: string
+  likedUserId?: string
+  savedUserId?: string
 }
 
-export const findManyPost = async () => {
-  return await prisma.post.findMany({
-    include: { author: true, likes: true, saves: true, comments: true },
-    orderBy: { createdAt: 'desc' },
-  })
-}
-
-export const findManyPostByAuthorId = async (authorId: string) => {
-  return await prisma.post.findMany({
-    where: { authorId },
-    include: { author: true, likes: true, saves: true, comments: true },
-    orderBy: { createdAt: 'desc' },
-  })
-}
-
-export const findManyPostBySavedUserId = async (userId: string) => {
-  return await prisma.post.findMany({
-    where: { saves: { some: { userId } } },
-    include: { author: true, likes: true, saves: true, comments: true },
-    orderBy: { createdAt: 'desc' },
-  })
-}
-
-export const findManyPostByLikedUserId = async (userId: string) => {
-  return await prisma.post.findMany({
-    where: { likes: { some: { userId } } },
-    include: { author: true, likes: true, saves: true, comments: true },
-    orderBy: { createdAt: 'desc' },
-  })
+export const getPosts = async (props?: GetPostsProps) => {
+  const response = await axios.get(`/api/posts`, { params: props })
+  return response.data
 }
 
 export const findPostById = async (postId: string) => {

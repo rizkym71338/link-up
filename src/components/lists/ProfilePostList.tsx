@@ -2,11 +2,17 @@
 
 import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroller'
+import { Post, User } from '@prisma/client'
 
-import { PostCard, Loader } from '@/components'
+import { Loader, ProfilePostCard } from '@/components'
 import { getPosts } from '@/services'
 
-export const PostList = () => {
+interface ProfilePostListProps {
+  user: User & { posts: Post[] }
+  by?: 'liked' | 'saved'
+}
+
+export const ProfilePostList = ({ user, by }: ProfilePostListProps) => {
   const [data, setData] = useState({
     items: [] as any[],
     offset: 0,
@@ -16,7 +22,13 @@ export const PostList = () => {
   const size = 10
 
   const loadMore = async () => {
-    const response = await getPosts({ offset: data.offset, size })
+    const response = await getPosts({
+      authorId: by === undefined ? user.id : undefined,
+      likedUserId: by === 'liked' ? user.id : undefined,
+      savedUserId: by === 'saved' ? user.id : undefined,
+      offset: data.offset,
+      size,
+    })
 
     setData({
       items: [...data.items, ...response],
@@ -27,7 +39,12 @@ export const PostList = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      const response = await getPosts()
+      const response = await getPosts({
+        authorId: by === undefined ? user.id : undefined,
+        likedUserId: by === 'liked' ? user.id : undefined,
+        savedUserId: by === 'saved' ? user.id : undefined,
+        size,
+      })
 
       setData({
         items: response,
@@ -37,7 +54,7 @@ export const PostList = () => {
     }
 
     fetch()
-  }, [])
+  }, [by, user.id])
 
   return (
     <InfiniteScroll
@@ -46,9 +63,9 @@ export const PostList = () => {
       hasMore={!data.endReached}
       loader={<Loader className="mx-auto my-4 h-8" />}
     >
-      <div className="divide-y divide-dark-2">
+      <div className="grid grid-cols-2 gap-1">
         {data.items.map((item: any) => (
-          <PostCard key={item.id} post={item} />
+          <ProfilePostCard key={item.id} post={item} />
         ))}
       </div>
       {data.endReached && data.items.length === 0 && (

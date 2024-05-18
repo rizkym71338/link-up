@@ -1,6 +1,5 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
 import { auth } from '@clerk/nextjs/server'
 
 import { prisma } from '@/libs'
@@ -19,6 +18,4 @@ export const saveOrUnSavePost = async (postId: string) => {
   } else {
     await prisma.savedPost.create({ data: { postId, userId: user?.id } })
   }
-
-  revalidatePath('')
 }

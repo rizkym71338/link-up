@@ -1,18 +1,21 @@
+'use client'
+
 import { Post, User } from '@prisma/client'
-import { auth } from '@clerk/nextjs/server'
 
 import { NextImage, ProfileStatistic } from '@/components'
 import { FollowOrUnFollowButton } from '@/components'
+import { authStore } from '@/stores'
 
 interface ProfileCardProps {
   user: User & { posts: Post[] }
-  currentUser: User
 }
 
-export const ProfileCard = async ({ user, currentUser }: ProfileCardProps) => {
-  const isFollowed = currentUser?.followingIds.includes(user.id)
+export const ProfileCard = ({ user }: ProfileCardProps) => {
+  const auth = authStore((state) => state.user)
 
-  const isCurrentUser = user.clerkId === auth().userId
+  const isFollowed = auth?.followingIds.includes(user.id) || false
+
+  const isCurrentUser = user.id === auth?.id
 
   return (
     <div className="mb-4 px-4 pt-4 md:px-0">

@@ -1,24 +1,22 @@
 import { NextRequest } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
+import { Prisma } from '@prisma/client'
 
 import { prisma } from '@/libs'
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
 
-  const size = Number(searchParams.get('size')) || 5
+  const size = Number(searchParams.get('size')) || 15
   const offset = Number(searchParams.get('offset')) || 0
-  const query = searchParams.get('query') || ''
+  const withSelf = searchParams.get('withSelf') == 'true'
+
+  let where: Prisma.UserWhereInput = {}
+  if (withSelf) where.clerkId = auth().userId
 
   const users = await prisma.user.findMany({
-    where: {
-      OR: [
-        { username: { contains: query, mode: 'insensitive' } },
-        { firstName: { contains: query, mode: 'insensitive' } },
-        { lastName: { contains: query, mode: 'insensitive' } },
-      ],
-      NOT: { clerkId: auth().userId },
-    },
+    where,
+    include: { posts: true },
     orderBy: { createdAt: 'desc' },
     take: size,
     skip: offset,

@@ -3,23 +3,25 @@
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { UserIcon } from '@heroicons/react/24/outline'
-import { Notification, User } from '@prisma/client'
+import { Notification } from '@prisma/client'
 
 import { readAllNotification } from '@/actions'
 import { sidebarLinks } from '@/constants'
+import { authStore } from '@/stores'
 import { cn } from '@/libs'
 
 interface BottomBarProps {
-  currentUser: User
   notifications: Notification[]
 }
 
-export const BottomBar = ({ currentUser, notifications }: BottomBarProps) => {
+export const BottomBar = ({ notifications }: BottomBarProps) => {
   const pathname = usePathname()
+
+  const auth = authStore((state) => state.user)
 
   const menus = [
     ...sidebarLinks,
-    { icon: UserIcon, label: 'Profile', route: `/profile/${currentUser.id}` },
+    { icon: UserIcon, label: 'Profile', route: `/profile/${auth?.id}` },
   ]
 
   return (

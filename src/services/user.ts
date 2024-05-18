@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { auth } from '@clerk/nextjs/server'
 
 import { prisma } from '@/libs'
@@ -19,23 +20,36 @@ export const findUserById = async (userId: string) => {
 export const findManyUserWithoutCurrentUser = async () => {
   return await prisma.user.findMany({
     where: { clerkId: { not: auth().userId } },
+    orderBy: { createdAt: 'desc' },
   })
 }
 
-export const findManyUserFollowingById = async (userId: string) => {
-  return await prisma.user.findMany({
-    where: { followersIds: { has: userId } },
-  })
+interface SearchUserProps {
+  query: string
+  offset?: number
+  size?: number
 }
 
-export const findManyUserFollowerById = async (userId: string) => {
-  return await prisma.user.findMany({
-    where: { followingIds: { has: userId } },
-  })
+export const searchUser = async (props?: SearchUserProps) => {
+  const response = await axios.get(`/api/search`, { params: props })
+
+  return response.data
 }
 
-export const searchUser = async (query: string, offset = 0) => {
-  const response = await fetch(`/api/search?query=${query}&offset=${offset}`)
+interface FollowUserProps {
+  id: string
+  offset?: number
+  size?: number
+}
 
-  return response.json()
+export const getFollowers = async (props?: FollowUserProps) => {
+  const response = await axios.get(`/api/followers`, { params: props })
+
+  return response.data
+}
+
+export const getFollowings = async (props?: FollowUserProps) => {
+  const response = await axios.get(`/api/followings`, { params: props })
+
+  return response.data
 }

@@ -1,65 +1,70 @@
 'use client'
 
-import { Suspense, useEffect, useState } from 'react'
-import { useInView } from 'react-intersection-observer'
+import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
+import InfiniteScroll from 'react-infinite-scroller'
 
 import { Loader, UserCard } from '@/components'
 import { searchUser } from '@/services'
 
 export const SearchList = () => {
-  const [users, setUsers] = useState<any>([])
-  const [offset, setOffset] = useState(0)
-  const [endReached, setEndReached] = useState(false)
+  const [data, setData] = useState({
+    items: [] as any[],
+    offset: 0,
+    endReached: false,
+  })
+
+  const size = 10
 
   const params = useParams()
   const query = params.query as string
 
-  const { ref } = useInView({
-    onChange(inView) {
-      if (inView && !endReached) loadMore()
-    },
-  })
-
   const loadMore = async () => {
-    const newUsers = await searchUser(query, offset)
+    const response = await searchUser({ query, size, offset: data.offset })
 
-    if (newUsers.length === 0) return setEndReached(true)
-
-    setUsers([...users, ...newUsers])
-    setOffset(offset + 15)
+    setData({
+      items: [...data.items, ...response],
+      offset: data.offset + size,
+      endReached: response.length === 0,
+    })
   }
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      const users = await searchUser(query)
+    const fetch = async () => {
+      const response = await searchUser({ query, size })
 
-      setUsers([...users])
-      if (users.length < 15) setEndReached(true)
-      setOffset(15)
+      setData({
+        items: response,
+        offset: size,
+        endReached: response.length < size,
+      })
     }
 
-    fetchPosts()
+    fetch()
   }, [query])
 
   return (
-    <Suspense>
+    <InfiniteScroll
+      pageStart={0}
+      loadMore={loadMore}
+      hasMore={!data.endReached}
+      loader={<Loader className="mx-auto my-4 h-8" />}
+    >
       <div className="divide-y divide-dark-2">
-        {users.map((user: any) => (
-          <UserCard key={user.id} user={user} />
+        {data.items.map((item: any) => (
+          <UserCard key={item.id} user={item} />
         ))}
       </div>
-      {endReached && users.length === 0 && (
-        <div className="my-4 text-center text-small-semibold">
-          No users found
+      {data.endReached && data.items.length === 0 && (
+        <div className="py-4 text-center text-small-semibold text-light-2">
+          No data
         </div>
       )}
-      {!endReached && <Loader ref={ref} className="mx-auto my-4 h-8" />}
-      {endReached && users.length > 0 && (
-        <div className="my-4 text-center text-small-semibold">
-          No more users
+      {data.endReached && data.items.length > 0 && (
+        <div className="py-4 text-center text-small-semibold text-light-2">
+          No more data
         </div>
       )}
-    </Suspense>
+    </InfiniteScroll>
   )
 }

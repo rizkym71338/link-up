@@ -5,7 +5,6 @@ import { Notification } from '@prisma/client'
 
 import { Menu, NextImage, ProfileStatistic } from '@/components'
 import { authStore } from '@/stores'
-import { Suspense } from 'react'
 
 interface LeftSideBarProps {
   notifications: Notification[]
@@ -22,16 +21,22 @@ export const LeftSideBar = ({ notifications }: LeftSideBarProps) => {
           alt="logo"
           className="mx-auto mb-8"
           useSkeleton
+          priority
         />
       </Link>
 
       <Link href={`/profile/${auth?.id}`}>
-        <NextImage
-          src={auth?.profilePhoto || ''}
-          alt="profile-photo"
-          className="mx-auto mb-2 h-16 w-16 rounded-full"
-          useSkeleton
-        />
+        {!auth && (
+          <div className="mx-auto mb-2 h-16 w-16 animate-pulse rounded-full bg-dark-2" />
+        )}
+        {auth && (
+          <NextImage
+            src={auth?.profilePhoto || ''}
+            alt="profile-photo"
+            className="mx-auto mb-2 h-16 w-16 rounded-full"
+            useSkeleton
+          />
+        )}
       </Link>
 
       <Link href={`/profile/${auth?.id}`}>

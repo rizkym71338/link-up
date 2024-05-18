@@ -3,10 +3,11 @@
 import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroller'
 
-import { PostCard, Loader } from '@/components'
-import { getPosts } from '@/services'
+import { Loader, NotificationCard } from '@/components'
+import { getNotifications } from '@/services'
+import { authStore } from '@/stores'
 
-export const PostList = () => {
+export const NotificationList = () => {
   const [data, setData] = useState({
     items: [] as any[],
     offset: 0,
@@ -15,8 +16,14 @@ export const PostList = () => {
 
   const size = 10
 
+  const auth = authStore((state) => state.user)
+
   const loadMore = async () => {
-    const response = await getPosts({ offset: data.offset, size })
+    const response = await getNotifications({
+      id: auth?.id || '',
+      offset: data.offset,
+      size,
+    })
 
     setData({
       items: [...data.items, ...response],
@@ -26,8 +33,8 @@ export const PostList = () => {
   }
 
   useEffect(() => {
-    const fetch = async () => {
-      const response = await getPosts()
+    const fetchPosts = async () => {
+      const response = await getNotifications({ id: auth?.id || '', size })
 
       setData({
         items: response,
@@ -36,8 +43,8 @@ export const PostList = () => {
       })
     }
 
-    fetch()
-  }, [])
+    fetchPosts()
+  }, [auth?.id])
 
   return (
     <InfiniteScroll
@@ -47,9 +54,18 @@ export const PostList = () => {
       loader={<Loader className="mx-auto my-4 h-8" />}
     >
       <div className="divide-y divide-dark-2">
-        {data.items.map((item: any) => (
-          <PostCard key={item.id} post={item} />
-        ))}
+        {data.items.map((item: any) => {
+          const isFollowed =
+            auth?.followingIds.includes(item.authorId || '') || false
+
+          return (
+            <NotificationCard
+              key={item.id}
+              notification={item}
+              isFollowed={isFollowed}
+            />
+          )
+        })}
       </div>
       {data.endReached && data.items.length === 0 && (
         <div className="py-4 text-center text-small-semibold text-light-2">

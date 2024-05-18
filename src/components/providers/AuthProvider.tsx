@@ -15,5 +15,9 @@ export const AuthProvider = ({ children, currentUser }: AuthProviderProps) => {
 
   setUser(currentUser)
 
+  const user = authStore((state) => state.user)
+
+  if (!user) return null
+
   return children
 }

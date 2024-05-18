@@ -1,12 +1,17 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { User } from '@prisma/client'
 import InfiniteScroll from 'react-infinite-scroller'
 
-import { PostCard, Loader } from '@/components'
-import { getPosts } from '@/services'
+import { Loader, UserCard } from '@/components'
+import { getFollowers } from '@/services'
 
-export const PostList = () => {
+interface FollowerListProps {
+  user: User
+}
+
+export const FollowerList = ({ user }: FollowerListProps) => {
   const [data, setData] = useState({
     items: [] as any[],
     offset: 0,
@@ -16,7 +21,11 @@ export const PostList = () => {
   const size = 10
 
   const loadMore = async () => {
-    const response = await getPosts({ offset: data.offset, size })
+    const response = await getFollowers({
+      id: user.id,
+      offset: data.offset,
+      size,
+    })
 
     setData({
       items: [...data.items, ...response],
@@ -27,7 +36,7 @@ export const PostList = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      const response = await getPosts()
+      const response = await getFollowers({ id: user.id, size })
 
       setData({
         items: response,
@@ -37,7 +46,7 @@ export const PostList = () => {
     }
 
     fetch()
-  }, [])
+  }, [user.id])
 
   return (
     <InfiniteScroll
@@ -48,7 +57,7 @@ export const PostList = () => {
     >
       <div className="divide-y divide-dark-2">
         {data.items.map((item: any) => (
-          <PostCard key={item.id} post={item} />
+          <UserCard key={item.id} user={item} />
         ))}
       </div>
       {data.endReached && data.items.length === 0 && (

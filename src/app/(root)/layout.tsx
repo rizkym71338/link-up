@@ -27,7 +27,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           <LeftSideBar notifications={notifications} />
           <MainContainer>{children}</MainContainer>
         </main>
-        <BottomBar currentUser={currentUser} notifications={notifications} />
+        <BottomBar notifications={notifications} />
       </AuthProvider>
     </ClerkProvider>
   )
