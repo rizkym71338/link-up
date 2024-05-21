@@ -10,18 +10,17 @@ export const findCurrentUser = async () => {
   })
 }
 
-export const findUserById = async (userId: string) => {
-  return await prisma.user.findFirst({
-    where: { id: userId },
-    include: { posts: true },
-  })
-}
-
 export const findManyUserWithoutCurrentUser = async () => {
   return await prisma.user.findMany({
     where: { clerkId: { not: auth().userId } },
     orderBy: { createdAt: 'desc' },
   })
+}
+
+export const getUser = async (id: string) => {
+  const response = await axios.get(`/api/users/${id}`)
+
+  return response.data
 }
 
 interface SearchUserProps {

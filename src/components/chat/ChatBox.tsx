@@ -3,20 +3,27 @@
 import * as Ably from 'ably'
 import { useEffect, useState, useTransition } from 'react'
 import { AblyProvider, ChannelProvider, useChannel } from 'ably/react'
-import { Chat, User } from '@prisma/client'
 
-import { ChatHeader, ChatInput, ChatList } from '@/components'
+import { ChatHeader, ChatInput, ChatList, Loader } from '@/components'
 import { createChat, readAllChat } from '@/actions'
+import { getChats, getUser } from '@/services'
+import { useParams, useRouter } from 'next/navigation'
+import { authStore } from '@/stores'
 
 interface ChatBoxProps {
-  currentUser: User
-  recipientUser: User
-  chats: Chat[] & { author: User | null; recipient: User | null }[]
   ABLY_KEY: string
 }
 
-export const ChatBox = (props: ChatBoxProps) => {
-  const { currentUser, recipientUser, ABLY_KEY, chats } = props
+export const ChatBox = ({ ABLY_KEY }: ChatBoxProps) => {
+  const [data, setData] = useState({
+    recipient: null as any,
+    isLoading: true,
+  })
+
+  const params = useParams()
+  const router = useRouter()
+
+  const auth = authStore((state) => state.user)
 
   const client = new Ably.Realtime({
     key: ABLY_KEY,
@@ -33,17 +40,32 @@ export const ChatBox = (props: ChatBoxProps) => {
   }
 
   useEffect(() => {
+    const fetch = async () => {
+      const response = await getUser(params.id as string)
+
+      if (!response) return router.replace('/404')
+
+      setData((data) => ({ ...data, recipient: response, isLoading: false }))
+    }
+
+    fetch()
+  }, [auth?.id, params.id, router])
+
+  useEffect(() => {
     const readChat = async () =>
       await readAllChat({
-        authorId: recipientUser.id,
-        recipientId: currentUser.id,
+        authorId: auth?.id as string,
+        recipientId: data.recipient?.id as string,
       })
     readChat()
     scrollToBottom()
-  }, [currentUser.id, recipientUser.id])
+  }, [data.recipient?.id, auth?.id])
 
   const AblyPubSub = () => {
-    const [messages, setMessages] = useState<any>(chats)
+    const [messages, setMessages] = useState({
+      data: [] as any,
+      isLoading: true,
+    })
 
     const [isPending, startTransition] = useTransition()
 
@@ -51,8 +73,8 @@ export const ChatBox = (props: ChatBoxProps) => {
       startTransition(async () => {
         const { author, recipient, message } = value.data
 
-        const isAuthor = author.id === currentUser.id
-        const isRecipient = author.id === recipientUser.id
+        const isAuthor = author.id === auth?.id
+        const isRecipient = author.id === data.recipient?.id
 
         const chat = {
           author,
@@ -63,7 +85,7 @@ export const ChatBox = (props: ChatBoxProps) => {
         }
 
         if (isRecipient || isAuthor) {
-          setMessages((value: any) => [...value, chat])
+          setMessages((value) => ({ ...value, data: [...value.data, chat] }))
           scrollToBottom()
         }
 
@@ -86,25 +108,42 @@ export const ChatBox = (props: ChatBoxProps) => {
       })
     })
 
+    useEffect(() => {
+      const fetch = async () => {
+        const response = await getChats({
+          currentUserId: auth?.id as string,
+          recipientId: data.recipient?.id as string,
+        })
+
+        setMessages({ data: response, isLoading: false })
+      }
+
+      fetch()
+    }, [])
+
+    if (messages.isLoading) return <Loader className="mx-auto my-4 h-8" />
+
     return (
       <section>
-        <ChatHeader recipientUser={recipientUser} />
+        <ChatHeader recipientUser={data.recipient} />
 
         <ChatList
           messages={messages}
-          currentUser={currentUser}
-          recipientUser={recipientUser}
+          currentUser={auth as any}
+          recipientUser={data.recipient}
         />
 
         <ChatInput
           channel={channel}
           isPending={isPending}
-          currentUser={currentUser}
-          recipientUser={recipientUser}
+          currentUser={auth as any}
+          recipientUser={data.recipient}
         />
       </section>
     )
   }
+
+  if (data.isLoading) return <Loader className="mx-auto my-4 h-8" />
 
   return (
     <AblyProvider client={client}>

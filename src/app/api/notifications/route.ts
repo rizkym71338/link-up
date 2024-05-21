@@ -1,4 +1,4 @@
-import { NextRequest } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
 import { prisma } from '@/libs'
 
@@ -17,5 +17,5 @@ export async function GET(request: NextRequest) {
     skip: offset,
   })
 
-  return Response.json(notifications)
+  return NextResponse.json(notifications)
 }

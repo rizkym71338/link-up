@@ -3,7 +3,8 @@
 import { ReactNode } from 'react'
 import { Post, User } from '@prisma/client'
 
-import { authStore } from '@/stores/auth'
+import { Loader } from '@/components'
+import { authStore } from '@/stores'
 
 interface AuthProviderProps {
   children: ReactNode
@@ -11,13 +12,13 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children, currentUser }: AuthProviderProps) => {
-  const setUser = authStore((state) => state.setUser)
+  const setUser = authStore(({ setUser }) => setUser)
 
   setUser(currentUser)
 
-  const user = authStore((state) => state.user)
+  const user = authStore(({ user }) => user)
 
-  if (!user) return null
+  if (!user) return <Loader className="mx-auto my-4 h-8" />
 
   return children
 }

@@ -16,11 +16,13 @@ export const ChatList = (props: ChatListProps) => {
 
   return (
     <div className="flex flex-col gap-1 px-4 pb-16 pt-4 md:px-0 md:pb-[64px] md:pt-4">
-      {messages.map((message: any, index: number) => {
+      {messages.data.map((message: any, index: number) => {
         const isAuthor = message.author.id === currentUser.id
         const user = isAuthor ? currentUser : recipientUser
         const isFirst =
-          index > 0 ? messages[index - 1].author.id !== message.author.id : true
+          index > 0
+            ? messages.data[index - 1].author.id !== message.author.id
+            : true
 
         return (
           <Zoom key={index} duration={500} triggerOnce>

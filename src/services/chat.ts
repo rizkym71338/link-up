@@ -1,14 +1,14 @@
-import { prisma } from '@/libs'
+import axios from 'axios'
 
-export const findManyChatByAuthorAndRecipientId = async (
-  currentUserId: string,
-  recipientId: string,
-) => {
-  return await prisma.chat.findMany({
-    where: {
-      authorId: { in: [currentUserId, recipientId] },
-      recipientId: { in: [currentUserId, recipientId] },
-    },
-    include: { author: true, recipient: true },
+interface GetChatsProps {
+  currentUserId: string
+  recipientId: string
+}
+
+export const getChats = async (props: GetChatsProps) => {
+  const response = await axios.get(`/api/chats`, {
+    params: props,
   })
+
+  return response.data
 }

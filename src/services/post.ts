@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-import { prisma } from '@/libs'
-
 interface GetPostsProps {
   offset?: number
   size?: number
@@ -15,14 +13,15 @@ export const getPosts = async (props?: GetPostsProps) => {
   return response.data
 }
 
-export const findPostById = async (postId: string) => {
-  return await prisma.post.findFirst({
-    where: { id: postId },
-    include: {
-      likes: true,
-      author: true,
-      saves: true,
-      comments: { include: { author: true } },
-    },
-  })
+interface GetPostProps {
+  id: string
+}
+
+export const getPost = async ({ id }: GetPostProps) => {
+  try {
+    const response = await axios.get(`/api/posts/${id}`)
+    return response.data
+  } catch (error) {
+    return null
+  }
 }

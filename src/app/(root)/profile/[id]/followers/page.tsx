@@ -1,24 +1,41 @@
-import { notFound } from 'next/navigation'
+'use client'
 
-import { FollowerList, ProfileCard, ProfileTab } from '@/components'
-import { findUserById } from '@/services'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+
+import { FollowerList, Loader, ProfileCard, ProfileTab } from '@/components'
+import { getUser } from '@/services'
 
 interface FollowersPageProps {
   params: { id: string }
 }
 
-export default async function FollowersPage({ params }: FollowersPageProps) {
-  const user = await findUserById(params.id)
+export default function FollowersPage({ params }: FollowersPageProps) {
+  const [data, setData] = useState({ user: null as any, isLoading: true })
 
-  if (!user) return notFound()
+  const router = useRouter()
+
+  useEffect(() => {
+    const fetch = async () => {
+      const response = await getUser(params.id)
+
+      if (!response) return router.replace('/404')
+
+      setData({ user: response, isLoading: false })
+    }
+
+    fetch()
+  }, [params.id, router])
+
+  if (data.isLoading) return <Loader className="mx-auto my-4 h-8" />
 
   return (
     <section>
-      <ProfileCard user={user} />
+      <ProfileCard user={data.user} />
 
       <ProfileTab />
 
-      <FollowerList user={user} />
+      <FollowerList user={data.user} />
     </section>
   )
 }
