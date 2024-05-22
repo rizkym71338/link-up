@@ -1,5 +1,4 @@
 import { HomeIcon, FolderPlusIcon, BellIcon } from '@heroicons/react/24/outline'
-// import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline'
 
 export const sidebarLinks = [
   {
@@ -7,11 +6,6 @@ export const sidebarLinks = [
     route: '/',
     label: 'Home',
   },
-  // {
-  //   icon: ChatBubbleLeftRightIcon,
-  //   route: '/direct',
-  //   label: 'Direct Message',
-  // },
   {
     icon: FolderPlusIcon,
     route: '/create-post',
@@ -52,10 +46,6 @@ export const pageTitles = [
   {
     url: '/notification',
     title: 'Notification',
-  },
-  {
-    url: '/direct',
-    title: 'Direct Message',
   },
 ]
 

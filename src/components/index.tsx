@@ -3,7 +3,6 @@ export * from '@/components/cards'
 export * from '@/components/inputs'
 export * from '@/components/layout'
 export * from '@/components/tabs'
-export * from '@/components/chat'
 export * from '@/components/lists'
 export * from '@/components/providers'
 

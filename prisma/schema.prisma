@@ -19,8 +19,6 @@ model User {
   comments               Comment[]
   savedPosts             SavedPost[]
   likedPosts             LikedPost[]
-  authorChats            Chat[]         @relation("AuthorChat")
-  recipientChats         Chat[]         @relation("RecipientChat")
   authorNotifications    Notification[] @relation("AuthorNotification")
   recipientNotifications Notification[] @relation("RecipientNotification")
   followers              User[]         @relation("UserFollows", fields: [followersIds], references: [id])
@@ -89,15 +87,4 @@ model LikedPost {
   post      Post?    @relation(fields: [postId], references: [id])
   postId    String?  @db.ObjectId
   createdAt DateTime @default(now())
-}
-
-model Chat {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  message     String?
-  isRead      Boolean?
-  author      User?    @relation("AuthorChat", fields: [authorId], references: [id])
-  authorId    String?  @db.ObjectId
-  recipient   User?    @relation("RecipientChat", fields: [recipientId], references: [id])
-  recipientId String?  @db.ObjectId
-  createdAt   DateTime @default(now())
 }
