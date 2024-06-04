@@ -13,8 +13,8 @@ export const TabButton = ({ href, label, isActive }: TabButtonProps) => {
     <Link
       href={href}
       className={cn(
-        'w-full rounded-md px-3 py-2 text-center text-small-semibold',
-        isActive ? 'bg-purple-1' : 'bg-dark-2',
+        'flex w-full items-center justify-center rounded-md px-3 py-2 text-center text-small-semibold',
+        isActive ? 'bg-brand text-gray-50' : 'bg-gray-200',
       )}
     >
       {label}

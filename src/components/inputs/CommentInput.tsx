@@ -25,14 +25,14 @@ export const CommentInput = ({ postId, isCard }: CommentInputProps) => {
     <div
       className={cn(
         !isCard &&
-          'fixed bottom-[53px] left-0 flex w-full justify-center bg-purple-2 md:bottom-0 md:pl-[316px] md:pr-4',
+          'fixed bottom-[53px] left-0 flex w-full justify-center bg-gray-50 md:bottom-0 md:pl-[316px] md:pr-4',
       )}
     >
       <div
         className={cn(
           isCard
             ? 'flex items-center gap-4 px-4 md:px-0'
-            : 'flex w-full max-w-xl items-center gap-4 border-t border-dark-2 px-4 py-4 md:max-w-[544px] md:px-0',
+            : 'flex w-full max-w-xl items-center gap-4 border-t border-gray-100 px-4 py-4 md:max-w-[544px] md:px-0',
         )}
       >
         <input
@@ -48,7 +48,7 @@ export const CommentInput = ({ postId, isCard }: CommentInputProps) => {
         <button
           onClick={onClick}
           disabled={isPending || message === ''}
-          className="text-small-semibold text-purple-1"
+          className="text-brand text-small-semibold"
         >
           {isPending ? <Loader className="h-5" /> : 'Send'}
         </button>

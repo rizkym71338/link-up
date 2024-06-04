@@ -54,7 +54,7 @@ export const PostCard = ({ post }: PostCardProps) => {
         <Link href={`/profile/${post.author?.id}`} className="w-full">
           <p className="text-small-semibold">
             {post.author?.firstName} {post.author?.lastName}{' '}
-            <span className="text-subtle-medium text-light-2">
+            <span className="text-subtle-medium text-gray-400">
               • {timeAgo(post.createdAt)}
             </span>
           </p>
@@ -70,7 +70,7 @@ export const PostCard = ({ post }: PostCardProps) => {
         <NextImage
           src={post.postPhoto || ''}
           alt="post photo"
-          className="mb-4 aspect-video w-full border-dark-2 bg-dark-2 object-cover md:rounded-md md:border"
+          className="mb-4 aspect-video w-full border-gray-100 bg-gray-200 object-cover md:rounded-md md:border"
           useSkeleton
         />
       </Link>
@@ -82,7 +82,7 @@ export const PostCard = ({ post }: PostCardProps) => {
 
       <p className="mb-1 px-4 md:px-0">{post.caption}</p>
 
-      <p className="mb-2 px-4 text-sm text-purple-1 md:px-0">{post.tag}</p>
+      <p className="text-brand mb-2 px-4 text-sm md:px-0">{post.tag}</p>
 
       {post.comments.length !== 0 && (
         <Link href={`/post/${post.id}`}>

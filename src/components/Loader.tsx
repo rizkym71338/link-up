@@ -10,7 +10,7 @@ const Loader = forwardRef<HTMLDivElement, LoaderProps>(({ className }, ref) => {
     <div
       ref={ref}
       className={cn(
-        'aspect-square animate-spin rounded-full border-t-4 border-solid border-purple-1',
+        'border-brand aspect-square animate-spin rounded-full border-t-4 border-solid',
         className,
       )}
     />

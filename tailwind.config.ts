@@ -10,6 +10,7 @@ const config: Config = {
     container: { center: true },
     extend: {
       colors: {
+        brand: '#007BFF',
         'purple-1': '#7857FF',
         'purple-2': '#1D1928',
         'pink-1': '#FF0073',

@@ -28,7 +28,7 @@ export const NotificationCard = (props: NotificationCardProps) => {
           <span className="font-semibold">{notification.author?.username}</span>{' '}
           {notification.message}
         </p>
-        <p className="text-subtle-medium text-light-2">
+        <p className="text-subtle-medium text-gray-400">
           {timeAgo(notification.createdAt)}
         </p>
       </Link>

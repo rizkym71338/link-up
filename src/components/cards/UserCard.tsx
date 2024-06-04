@@ -32,7 +32,7 @@ export const UserCard = ({ user }: UserCardProps) => {
         <p className="mb-1 text-small-semibold">
           {user.firstName} {user.lastName}
         </p>
-        <p className="text-subtle-medium text-light-2">@{user.username}</p>
+        <p className="text-subtle-medium text-gray-400">@{user.username}</p>
       </Link>
 
       {!isCurrentUser && (

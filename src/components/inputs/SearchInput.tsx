@@ -14,7 +14,7 @@ export const SearchInput = () => {
 
   const Icon = () => {
     const icon = (
-      <MagnifyingGlassIcon className="absolute right-2.5 top-2 h-5 w-5 cursor-pointer hover:text-pink-1" />
+      <MagnifyingGlassIcon className="hover:text-brand absolute right-2.5 top-2 h-5 w-5 cursor-pointer" />
     )
     if (search === '') return icon
     return (
@@ -36,7 +36,7 @@ export const SearchInput = () => {
     <div className="relative flex w-full">
       <input
         type="text"
-        className="w-full rounded-md bg-dark-2 px-3 py-2 text-small-semibold focus:outline-none"
+        className="w-full rounded-md bg-gray-100 px-3 py-2 text-small-semibold focus:outline-none"
         placeholder="Search post, people, ..."
         value={search}
         onChange={onChange}

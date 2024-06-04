@@ -69,12 +69,12 @@ export const ProfilePostList = ({ user, by }: ProfilePostListProps) => {
         ))}
       </div>
       {data.endReached && data.items.length === 0 && (
-        <div className="py-4 text-center text-small-semibold text-light-2">
+        <div className="py-4 text-center text-small-semibold text-gray-400">
           No data
         </div>
       )}
       {data.endReached && data.items.length > 0 && (
-        <div className="py-4 text-center text-small-semibold text-light-2">
+        <div className="py-4 text-center text-small-semibold text-gray-400">
           No more data
         </div>
       )}

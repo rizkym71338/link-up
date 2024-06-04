@@ -50,18 +50,18 @@ export const SearchList = () => {
       hasMore={!data.endReached}
       loader={<Loader className="mx-auto my-4 h-8" />}
     >
-      <div className="divide-y divide-dark-2">
+      <div className="divide-y divide-gray-100">
         {data.items.map((item: any) => (
           <UserCard key={item.id} user={item} />
         ))}
       </div>
       {data.endReached && data.items.length === 0 && (
-        <div className="py-4 text-center text-small-semibold text-light-2">
+        <div className="py-4 text-center text-small-semibold text-gray-400">
           No data
         </div>
       )}
       {data.endReached && data.items.length > 0 && (
-        <div className="py-4 text-center text-small-semibold text-light-2">
+        <div className="py-4 text-center text-small-semibold text-gray-400">
           No more data
         </div>
       )}

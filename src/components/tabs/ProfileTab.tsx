@@ -19,7 +19,7 @@ export const ProfileTab = ({ className }: ProfileTabProps) => {
   return (
     <div
       className={cn(
-        'flex gap-4 border-b border-dark-2 px-4 pb-4 md:px-0',
+        'flex gap-4 border-b border-gray-100 px-4 pb-4 md:px-0',
         className,
       )}
     >

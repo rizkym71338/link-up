@@ -50,7 +50,7 @@ export const ProfileStatistic = (props: ProfileStatisticProps) => {
           return (
             <div
               key={index}
-              className="h-10 w-full animate-pulse rounded-md bg-dark-2"
+              className="h-10 w-full animate-pulse rounded-md bg-gray-200"
             />
           )
         }
@@ -60,8 +60,8 @@ export const ProfileStatistic = (props: ProfileStatisticProps) => {
             key={index}
             href={`/profile/${user ? user.id : auth?.id}/${prefix}`}
             className={cn(
-              'w-full text-center transition-all hover:text-purple-1',
-              currentPrefix === prefix && prefix !== '' && 'text-purple-1',
+              'hover:text-brand w-full text-center transition-all',
+              currentPrefix === prefix && prefix !== '' && 'text-brand',
             )}
           >
             <p className="text-base-bold">{value}</p>

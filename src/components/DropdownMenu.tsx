@@ -28,7 +28,7 @@ export const DropdownMenu = ({ button, items }: DropdownMenuProps) => {
       >
         <MenuItems
           anchor="bottom end"
-          className="w-32 origin-top-right divide-y divide-dark-2 rounded border border-dark-2 bg-purple-2 p-0 text-sm focus:outline-none"
+          className="w-32 origin-top-right divide-y divide-gray-100 rounded border border-gray-100 bg-purple-2 p-0 text-sm focus:outline-none"
         >
           {items.map(({ label, asLink, href, onClick }, index) => {
             return (
@@ -36,13 +36,13 @@ export const DropdownMenu = ({ button, items }: DropdownMenuProps) => {
                 {asLink && href ? (
                   <Link
                     href={href}
-                    className="block w-full px-3 py-1.5 text-start hover:bg-dark-2"
+                    className="block w-full bg-gray-50 px-3 py-1.5 text-start hover:bg-gray-200"
                   >
                     {label}
                   </Link>
                 ) : (
                   <button
-                    className="w-full px-3 py-1.5 text-start hover:bg-dark-2"
+                    className="w-full bg-gray-50 px-3 py-1.5 text-start hover:bg-gray-200"
                     onClick={onClick}
                   >
                     {label}

@@ -73,7 +73,7 @@ export default function PostPage({ params }: PostPageProps) {
         <Link href={`/profile/${data.post.author?.id}`} className="w-full">
           <p className="text-small-semibold">
             {data.post.author?.firstName} {data.post.author?.lastName}{' '}
-            <span className="text-subtle-medium text-light-2">
+            <span className="text-subtle-medium text-gray-400">
               • {timeAgo(data.post.createdAt)}
             </span>
           </p>
@@ -89,7 +89,7 @@ export default function PostPage({ params }: PostPageProps) {
         <NextImage
           src={data.post.postPhoto || ''}
           alt="post photo"
-          className="mb-4 aspect-video w-full border-dark-2 bg-dark-2 object-cover md:rounded-md md:border"
+          className="mb-4 aspect-video w-full border-gray-100 bg-gray-200 object-cover md:rounded-md md:border"
           useSkeleton
         />
       </Link>
@@ -101,10 +101,10 @@ export default function PostPage({ params }: PostPageProps) {
 
       <p className="mb-1 px-4 md:px-0">{data.post.caption}</p>
 
-      <p className="mb-4 px-4 text-sm text-purple-1 md:px-0">{data.post.tag}</p>
+      <p className="text-brand mb-4 px-4 text-sm md:px-0">{data.post.tag}</p>
 
       {data.post.comments.length !== 0 && (
-        <div className="border-t border-dark-2 px-4 py-2 md:px-0">
+        <div className="border-t border-gray-100 px-4 py-2 md:px-0">
           {data.post.comments.map((comment: any) => (
             <div key={comment.id} className="flex gap-2 py-2">
               <NextImage
@@ -123,7 +123,7 @@ export default function PostPage({ params }: PostPageProps) {
                   </Link>{' '}
                   {comment.message}
                 </p>
-                <p className="text-tiny-medium text-light-2">
+                <p className="text-tiny-medium text-gray-400">
                   {timeAgo(comment.createdAt)}
                 </p>
               </div>

@@ -26,7 +26,7 @@ export const FollowOrUnFollowButton = (props: FollowOrUnFollowButtonProps) => {
       onClick={onClick}
       className={cn(
         'text-small-semibold',
-        isFollowed ? 'text-red-500' : 'text-purple-1',
+        isFollowed ? 'text-red-500' : 'text-brand',
         className,
       )}
     >

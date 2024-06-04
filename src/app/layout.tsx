@@ -8,7 +8,7 @@ import { cn } from '@/libs'
 import '@/styles/globals.css'
 
 export const metadata: Metadata = {
-  title: 'Vibe Zone',
+  title: 'LinkUp',
   description: 'Next 14 Social Media App',
 }
 
@@ -21,7 +21,7 @@ interface AppLayoutProps {
 export default function AppLayout({ children }: AppLayoutProps) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, 'bg-purple-2 text-light-1')}>
+      <body className={cn(inter.className, 'bg-gray-50 text-gray-700')}>
         <ProgressBarProvider>{children}</ProgressBarProvider>
       </body>
     </html>

@@ -40,8 +40,8 @@ export const Menu = ({ notifications }: MenuProps) => {
               }
             }}
             className={cn(
-              'relative mb-2 flex items-center gap-3 rounded-md px-3 py-2 transition-all hover:bg-purple-1',
-              isActive && 'bg-purple-1',
+              'hover:bg-brand relative mb-2 flex items-center gap-3 rounded-md px-3 py-2 transition-all hover:text-gray-50',
+              isActive && 'bg-brand text-gray-50',
             )}
           >
             {notifications.length > 0 && label === 'Notification' && (

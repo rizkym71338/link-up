@@ -25,7 +25,7 @@ export const BottomBar = ({ notifications }: BottomBarProps) => {
   ]
 
   return (
-    <div className="fixed bottom-0 z-10 flex w-full items-center justify-around border-t border-dark-2 bg-purple-2 px-4 py-2 md:hidden">
+    <div className="fixed bottom-0 z-10 flex w-full items-center justify-around border-t border-gray-100 bg-gray-50 px-4 py-2 md:hidden">
       {menus.map(({ icon: Icon, route, label }) => {
         const isActive =
           label === 'Profile' ? pathname.includes(route) : pathname === route
@@ -40,7 +40,7 @@ export const BottomBar = ({ notifications }: BottomBarProps) => {
             }}
             className={cn(
               'relative flex flex-col items-center justify-center gap-2 rounded-md p-2',
-              isActive && 'bg-purple-1',
+              isActive && 'bg-brand text-gray-50',
             )}
           >
             {notifications.length > 0 && label === 'Notification' && (

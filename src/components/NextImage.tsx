@@ -27,7 +27,7 @@ export const NextImage = ({
       className={cn(
         className,
         status === 'loading' &&
-          cn('animate-pulse bg-dark-2 blur', blurClassName),
+          cn('animate-pulse bg-gray-200 blur', blurClassName),
       )}
       src={src}
       width={width}
