@@ -72,7 +72,7 @@ export const LeftSideBar = ({ notifications }: LeftSideBarProps) => {
       <hr className="my-4 border-gray-100" />
 
       <p className="text-center text-tiny-medium">
-        © 2024 LinkUp | Powered by Alphadev
+        © 2024 LinkUp | created with ❤️ by rz.dev
       </p>
     </div>
   )
